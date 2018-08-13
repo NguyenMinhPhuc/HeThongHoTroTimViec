@@ -1,0 +1,14 @@
+{
+    "dtbTimTho": {
+        "username": "root",
+        "password": null,
+        "database": "db_findworker",
+        "host": "localhost",
+        "port": "8181",
+        "dialect": "mysql"
+    },
+    "jsonwebtoken":{
+        "secret": "imtisoling",
+        "algorithm": "HS512"
+    }
+}
