@@ -1,0 +1,6 @@
+{
+    "getProfileInform": "SELECT UserAccountID, Email, FullName, IsMale, PhoneNumber, Place, DATE_FORMAT(Birthday, '%d/%m/%Y') as Birthday, Image, PersonID, PointsAverage, UserTypeID FROM useraccounts WHERE UserAccountID = ?",
+    "postCheckInforLogin": "SELECT UserAccountID, Username, UserTypeID FROM useraccounts WHERE Username = ? and Password = ?",
+    "postSignUpForAllUser": "INSERT INTO useraccounts ( Email , Username , Password , FullName , UserTypeID) VALUES (?,?,?,?,?)",
+    "updateProfileInform": "UPDATE useraccounts SET FullName=?, IsMale=?, PhoneNumber=?, Place=?, Birthday=STR_TO_DATE(?, '%d/%m/%Y'), Image=?, PersonID=? WHERE UserAccountID = ?"
+}

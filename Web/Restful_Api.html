@@ -8,59 +8,87 @@
 </head>
 <body >
 
-<div class="container">
-	<div class="text-center">
-		<h2>Restful Api</h2>
-  		<p>Resource and HTTP method</p> 
+<div  class="text-center">
+	<div>
+		<h1>Restful Api</h1>
+  		<h4 class="text-secondary"><i>"Resource and HTTP method"</i></h4> 
 	</div>
   <table class="table table-hover">
 	  <thead class="thead-dark">
-	    <tr class="text-center">
+	    <tr>
 	      <th scope="col">Resource</th>
 	      <th scope="col">GET</th>
 	      <th scope="col">POST</th>
 	      <th scope="col">PUT</th>
 	      <th scope="col">DELETE</th>
-	      <th scope="col">Date Created</th>
-	      <th scope="col">Date finished</th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	    <tr>
 	      <th scope="row">/api/account/login</th>
-	      <td>ERROR</td>
-	      <td>
-	      	<b>Login and return a token</b><br>
-	      	body: username: '...', password: '...', grant_type: 'password'<br>
-	      	headers: 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'</td>
-	      <td>ERROR</td>
-	      <td>ERROR</td>
-	      <td>8/8/2018</td>
-	      <td>10/8/2018</td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	      <td class="text-left">
+	      	<h5 class="text-center">Login and return a token</h5>
+	      	<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+	      	<b>body:</b> username: - password: - grant_type: 'password'<br>
+	      	<i>8/8/2018-10/8/2018</i>
+	      </td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	      <td class="text-danger"><b>ERROR</b></td>
 	    </tr>
 	    <tr>
 	      <th scope="row">/api/account/signup_for_guest</th>
-	      <td>ERROR</td>
-	      <td>
-	      	<b>Sign Up for Guest</b><br>
-	      	body: email: '...', username: '...', password: '...' , fullname: '...'<br>
-	      	headers: 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'</td>
-	      <td>ERROR</td>
-	      <td>ERROR</td>
-	      <td>10/8/2018</td>
-	      <td>13/8/2018</td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	      <td class="text-left">
+	      	<h5 class="text-center">Sign Up for Guest</h5>
+	      	<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+	      	<b>body:</b> email: - username: - password: - fullname:<br>
+	      	<i>10/8/2018-13/8/2018</i>
+	      </td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	      <td class="text-danger"><b>ERROR</b></td>
 	    </tr>
 	    <tr>
 	      <th scope="row">/api/account/signup_for_worker</th>
-	      <td>ERROR</td>
-	      <td>
-	      	<b>Sign Up for Worker</b><br>
-	      	body: email: '...', username: '...', password: '...' , fullname: '...'<br>
-	      	headers: 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'</td>
-	      <td>ERROR</td>
-	      <td>ERROR</td>
-	      <td>13/8/2018</td>
-	      <td>13/8/2018</td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	      <td class="text-left">
+	      	<h5 class="text-center">Sign Up for Worker</h5>
+	      	<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+	      	<b>body:</b> email: - username: - password: - fullname:<br>
+	      	<i>13/8/2018-13/8/2018</i>
+	      </td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	    </tr>
+	    <tr>
+	      <th scope="row">/api/account/profile</th>
+	      <td class="text-left">
+	      	<h5 class="text-center">Get inform</h5>
+	      	<b>headers:</b> 'Authorization': 'token'<br>
+	      	<i>14/8/2018-14/8/2018</i>
+	      </td>
+	      </td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	      <td class="text-left">
+	      	<h5 class="text-center">Update inform</h5>
+	      	<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+	      	<b>body:</b> fullname: - ismale: - phonenumber: - place: - birthday: - image: - personid:<br>
+	      	<i>14/8/2018-15/8/2018</i>
+	      </td>
+	      </td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	    </tr>
+	    <tr>
+	      <th scope="row">/api/account/curriculum_vitae</th>
+	      <td class="text-danger"><b>ERROR</b></td>
+	      <td class="text-left">
+	      	<h5 class="text-center">Tạo mới CV</h5>
+	      	<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+	      	<b>body:</b> userworkerid: - namejobcategory: - exprience: - qualifications: - generalinformation: - imagestore<br>
+	      	<i>15/8/2018-.../8/2018</i>
+	      </td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	      <td class="text-danger"><b>ERROR</b></td>
 	    </tr>
 	  </tbody>
 	</table>

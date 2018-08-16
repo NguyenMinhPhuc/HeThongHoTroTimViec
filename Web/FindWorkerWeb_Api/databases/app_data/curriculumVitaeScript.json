@@ -1,0 +1,3 @@
+{
+    "postJobCategoryNotCategoryID": "INSERT INTO jobcategories( UserWorkerID, NameJobCategory, Exprience, Qualifications, GeneralInformation, ImageStore) VALUES (?,?,?,?,?,?)"
+}
