@@ -58,7 +58,7 @@ router.post('/login', [check('username').custom(value => {//sử dụng express-
                 .then(result => {
                     if (result.length > 0) {
                         var resultObject = JSON.parse(JSON.stringify(result[0]));//ép chuỗi
-                        jwt.sign(resultObject, process.env.SECRET, { algorithm: process.env.ALGORITHM, expiresIn: '1d' }, (err, token) => {//mã hóa sử dụng jwt tồn tại trong 1 ngày
+                        jwt.sign(resultObject, process.env.FW_SECRET, { algorithm: process.env.FW_ALGORITHM, expiresIn: '1d' }, (err, token) => {//mã hóa sử dụng jwt tồn tại trong 1 ngày
                             if (err) return res.json(500, { error: err });
                             return res.json(200, { "success": true, "token": token, "UserTypeID": result[0].UserTypeID });
                         });

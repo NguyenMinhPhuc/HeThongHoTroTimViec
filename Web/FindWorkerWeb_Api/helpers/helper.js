@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 //decode với key trong config
 function jwtVerifyLogin(token) {
     return new Promise((resolve, reject) => {
-        jwt.verify(token, process.env.SECRET, function (err, decoded) {
+        jwt.verify(token, process.env.FW_SECRET, function (err, decoded) {
             if (err) return reject(err);
             return resolve(decoded);
         });
