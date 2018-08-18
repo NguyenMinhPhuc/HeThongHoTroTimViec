@@ -12,25 +12,51 @@ var router = express.Router();
 //GET
 router.get('/profile', (req, res) => {
     helper.jwtVerifyLogin(req.header("authorization"))//verify token trong header
-        .then(result => {
-            accountModel.getProfileInform(result.UserAccountID)//get thông tin profile
+        .then(results => {
+            accountModel.getProfileInform(results.UserAccountID)//get thông tin profile
                 .then(result => {
                     if (result.length > 0) {
-                        res.json(200, result[0]);
+                        return res.json(200, result[0]);
                     } else {
-                        res.json(400, {
+                        return res.json(400, {
                             "error": "invalid_grant",
                             "error_description": "ID không tồn tại"
                         });
                     }
                 })
                 .catch(err => {
-                    res.json(500, err);
+                    return res.json(500, err);
                 });
         })
         .catch(err => {
             console.log(err);
-            res.json(400, {
+            return res.json(400, {
+                "error": "invalid_grant",
+                "error_description": "Token không tồn tại hoặc đã hết hạn"
+            });
+        });
+});
+router.get('/profile/:useraccountid', (req, res) => {
+    helper.jwtVerifyLogin(req.header("authorization"))//verify token trong header
+        .then(results => {
+            accountModel.getProfileInform(req.params.useraccountid)//get thông tin profile
+                .then(result => {
+                    if (result.length > 0) {
+                        return res.json(200, result[0]);
+                    } else {
+                        return res.json(400, {
+                            "error": "invalid_grant",
+                            "error_description": "ID không tồn tại"
+                        });
+                    }
+                })
+                .catch(err => {
+                    return res.json(500, err);
+                });
+        })
+        .catch(err => {
+            console.log(err);
+            return res.json(400, {
                 "error": "invalid_grant",
                 "error_description": "Token không tồn tại hoặc đã hết hạn"
             });
@@ -41,13 +67,12 @@ router.get('/profile', (req, res) => {
 router.post('/login', [check('username').custom(value => {//sử dụng express-validator để custom username không có khoảng cách
     if (value.indexOf(' ') >= 0) {
         return Promise.reject('Username không chứa khoảng cách');
-    }
-    return Promise.resolve(true);
+    } return Promise.resolve(true);
 })], (req, res) => {
     req.checkBody('username', 'Không để trống Username').trim().notEmpty();
     req.checkBody('password', 'Không để trống Password').trim().notEmpty();
     req.checkBody('grant_type', 'Không để trống Grant type').trim().notEmpty();
-    if (req.validationErrors()) res.json(400, { "error": req.validationErrors() });
+    if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
     else {
         if (req.body.grant_type === "password") {
             let user = {
@@ -62,16 +87,18 @@ router.post('/login', [check('username').custom(value => {//sử dụng express-
                             if (err) return res.json(500, { error: err });
                             return res.json(200, { "success": true, "token": token, "UserTypeID": result[0].UserTypeID });
                         });
-                    } else return res.json(400, {
-                        "error": "invalid_grant",
-                        "error_description": "Username hoặc Password là không đúng"
-                    });
+                    } else {
+                        return res.json(400, {
+                            "error": "invalid_grant",
+                            "error_description": "Username hoặc Password là không đúng"
+                        });
+                    }
                 })
                 .catch(err => {
-                    res.json(500, err);
+                    return res.json(500, err);
                 });
         } else {
-            res.json(400, {
+            return res.json(400, {
                 "error": "invalid_grant",
                 "error_description": "Grant type không đúng"
             });
@@ -88,7 +115,7 @@ router.post('/signup_for_guest', [check('username').custom(value => {//sử dụ
         req.checkBody('email', 'không phải là một Email').isEmail();
         req.checkBody('password', 'Password phải chứa ít nhất là 6 ký tự').trim().isLength({ min: 6 });
         req.checkBody('fullname', 'Fullname phải chứa ít nhất là 3 ký tự').trim().isLength({ min: 3 });
-        if (req.validationErrors()) res.json(400, { "error": req.validationErrors() });
+        if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
         else {
             let account = {
                 email: req.body.email.trim(),
@@ -107,7 +134,7 @@ router.post('/signup_for_guest', [check('username').custom(value => {//sử dụ
                     });
                 })
                 .catch(err => {
-                    res.json(500, { "error": err });
+                    return res.json(500, { "error": err });
                 });
         }
     });
@@ -121,7 +148,7 @@ router.post('/signup_for_worker', [check('username').custom(value => {//sử d�
         req.checkBody('email', 'Không phải là Email').isEmail();
         req.checkBody('password', 'Password phải chứa ít nhất là 6 ký tự').trim().isLength({ min: 6 });
         req.checkBody('fullname', 'Fullname phải chứa ít nhất là 3 ký tự').trim().isLength({ min: 3 });
-        if (req.validationErrors()) res.json(400, { "error": req.validationErrors() });
+        if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
         else {
             let account = {
                 email: req.body.email.trim(),
@@ -140,7 +167,7 @@ router.post('/signup_for_worker', [check('username').custom(value => {//sử d�
                     });
                 })
                 .catch(err => {
-                    res.json(500, { "error": err });
+                    return res.json(500, { "error": err });
                 });
         }
     });
@@ -159,7 +186,7 @@ router.put('/profile', [check('birthday').custom(value => {//sử dụng express
         req.checkBody('place', 'Không để trống địa điểm').trim().notEmpty();
         req.checkBody('image', 'Không để trống ảnh').trim().isURL();
         req.checkBody('personid', 'Sai định dạng cmnd').trim().isInt().isLength({ min: 9, max: 10 });
-        if (req.validationErrors()) res.json(400, { "error": req.validationErrors() });
+        if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
         else {
             helper.jwtVerifyLogin(req.header("authorization"))
                 .then(result => {
@@ -184,12 +211,12 @@ router.put('/profile', [check('birthday').custom(value => {//sử dụng express
                             });
                         })
                         .catch(err => {
-                            res.json(500, { "error": err });
+                            return res.json(500, { "error": err });
                         });
                 })
                 .catch(err => {
                     console.log(err);
-                    res.json(400, {
+                    return res.json(400, {
                         "error": "invalid_grant",
                         "error_description": "Token không tồn tại hoặc đã hết hạn"
                     });

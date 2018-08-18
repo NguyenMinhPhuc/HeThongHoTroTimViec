@@ -5,7 +5,7 @@ function jwtVerifyLogin(token) {
     return new Promise((resolve, reject) => {
         jwt.verify(token, process.env.FW_SECRET, function (err, decoded) {
             if (err) return reject(err);
-            return resolve(decoded);
+            resolve(decoded);
         });
     })
 };

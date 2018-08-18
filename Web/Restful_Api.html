@@ -64,7 +64,7 @@
 	      <th scope="row">/api/account/profile</th>
 	      <td class="text-left">
 	      	<h5 class="text-center">Get inform</h5>
-	      	<b>headers:</b> 'Authorization': 'token'<br>
+	      	<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 	      	<i>14/8/2018-14/8/2018</i>
 	      </td>
 	      </td>
@@ -79,16 +79,43 @@
 	      <td class="text-danger"><b>ERROR</b></td>
 	    </tr>
 	    <tr>
-	      <th scope="row">/api/account/curriculum_vitae</th>
-	      <td class="text-danger"><b>ERROR</b></td>
+	      <th scope="row">/api/account/profile/:useraccountid</th>
 	      <td class="text-left">
-	      	<h5 class="text-center">Tạo mới CV</h5>
+	      	<h5 class="text-center">Get inform</h5>
 	      	<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-	      	<b>body:</b> userworkerid: - namejobcategory: - exprience: - qualifications: - generalinformation: - imagestore<br>
-	      	<i>15/8/2018-.../8/2018</i>
+	      	<i>14/8/2018-14/8/2018</i>
+	      </td>
 	      </td>
 	      <td class="text-danger"><b>ERROR</b></td>
 	      <td class="text-danger"><b>ERROR</b></td>
+	      </td>
+	      <td class="text-danger"><b>ERROR</b></td>
+	    </tr>
+	    <tr>
+	      <th scope="row">/api/account/cv</th>
+	      <td class="text-left">
+	      	<h5 class="text-center">GET CV Not Activated</h5>
+	      	<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+	      	<i>17/8/2018-18/8/2018</i>
+	      </td>
+	      <td class="text-left">
+	      	<h5 class="text-center">Create CV</h5>
+	      	<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+	      	<b>body:</b> [categoryid:] - namejobcategory: - exprience: - qualifications: - generalinformation: - imagestore<br>
+	      	<i>15/8/2018-17/8/2018</i>
+	      </td>
+	      <td class="text-left">
+	      	<h5 class="text-center">Update CV</h5>
+	      	<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+	      	<b>body:</b> [categoryid:] - namejobcategory: - exprience: - qualifications: - generalinformation: - imagestore<br>
+	      	<i>18/8/2018-.../8/2018</i>
+	      </td>
+	      <td class="text-left">
+	      	<h5 class="text-center">Delete CV</h5>
+	      	<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+	      	<b>body:</b> [categoryid:] - namejobcategory: - exprience: - qualifications: - generalinformation: - imagestore<br>
+	      	<i>.../8/2018-.../8/2018</i>
+	      </td>
 	    </tr>
 	  </tbody>
 	</table>
