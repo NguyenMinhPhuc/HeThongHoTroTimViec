@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FindWorker_App.SignUpPage"
+             Title="ĐĂNG KÝ">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="LightBlue" HorizontalOptions="FillAndExpand" Padding="50,80,50,0">
+            <Label Text="Tên đăng nhập" VerticalOptions="Start" TextColor="Black"/>
+            <Entry HorizontalOptions="CenterAndExpand" WidthRequest="350" FontSize="15" HeightRequest="40" TextColor="Black"></Entry>
+            <Label Text="Mật khẩu" VerticalOptions="Start" TextColor="Black"/>
+            <Entry HorizontalOptions="CenterAndExpand" WidthRequest="350" FontSize="15" HeightRequest="40" TextColor="Black"></Entry>
+            <Label Text="Nhập lại mật khẩu" VerticalOptions="Start" TextColor="Black"/>
+            <Entry HorizontalOptions="CenterAndExpand" WidthRequest="350" FontSize="15" HeightRequest="40" TextColor="Black"></Entry>
+            <Label Text="Email" VerticalOptions="Start" TextColor="Black"/>
+            <Entry HorizontalOptions="CenterAndExpand" WidthRequest="350" FontSize="15" HeightRequest="40" Keyboard="Email" TextColor="Black"></Entry>
+            <Label Text="Loại tài khoản" VerticalOptions="Start" TextColor="Black"/>
+            <Picker FontSize="22" HeightRequest="40"></Picker>
+            <Button x:Name="btnOK" Text="XÁC NHẬN" BackgroundColor="AntiqueWhite" TextColor="Blue" BorderRadius="20" Clicked="btnOK_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
