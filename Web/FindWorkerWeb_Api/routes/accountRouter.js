@@ -82,10 +82,11 @@ router.post('/login', [check('username').custom(value => {//sử dụng express-
             accountModel.postCheckInforLogin(user)//Select and check user and password
                 .then(result => {
                     if (result.length > 0) {
-                        var resultObject = JSON.parse(JSON.stringify(result[0]));//ép chuỗi
-                        jwt.sign(resultObject, process.env.FW_SECRET, { algorithm: process.env.FW_ALGORITHM, expiresIn: '1d' }, (err, token) => {//mã hóa sử dụng jwt tồn tại trong 1 ngày
+                        // var resultObject = JSON.parse(JSON.stringify(result[0].UserAccountID, result[0].UserTypeID));//ép chuỗi
+                        var resultObject = JSON.parse(JSON.stringify({ "UserAccountID": result[0].UserAccountID, "UserTypeID": result[0].UserTypeID }));
+                        jwt.sign(resultObject, process.env.FW_SECRET, { algorithm: process.env.FW_ALGORITHM, expiresIn: '1d' }, (err, token) => {
                             if (err) return res.json(500, { error: err });
-                            return res.json(200, { "success": true, "token": token, "UserTypeID": result[0].UserTypeID });
+                            return res.json(200, { "success": true, "token": token, "FullName": result[0].FullName, "Image": result[0].Image, "UserTypeID": result[0].UserTypeID });
                         });
                     } else {
                         return res.json(400, {
@@ -184,7 +185,7 @@ router.put('/profile', [check('birthday').custom(value => {//sử dụng express
         req.checkBody('phonenumber', 'Không phải là số điện thoại').isMobilePhone("vi-VN");
         req.checkBody('ismale', 'Sai định dạng true false').isBoolean();
         req.checkBody('place', 'Không để trống địa điểm').trim().notEmpty();
-        req.checkBody('image', 'Không để trống ảnh').trim().isURL();
+        //req.checkBody('image', 'Không để trống ảnh').trim().isURL();
         req.checkBody('personid', 'Sai định dạng cmnd').trim().isInt().isLength({ min: 9, max: 10 });
         if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
         else {
