@@ -64,11 +64,7 @@ router.get('/profile/:useraccountid', (req, res) => {
 });
 
 //POST
-router.post('/login', [check('username').custom(value => {//sử dụng express-validator để custom username không có khoảng cách
-    if (value.indexOf(' ') >= 0) {
-        return Promise.reject('Username không chứa khoảng cách');
-    } return Promise.resolve(true);
-})], (req, res) => {
+router.post('/login', (req, res) => {
     req.checkBody('username', 'Không để trống Username').trim().notEmpty();
     req.checkBody('password', 'Không để trống Password').trim().notEmpty();
     req.checkBody('grant_type', 'Không để trống Grant type').trim().notEmpty();
@@ -86,7 +82,7 @@ router.post('/login', [check('username').custom(value => {//sử dụng express-
                         var resultObject = JSON.parse(JSON.stringify({ "UserAccountID": result[0].UserAccountID, "UserTypeID": result[0].UserTypeID }));
                         jwt.sign(resultObject, process.env.FW_SECRET, { algorithm: process.env.FW_ALGORITHM, expiresIn: '1d' }, (err, token) => {
                             if (err) return res.json(500, { error: err });
-                            return res.json(200, { "success": true, "token": token, "FullName": result[0].FullName, "Image": result[0].Image, "UserTypeID": result[0].UserTypeID });
+                            return res.json(200, { "success": true, "token": token, "UserAccountID": result[0].UserAccountID, "FullName": result[0].FullName, "Image": result[0].Image, "UserTypeID": result[0].UserTypeID });
                         });
                     } else {
                         return res.json(400, {
