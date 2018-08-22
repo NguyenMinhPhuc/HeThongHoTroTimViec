@@ -10,32 +10,32 @@ var { check } = require('express-validator/check');
 
 var router = express.Router();
 //GET
-router.get('/profile', (req, res) => {
-    helper.jwtVerifyLogin(req.header("authorization"))//verify token trong header
-        .then(results => {
-            accountModel.getProfileInform(results.UserAccountID)//get thông tin profile
-                .then(result => {
-                    if (result.length > 0) {
-                        return res.json(200, result[0]);
-                    } else {
-                        return res.json(400, {
-                            "error": "invalid_grant",
-                            "error_description": "ID không tồn tại"
-                        });
-                    }
-                })
-                .catch(err => {
-                    return res.json(500, err);
-                });
-        })
-        .catch(err => {
-            console.log(err);
-            return res.json(400, {
-                "error": "invalid_grant",
-                "error_description": "Token không tồn tại hoặc đã hết hạn"
-            });
-        });
-});
+// router.get('/profile', (req, res) => {
+//     helper.jwtVerifyLogin(req.header("authorization"))//verify token trong header
+//         .then(results => {
+//             accountModel.getProfileInform(results.UserAccountID)//get thông tin profile
+//                 .then(result => {
+//                     if (result.length > 0) {
+//                         return res.json(200, result[0]);
+//                     } else {
+//                         return res.json(400, {
+//                             "error": "invalid_grant",
+//                             "error_description": "ID không tồn tại"
+//                         });
+//                     }
+//                 })
+//                 .catch(err => {
+//                     return res.json(500, err);
+//                 });
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             return res.json(400, {
+//                 "error": "invalid_grant",
+//                 "error_description": "Token không tồn tại hoặc đã hết hạn"
+//             });
+//         });
+// });
 router.get('/profile/:useraccountid', (req, res) => {
     helper.jwtVerifyLogin(req.header("authorization"))//verify token trong header
         .then(results => {
