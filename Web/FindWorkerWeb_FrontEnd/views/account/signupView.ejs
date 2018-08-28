@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký | Hệ thống hỗ trợ tìm việc</title>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="stylesheets/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="stylesheets/animate.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet">
+    <link href="stylesheets/styleMyEdited.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div class="ibox-content">
+            <div><h1 class="logo-name">FW</h1></div>
+            <h3>Chào mừng bạn đến với Website<br> <b>Hệ Thống Hỗ Trợ Tìm Việc</b>.</h3>
+            <p>Tạo một tài khoản mới</p>
+            <form class="m-t" role="form" id="fSignup" name="fSignup">
+                <div class="form-group">
+                    <input type="text" id="iSignupUsername" class="form-control" placeholder="Tài khoản" tabindex="1" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="iSignupPassword" class="form-control" placeholder="Mật khẩu" tabindex="2" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="iSignupPassword2" class="form-control" placeholder="Nhập lại mật khẩu" tabindex="3" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="iSignupFullname" class="form-control" placeholder="Họ và Tên" tabindex="4" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="iSignupEmail" class="form-control" placeholder="Email" tabindex="5" required>
+                </div>
+                <div style="display: none" id="alert" class="alert alert-danger text-center" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    <span class="msg"></span>
+                </div>
+                <button type="submit" id="btnSignup" class="btn btn-primary block full-width m-b" tabindex="7">Đăng ký</button>
+                <p class="text-muted text-center"><small>Bạn đã có tài khoản?</small></p>
+                <a class="btn btn-sm btn-white btn-block" href="/login" tabindex="8">Đăng nhập</a>
+            </form>
+            <p class="m-t"> <small>Hệ Thống Hỗ Trợ Tìm Việc &copy; 2018</small> </p>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- My script -->
+    <script src="/javascripts/HTTPMethods/accountPublic.js"></script>
+</body>
+</html>

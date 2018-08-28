@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo/logoFW60x60.jpg">
+    <title>
+        <%=tittle%>
+    </title>
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/stylesheets/animate.css" rel="stylesheet">
+    <!--  -->
+    <link href="/stylesheets/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <!--  -->
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/stylesheets/styleMyEdited.css" rel="stylesheet">
+    <!--  -->
+    <link href="/stylesheets/plugins/touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet">
+    <link href="/stylesheets/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <style>
+        tr th {text-align: center;}
+    </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <%- include('../layout_index/index_sidebar_collapse.ejs'); -%>
+      <div id="page-wrapper" class="gray-bg">
+        <%- include('../layout_index/index_header.ejs'); -%>
+          <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                  <h2>Danh sách thợ đợi duyệt</h2>
+                </div>
+                <div class="tab-pane active">
+                  <div class="ibox-content profile-content col-md-12">
+                    <!-- <form class="form-horizontal" id="fCVPost" name="fCVPost" action="/cv/post"> -->
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>#</th>
+                                    <th></th>
+                                    <th>Họ và Tên</th>
+                                    <th>Ngành nghề</th>
+                                    <th>CMND</th>
+                                    <th>Năm kinh nghiệm</th>
+                                    <th>Trình độ chuyên môn</th>
+                                    <th>Thông tin chung</th>
+                                    <th>Tổng điểm</th>
+                                    <th>Ngày tạo tài khoản</th>
+                                    <th>Ngày nạp hồ sơ</th>
+                                    <th style="width:70px"></th>
+                                </tr>
+                                
+                                <%let i=0;
+                                userCategories.forEach(function(userCategory){
+                                    i++%>
+                                    <tr>
+                                        <td><b><%=i%></b></td>
+                                        <td class="client-avatar"><img alt="image" src="<%=userCategory.Image%>"> </td>
+                                        <td style="width:120px"><a href="/profile/<%=userCategory.UserAccountID%>" class="client-link" target="_blank"><%=userCategory.FullName%></a></td>
+                                        <td> <%=userCategory.NameJobCategory%></td>
+                                        <td> <%=userCategory.PersonID%></td>
+                                        <td class="text-center"> <%=userCategory.Exprience%></td>
+                                        <td> <%=userCategory.Qualifications%></td>
+                                        <td> <%=userCategory.GeneralInformation%></td>
+                                        <td> <%=userCategory.PointsAverage%></td>
+                                        <td> <%=userCategory.CreateDateAccount%></td>
+                                        <td> <%=userCategory.CreateDateJobCategory%></td>
+                                        <td >
+                                            <div style="display:inline">
+                                                <abbr title="Đồng ý hồ sơ này">
+                                                    <button type="button" class="btnAgreeCV btn btn-primary btn-xs" categoryid="<%=userCategory.CategoryID%>" userworkerid="<%=userCategory.UserAccountID%>">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                </abbr>
+                                                <abbr title="Xóa hồ sơ này">
+                                                    <button type="button" class="btnDeleteCV btn btn-danger btn-xs" categoryid="<%=userCategory.CategoryID%>" userworkerid="<%=userCategory.UserAccountID%>">
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </abbr>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                                <tr>
+                                    <th>#</th>
+                                    <th></th>
+                                    <th>Họ và Tên</th>
+                                    <th>Ngành nghề</th>
+                                    <th>CMND</th>
+                                    <th>Năm kinh nghiệm</th>
+                                    <th>Trình độ chuyên môn</th>
+                                    <th>Thông tin chung</th>
+                                    <th>Tổng điểm</th>
+                                    <th>Ngày tạo tài khoản</th>
+                                    <th>Ngày nạp hồ sơ</th>
+                                    <th></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    <!-- </form> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <%- include('../layout_index/index_footer.ejs'); -%>
+      </div>
+  </div>
+  <%- include('../layout_index/index_script.ejs') -%>
+    <script src="/javascripts/plugins/touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="/javascripts/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="/javascripts/plugins/toastr/toastr.min.js"></script>
+    <script src="/javascripts/HTTPMethods/cvPublic.js"></script>
+</body>
+
+</html>
