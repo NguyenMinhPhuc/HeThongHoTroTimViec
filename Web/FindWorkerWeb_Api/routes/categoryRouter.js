@@ -4,7 +4,7 @@ var router = express.Router();
 var categoryModel = require('../models/categoryModel');
 var helper = require('../helpers/helper');
 
-router.get('/get-all-category', async (req, res) => {
+router.get('/get-all', async (req, res) => {
     try {
         await helper.jwtVerifyLogin(req.header("authorization"));
         let resultOfgAJC = await categoryModel.getAllJobCategory();

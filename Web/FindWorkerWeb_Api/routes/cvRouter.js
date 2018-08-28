@@ -4,7 +4,7 @@ var router = express.Router();
 var cvModel = require('../models/cvModel');
 var helper = require('../helpers/helper');
 //GET
-router.get('/', async (req, res) => {
+router.get('/not-activated', async (req, res) => {
     try {
         let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
         if (resultOfJWT.UserTypeID == 1) {
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
     }
 });
 //POST đăng hồ sơ để đợi duyệt
-router.post('/', async (req, res) => {
+router.post('/post', async (req, res) => {
     req.checkBody('categoryid', 'Danh mục bị lỗi').trim().isInt();
     req.checkBody('namejobcategory', 'Tên danh mục bị sai định dạng').trim().isLength({ min: 3 });
     req.checkBody('exprience', 'Sai định dạng kiểu dữ liệu của kinh nghiệm').isFloat({ min: 0.0 });
@@ -79,7 +79,7 @@ router.post('/', async (req, res) => {
     }
 });
 //PUT active Hồ sơ người đăng
-router.put('/', async (req, res) => {
+router.put('/active-cv', async (req, res) => {
     req.checkBody('categoryid', 'Sai định dạng danh mục').trim().isInt();
     req.checkBody('userworkerid', 'Sai định dạng tài khoản id').trim().isInt();
     if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
@@ -117,7 +117,7 @@ router.put('/', async (req, res) => {
     }
 });
 //Delete hồ sơ chưa active
-router.delete('/', async (req, res) => {
+router.delete('/active-cv', async (req, res) => {
     req.checkBody('categoryid', 'Sai định dạng danh mục').trim().isInt();
     req.checkBody('userworkerid', 'Sai định dạng tài khoản id').trim().isInt();
     if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
