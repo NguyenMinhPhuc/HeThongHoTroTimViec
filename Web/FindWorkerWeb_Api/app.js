@@ -17,9 +17,11 @@ app.use(bodyParser.json());
 app.use(expressValidator());
 
 var accountRouter = require('./routes/accountRouter'),
-  cvRouter = require('./routes/curriculumVitaeRouter');
+  cvRouter = require('./routes/curriculumVitaeRouter'),
+  categoryRouter = require('./routes/categoryRouter');
 app.use('/api/account', accountRouter);
 app.use('/api/cv', cvRouter);
+app.use('/api/category', categoryRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));

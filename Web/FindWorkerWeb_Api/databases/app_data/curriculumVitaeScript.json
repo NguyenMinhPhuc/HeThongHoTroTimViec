@@ -1,8 +1,7 @@
 {
-    "selectJobCategoryID": "SELECT DISTINCT CategoryID, NameJobCategory FROM jobcategories WHERE CategoryID = ? or NameJobCategory = ?",
-    "selectUserNotActivated": "SELECT ua.UserAccountID, ua.Email, ua.FullName, ua.IsMale, ua.PhoneNumber, ua.Place, ua.Image, ua.PersonID,  DATE_FORMAT(ua.CreateDate, '%d/%m/%Y') AS CreateDateAccount, ua.PointsAverage , jc.`CategoryID`, jc.NameJobCategory, jc.Exprience, jc.Qualifications, jc.GeneralInformation, DATE_FORMAT(jc.CreateDate, '%d/%m/%Y') AS CreateDateJobCategory FROM useraccounts as ua INNER JOIN jobcategories AS jc on ua.UserAccountID = jc.UserWorkerID WHERE jc.ActiveStatus = ? AND ua.UserTypeID = ?",
-    "insertJobCategoryNotByCategoryID": "INSERT INTO jobcategories( UserWorkerID, NameJobCategory, Exprience, Qualifications, GeneralInformation, ImageStore) VALUES (?,?,?,?,?,?)",
-    "insertJobCategoryByCategoryID": "INSERT INTO jobcategories(CategoryID, UserWorkerID, NameJobCategory, Exprience, Qualifications, GeneralInformation, ImageStore) SELECT ?,?,?,?,?,?,? WHERE NOT EXISTS(SELECT * FROM jobcategories WHERE CategoryID = ? and UserWorkerID = ?) LIMIT 1",
-    "updateActiveCV": "UPDATE jobcategories SET ActiveStatus = 1, ActiveDate = CURRENT_TIMESTAMP, UserAdminActive = ? WHERE CategoryID = ? AND UserWorkerID = ?",
-    "deleteCV": "DELETE FROM jobcategories WHERE CategoryID = ? and UserWorkerID = ? AND ActiveStatus = 0"
+    "selectJobCategoryByID": "SELECT * FROM jobcategories WHERE CategoryID = ? or NameJobCategory = ?",
+    "selectUserNotActivated": "SELECT ua.UserAccountID, ua.Email, ua.FullName, ua.IsMale, ua.PhoneNumber, ua.Place, ua.Image, ua.PersonID,  DATE_FORMAT(ua.CreateDate, '%d/%m/%Y') AS CreateDateAccount, ua.PointsAverage , ujc.CategoryID, jc.NameJobCategory, ujc.Exprience, ujc.Qualifications, ujc.GeneralInformation, DATE_FORMAT(ujc.CreateDate, '%d/%m/%Y') AS CreateDateJobCategory FROM useraccounts as ua INNER JOIN userjobcategories  AS ujc on ua.UserAccountID = ujc.UserWorkerID INNER JOIN jobcategories AS jc ON jc.CategoryID = ujc.CategoryID WHERE ujc.ActiveStatus = ? AND ua.UserTypeID = ?;",
+    "insertJobCategoryByCategoryID": "INSERT INTO userjobcategories(CategoryID, UserWorkerID, Exprience, Qualifications, GeneralInformation, ImageStore) SELECT ?,?,?,?,?,? WHERE NOT EXISTS(SELECT * FROM userjobcategories WHERE CategoryID = ? and UserWorkerID = ?) LIMIT 1",
+    "updateActiveCV": "UPDATE userjobcategories SET ActiveStatus = 1, ActiveDate = CURRENT_TIMESTAMP, UserAdminActive = ? WHERE CategoryID = ? AND UserWorkerID = ?",
+    "deleteCV": "DELETE FROM userjobcategories WHERE CategoryID = ? AND UserWorkerID = ? AND ActiveStatus = 0"
 }

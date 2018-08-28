@@ -1,0 +1,3 @@
+{
+    "selectAllJobCategory": "SELECT * FROM jobcategories"
+}
