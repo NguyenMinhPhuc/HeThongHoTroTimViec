@@ -29,16 +29,22 @@ app.use(session({
 var loginRouter = require('./routes/account/loginRouter'),
   logoutRouter = require('./routes/account/logoutRouter'),
   signupRouter = require('./routes/account/signupRouter'),
-  indexRouter = require('./routes/indexRouter'),
   profileRouter = require('./routes/profile/profileRouter'),
-  cvRouter = require('./routes/cv/cvRouter');
+  //
+  indexAdminRouter = require('./routes/adminRouter/indexRouter'),
+  cvAdminRouter = require('./routes/adminRouter/cv/cvRouter'),
+  //
+  indexWorkerRouter = require('./routes/workerRouter/indexRouter'),
+  cvWorkerRouter = require('./routes/workerRouter/cv/cvRouter');
 
-app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
-app.use('/signup', signupRouter);
-app.use('/', indexRouter);
-app.use('/profile', profileRouter);
-app.use('/cv', cvRouter);
+app.use('/login', loginRouter)
+  .use('/logout', logoutRouter)
+  .use('/signup', signupRouter)
+  .use('/profile', profileRouter)
+  .use('/admin', indexAdminRouter)
+  .use('/admin/cv', cvAdminRouter)
+  .use('/', indexWorkerRouter)
+  .use('/cv', cvWorkerRouter)
 
 // catch 404
 app.use(function (req, res, next) {

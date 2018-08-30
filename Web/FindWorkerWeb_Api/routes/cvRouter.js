@@ -3,27 +3,8 @@ var router = express.Router();
 
 var cvModel = require('../models/cvModel');
 var helper = require('../helpers/helper');
-//GET
-router.get('/not-activated', async (req, res) => {
-    try {
-        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
-        if (resultOfJWT.UserTypeID == 1) {
-            let resultOfUNA = await cvModel.getUserNotActivated(0, 2);
-            res.json(200, resultOfUNA);
-        } else {
-            res.json(400, {
-                "error": "invalid_grant",
-                "error_description": "Loại tài khoản của bạn không có quyền lấy danh sách"
-            });
-        }
-    } catch (err) {
-        console.log(err.message);
-        return res.json(500, {
-            "error": "invalid_grant",
-            "error_description": "Lỗi xác thực token"
-        });
-    }
-});
+
+//router post
 //POST đăng hồ sơ để đợi duyệt
 router.post('/post', async (req, res) => {
     req.checkBody('categoryid', 'Danh mục bị lỗi').trim().isInt();
@@ -78,6 +59,8 @@ router.post('/post', async (req, res) => {
         }
     }
 });
+
+//router ACTIVE CV
 //PUT active Hồ sơ người đăng
 router.put('/active-cv', async (req, res) => {
     req.checkBody('categoryid', 'Sai định dạng danh mục').trim().isInt();
@@ -154,4 +137,56 @@ router.delete('/active-cv', async (req, res) => {
     }
 });
 
+//router not-activated
+//GET
+router.get('/not-activated', async (req, res) => {
+    try {
+        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+        if (resultOfJWT.UserTypeID == 1) {
+            let resultOfUNA = await cvModel.getUserNotActivated(0, 2);
+            if (resultOfUNA.length > 0) {
+                res.status(200).json({ "success": true, "result": resultOfUNA });
+            } else {
+                res.status(200).json({ "success": false, "message": "Danh sách trống!!!" });
+            }
+        } else {
+            res.json(400, {
+                "error": "invalid_grant",
+                "error_description": "Loại tài khoản của bạn không có quyền lấy danh sách"
+            });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.json(500, {
+            "error": "invalid_grant",
+            "error_description": "Lỗi xác thực token"
+        });
+    }
+});
+
+//Router Activated
+router.get('/activated/:useraccountid', async (req, res) => {
+    try {
+        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+        if (resultOfJWT.UserTypeID) {
+            let resultOfUA = await cvModel.getUserActivated(req.params.useraccountid, 1);
+            if (resultOfUA.length > 0) {
+                res.status(200).json({ "success": true, "result": resultOfUA });
+            } else {
+                res.status(200).json({ "success": false, "message": "Danh sách trống!!!" });
+            }
+        } else {
+            res.json(400, {
+                "error": "invalid_grant",
+                "error_description": "Loại tài khoản của bạn không có quyền lấy danh sách"
+            });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.json(500, {
+            "error": "invalid_grant",
+            "error_description": "Lỗi xác thực token"
+        });
+    }
+})
 module.exports = router;

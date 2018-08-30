@@ -1,6 +1,5 @@
 $(document).ready(function () {
     var valueSelectedspCVCategory, textSelectedspCVCategory, del;
-
     //Option Show toastr when have error or success
     toastr.options = {
         "closeButton": true,
@@ -18,7 +17,6 @@ $(document).ready(function () {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     };
-
     //event change select option
     $('#spCVCategory').on("change", function () {
         var optionSelected = $(this).find("option:selected");
@@ -60,7 +58,7 @@ $(document).ready(function () {
                 categoryid: categoryid,
                 userworkerid: userworkerid
             };
-            deleteCV(cvData, "/cv/worker-category-not-activated");
+            deleteCV(cvData, "/admin/cv/worker-category-not-activated");
         });
         // console.log($(this).attr("categoryid"));
     });
@@ -73,7 +71,7 @@ $(document).ready(function () {
             categoryid: categoryid,
             userworkerid: userworkerid
         };
-        putCV(cvData, "/cv/worker-category-not-activated");
+        putCV(cvData, "/admin/cv/worker-category-not-activated");
         // console.log($(this).attr("categoryid"));
     });
     //event click submit in form
@@ -97,7 +95,6 @@ $(document).ready(function () {
         }
         postCV(categoryData, "/cv/post");
     });
-
     //function of category
     function postCV(categoryData, namePath) {
         $.ajax({
@@ -105,11 +102,7 @@ $(document).ready(function () {
             url: namePath,
             data: categoryData
         }).done(function () {
-            swal({
-                title: "Hoàn thành!",
-                text: "Bạn đã đăng hồ sơ thành công!",
-                type: "success"
-            });
+            toastr["success"]("Đã đăng hồ sơ thành công.", "Thành công");
             $("#spCVCategory").val("");
             $("input#ipCVExprience").val(0.5);
             $("input#ipCVQualifications").val("");
@@ -117,11 +110,8 @@ $(document).ready(function () {
             $("#alert").fadeOut(700);
         }).fail(function (err) {
             let strErr;
-            if (err.responseJSON) {
-                strErr = err.responseJSON;
-            } else {
-                strErr = err.responseJSON.error["0"].msg;
-            }
+            if (err.responseJSON) { strErr = err.responseJSON; }
+            else { strErr = err.responseJSON.error["0"].msg; }
             $("#alert .msg").text(strErr);
             $("#alert").fadeIn(700);
         });
@@ -134,17 +124,12 @@ $(document).ready(function () {
             data: categoryData
         }).done(function () {
             del.remove();
-            swal("Đã xóa!", "Hồ sơ này đã bị xóa.", "success");
+            swal("Đã xóa!", "Hồ sơ đã được xóa.", "success");
         }).fail(function (err) {
             let strErr;
-            if (err.responseJSON) {
-                strErr = err.responseJSON;
-            } else {
-                strErr = err.responseJSON.error["0"].msg;
-            }
+            if (err.responseJSON) { strErr = err.responseJSON; }
+            else { strErr = err.responseJSON.error["0"].msg; }
             toastr["error"](strErr, "Lỗi");
-            // $("#alert .msg").text(strErr);
-            // $("#alert").fadeIn(700);
         });
     };
     //function PUT
@@ -155,17 +140,12 @@ $(document).ready(function () {
             data: categoryData
         }).done(function () {
             del.remove();
-            toastr["success"]("Đã thêm hồ sơ thành công.", "Thành công");
+            toastr["success"]("Đã chấp nhận hồ sơ thành công.", "Thành công");
         }).fail(function (err) {
             let strErr;
-            if (err.responseJSON) {
-                strErr = err.responseJSON;
-            } else {
-                strErr = err.responseJSON.error["0"].msg;
-            }
+            if (err.responseJSON) { strErr = err.responseJSON; }
+            else { strErr = err.responseJSON.error["0"].msg; }
             toastr["error"](strErr, "Lỗi");
-            // $("#alert .msg").text(strErr);
-            // $("#alert").fadeIn(700);
         });
     };
 });

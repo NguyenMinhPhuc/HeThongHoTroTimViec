@@ -49,20 +49,11 @@
                         <span class="nav-label"> Hồ sơ</span>
                         <span class="fa arrow"></span>
                     </a>
-                    <% if(userAccount.UserTypeID == 2 ){ %>
-                        <ul class="nav nav-second-level collapse">
-                            <li>
-                                <a href="/cv/post"><i class="fa fa-file-text"></i> Đăng hồ sơ</a>
-                            </li>
-                        </ul>
-                    <% } %>
-                    <% if(userAccount.UserTypeID == 1 ){ %>
-                        <ul class="nav nav-second-level collapse">
-                            <li class="active">
-                                <a href="/cv/worker-category-not-activated"><i class="fa fa-list-alt"></i> Thợ chưa được duyệt</a>
-                            </li>
-                        </ul>
-                    <% } %>
+                    <ul class="nav nav-second-level collapse">
+                        <li>
+                            <a href="/cv/post"><i class="fa fa-file-text"></i> Đăng hồ sơ</a>
+                        </li>
+                    </ul>
             </li>
         </ul>
     </div>

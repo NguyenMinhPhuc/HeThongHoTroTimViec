@@ -3,19 +3,51 @@ var router = express.Router();
 
 var axiosModel = require('../../models/axiosModel');
 
-//http method GET
+//http method GET profile by id
 router.get('/:useraccountid', async (req, res) => {
     if (req.session.token) {
         try {
-            if (req.session.account.UserTypeID == 1 || req.session.account.UserTypeID == 2) {
-                let resultgAP = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid));
-                res.render('./profile/profileView', {
-                    tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
-                    userAccount: req.session.account,
-                    myProfile: resultgAP.data,
-                    slideBarSTT: 0
-                });
-            } else { res.redirect('/login'); }
+            if (req.session.account.UserTypeID == 1) {
+                //let resultgAP = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid));
+                Promise.all([
+                    axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid)),
+                    axiosModel.getAxios(req.session.token, "/api/cv/activated/".concat(req.params.useraccountid))
+                ]).then((resultPA) => {
+                    res.render('./adminViews/profile/profileView', {
+                        tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
+                        userAccount: req.session.account,
+                        myProfile: resultPA[0].data,
+                        myCV: resultPA[1].data,
+                        slideBarSTT: 0
+                    });
+                })
+                // res.render('./adminViews/profile/profileView', {
+                //     tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
+                //     userAccount: req.session.account,
+                //     myProfile: resultgAP.data,
+                //     slideBarSTT: 0
+                // });
+            } else if (req.session.account.UserTypeID == 2) {
+                // let resultgAP = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid));
+                Promise.all([
+                    axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid)),
+                    axiosModel.getAxios(req.session.token, "/api/cv/activated/".concat(req.params.useraccountid))
+                ]).then((resultPA) => {
+                    res.render('./workerViews/profile/profileView', {
+                        tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
+                        userAccount: req.session.account,
+                        myProfile: resultPA[0].data,
+                        myCV: resultPA[1].data,
+                        slideBarSTT: 0
+                    });
+                })
+                // res.render('./workerViews/profile/profileView', {
+                //     tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
+                //     userAccount: req.session.account,
+                //     myProfile: resultgAP.data,
+                //     slideBarSTT: 0
+                // });
+            } else { res.redirect('/logout'); }
         } catch (error) {
             if (error.response.data.error == 'invalid_grant') {
                 res.locals.message = error.response.data.error_description;
@@ -24,39 +56,53 @@ router.get('/:useraccountid', async (req, res) => {
                 res.render('error');
             }
             else {
-                console.log(error);
-                res.status(500).json(error);
+                console.log(error.message);
+                res.redirect('/logout');
             }
         }
-    } else { res.redirect('/login'); }
+    } else { res.redirect('/logout'); }
 });
-router.get('/edit/:useraccountid', async (req, res) => {
+
+//http method GET profile by id to edit
+router.get('/edit', async (req, res) => {
     if (req.session.token) {
         try {
-            if (req.session.account.UserAccountID == req.params.useraccountid && (req.session.account.UserTypeID == 1 || req.session.account.UserTypeID == 2)) {
-                let resultgAP = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid));
-                res.render('./profile/profileEditView', {
+            if (req.session.account.UserTypeID == 1) {
+                let resultgAP = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.session.account.UserAccountID));
+                res.render('./adminViews/profile/profileEditView', {
                     tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
                     userAccount: req.session.account,
                     myProfile: resultgAP.data,
                     slideBarSTT: 0
                 });
-            } else { res.redirect('/'); }
+            } else if (req.session.account.UserTypeID == 2) {
+                let resultgAP = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.session.account.UserAccountID));
+                res.render('./workerViews/profile/profileView', {
+                    tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
+                    userAccount: req.session.account,
+                    myProfile: resultgAP.data,
+                    slideBarSTT: 0
+                });
+            } else { res.redirect('/logout'); }
         } catch (error) {
-            if (error.response.data.error == 'invalid_grant') { res.status(400).json(error.response.data.error_description); }
+            res.redirect('/logout');
+            if (error.response.data.error == 'invalid_grant') {
+                res.redirect('/logout');
+                res.status(400).json(error.response.data.error_description);
+            }
             else {
                 console.log("error: " + error.message);
-                res.status(500).json(error);
+                res.redirect('/logout');
             }
         }
-    } else { res.redirect('/login'); }
+    } else { res.redirect('/logout'); }
 });
 
-//http method PUT
-router.put('/edit/:useraccountid', async (req, res) => {
+//http method PUT a profile edited
+router.put('/edit', async (req, res) => {
     if (req.session.token) {
         try {
-            if (req.session.account.UserAccountID == req.params.useraccountid && (req.session.account.UserTypeID == 1 || req.session.account.UserTypeID == 2)) {
+            if (req.session.account.UserTypeID == 1 || req.session.account.UserTypeID == 2) {
                 let profileEdit = {
                     fullname: req.body.Fullname,
                     phonenumber: req.body.PhoneNumber,
@@ -79,7 +125,7 @@ router.put('/edit/:useraccountid', async (req, res) => {
                 res.status(500).json(error);
             }
         }
-    } else { res.redirect('/login'); }
+    } else { res.redirect('/logout'); }
 });
 
 module.exports = router;

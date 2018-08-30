@@ -18,6 +18,14 @@ function getUserNotActivated(ActiveStatus, UserTypeID) {
         });
     })
 };
+function getUserActivated(UserWorkerID, ActiveStatus) {
+    return new Promise((resolve, reject) => {
+        db.connection.query(CVScript.selectCVActivated, [UserWorkerID, ActiveStatus], (err, results) => {
+            if (err) { return reject(err); }
+            resolve(results);
+        });
+    })
+};
 
 //POST
 function postJobCategoryByCategoryID(cv) {
@@ -50,4 +58,4 @@ function deleteCV(cvdelete) {
 };
 
 
-module.exports = { getJobCategoryByID, getUserNotActivated, postJobCategoryByCategoryID, putActiveCV, deleteCV };
+module.exports = { getJobCategoryByID, getUserNotActivated, getUserActivated, postJobCategoryByCategoryID, putActiveCV, deleteCV };

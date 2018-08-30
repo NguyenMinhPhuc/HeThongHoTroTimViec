@@ -9,27 +9,7 @@ var { check } = require('express-validator/check');
 
 var router = express.Router();
 
-//GET
-router.get('/profile/:useraccountid', async (req, res) => {
-    try {
-        await helper.jwtVerifyLogin(req.header("authorization"));//verify token trong header
-        let result = await accountModel.getProfileInform(req.params.useraccountid)//get thông tin profile
-        if (result.length > 0) { return res.json(200, result[0]); }
-        else {
-            return res.json(400, {
-                "error": "invalid_grant",
-                "error_description": "ID không tồn tại"
-            });
-        }
-    } catch (err) {
-        return res.json(500, {
-            "error": "invalid_grant",
-            "error_description": "Token không tồn tại hoặc đã hết hạn"
-        });
-    }
-});
-
-//POST
+//Login
 router.post('/login', async (req, res) => {
     req.checkBody('username', 'Không để trống Username').trim().notEmpty();
     req.checkBody('password', 'Không để trống Password').trim().notEmpty();
@@ -66,6 +46,8 @@ router.post('/login', async (req, res) => {
         }
     };
 });
+
+//signup
 router.post('/signup_for_guest', [check('username').custom(value => {//sử dụng express-validator để custom username không có khoảng cách
     if (value.indexOf(' ') >= 0) {
         return Promise.reject('Username không chứa khoảng cách');
@@ -129,6 +111,25 @@ router.post('/signup_for_worker', [check('username').custom(value => {//sử d�
     }
 });
 
+//profile
+router.get('/profile/:useraccountid', async (req, res) => {
+    try {
+        await helper.jwtVerifyLogin(req.header("authorization"));//verify token trong header
+        let result = await accountModel.getProfileInform(req.params.useraccountid)//get thông tin profile
+        if (result.length > 0) { return res.json(200, result[0]); }
+        else {
+            return res.json(400, {
+                "error": "invalid_grant",
+                "error_description": "ID không tồn tại"
+            });
+        }
+    } catch (err) {
+        return res.json(500, {
+            "error": "invalid_grant",
+            "error_description": "Token không tồn tại hoặc đã hết hạn"
+        });
+    }
+});
 //PUT
 router.put('/profile', [check('birthday').custom(value => {//sử dụng express-validator để custom date đúng định dạng
     if (!moment(value, 'DD/MM/YYYY', true).isValid()) {

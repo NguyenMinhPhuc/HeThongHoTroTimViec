@@ -5,8 +5,13 @@ var axiosModel = require('../../models/axiosModel');
 
 //http method GET
 router.get('/', (req, res, next) => {
-    if (req.session.token) res.redirect('/');
-    else res.render('./account/loginView');
+    if (req.session.account) {
+        if (req.session.account.UserTypeID == 1) {
+            res.redirect("/admin");
+        } else if (req.session.account.UserTypeID == 2) {
+            res.redirect("/");
+        } else { res.redirect("/logout"); }
+    } else { res.render('./account/loginView'); }
 });
 
 //http method POST
@@ -18,9 +23,7 @@ router.post('/', async (req, res) => {
                 password: req.body.password
             };
             let resultAAM = await axiosModel.postAxiosLogin(user, "/api/account/login");
-            if (resultAAM.data.UserTypeID != 1 && resultAAM.data.UserTypeID != 2) {
-                res.status(403).json("Tài khoản bạn là khách không có quyền đăng nhập ở đây");
-            } else {
+            if (resultAAM.data.UserTypeID == 1 || resultAAM.data.UserTypeID == 2) {
                 req.session.token = resultAAM.data.token;
                 req.session.account = {
                     UserAccountID: resultAAM.data.UserAccountID,
@@ -28,7 +31,13 @@ router.post('/', async (req, res) => {
                     Image: resultAAM.data.Image,
                     UserTypeID: resultAAM.data.UserTypeID
                 };
-                res.status(200).json("/");
+                if (resultAAM.data.UserTypeID == 1) {
+                    res.status(200).json("/admin");
+                } else {
+                    res.status(200).json("/");
+                }
+            } else {
+                res.status(403).json("Tài khoản bạn là khách không có quyền đăng nhập ở đây");
             }
         } catch (error) {
             if (error.response.data.error[0].msg) {
