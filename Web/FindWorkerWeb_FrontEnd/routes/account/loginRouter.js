@@ -20,9 +20,10 @@ router.post('/', async (req, res) => {
         try {
             let user = {
                 username: req.body.username,
-                password: req.body.password
+                password: req.body.password,
+                grant_type: req.body.grant_type
             };
-            let resultAAM = await axiosModel.postAxiosLogin(user, "/api/account/login");
+            let resultAAM = await axiosModel.postAxios(null, user, "/api/account/login");
             if (resultAAM.data.UserTypeID == 1 || resultAAM.data.UserTypeID == 2) {
                 req.session.token = resultAAM.data.token;
                 req.session.account = {

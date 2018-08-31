@@ -8,45 +8,25 @@ router.get('/:useraccountid', async (req, res) => {
     if (req.session.token) {
         try {
             if (req.session.account.UserTypeID == 1) {
-                //let resultgAP = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid));
-                Promise.all([
-                    axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid)),
-                    axiosModel.getAxios(req.session.token, "/api/cv/activated/".concat(req.params.useraccountid))
-                ]).then((resultPA) => {
-                    res.render('./adminViews/profile/profileView', {
-                        tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
-                        userAccount: req.session.account,
-                        myProfile: resultPA[0].data,
-                        myCV: resultPA[1].data,
-                        slideBarSTT: 0
-                    });
-                })
-                // res.render('./adminViews/profile/profileView', {
-                //     tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
-                //     userAccount: req.session.account,
-                //     myProfile: resultgAP.data,
-                //     slideBarSTT: 0
-                // });
+                let resultProfile = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid));
+                let resultActivated = await axiosModel.getAxios(req.session.token, "/api/cv/activated/".concat(req.params.useraccountid));
+                res.render('./adminViews/profile/profileView', {
+                    tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
+                    userAccount: req.session.account,
+                    myProfile: resultProfile.data,
+                    myCV: resultActivated.data,
+                    slideBarSTT: 0
+                });
             } else if (req.session.account.UserTypeID == 2) {
-                // let resultgAP = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid));
-                Promise.all([
-                    axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid)),
-                    axiosModel.getAxios(req.session.token, "/api/cv/activated/".concat(req.params.useraccountid))
-                ]).then((resultPA) => {
-                    res.render('./workerViews/profile/profileView', {
-                        tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
-                        userAccount: req.session.account,
-                        myProfile: resultPA[0].data,
-                        myCV: resultPA[1].data,
-                        slideBarSTT: 0
-                    });
-                })
-                // res.render('./workerViews/profile/profileView', {
-                //     tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
-                //     userAccount: req.session.account,
-                //     myProfile: resultgAP.data,
-                //     slideBarSTT: 0
-                // });
+                let resultProfile = await axiosModel.getAxios(req.session.token, "/api/account/profile/".concat(req.params.useraccountid));
+                let resultActivated = await axiosModel.getAxios(req.session.token, "/api/cv/activated/".concat(req.params.useraccountid));
+                res.render('./workerViews/profile/profileView', {
+                    tittle: "Trang cá nhân | Hệ thống hỗ trợ tìm việc",
+                    userAccount: req.session.account,
+                    myProfile: resultProfile.data,
+                    myCV: resultActivated.data,
+                    slideBarSTT: 0
+                });
             } else { res.redirect('/logout'); }
         } catch (error) {
             if (error.response.data.error == 'invalid_grant') {

@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
             password: req.body.password,
             fullname: req.body.fullname
         };
-        let resultpAS = await axiosModel.postAxiosSignup(accountSignup, "/api/account/signup_for_worker");
+        let resultpAS = await axiosModel.postAxiosSignup(null, accountSignup, "/api/account/signup_for_worker");
         if (resultpAS.data.success) return res.status(200).json("/login");
     } catch (error) {
         if (error.response.data.error[0].msg) {

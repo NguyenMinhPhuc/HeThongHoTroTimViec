@@ -11,6 +11,7 @@ async function getAxios(token, namePath) {
         }
     };
     return await axios.get(urlTemp, config);
+
 };
 
 //HTTP METHOD POST
@@ -20,37 +21,6 @@ async function postAxios(token, valueObject, namePath) {
     let config = {
         headers: {
             'authorization': token,
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-        }
-    };
-    return await axios.post(urlTemp, data, config);
-};
-
-async function postAxiosLogin(user, namePath) {
-    let urlTemp = process.env.FWF_URLBACKEND.concat(namePath);
-    let data = qs.stringify({
-        username: user.username,
-        password: user.password,
-        grant_type: 'password'
-    });
-    let config = {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-        }
-    };
-    return await axios.post(urlTemp, data, config);
-};
-
-async function postAxiosSignup(user, namePath) {
-    let urlTemp = process.env.FWF_URLBACKEND.concat(namePath);
-    let data = qs.stringify({
-        username: user.username,
-        password: user.password,
-        email: user.email,
-        fullname: user.fullname
-    });
-    let config = {
-        headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
     };
@@ -82,4 +52,4 @@ async function deleteAxios(token, valueObject, namePath) {
     return await axios.delete(urlTemp, config);
 };
 
-module.exports = { getAxios, postAxios, postAxiosLogin, postAxiosSignup, putAxios, deleteAxios };
+module.exports = { getAxios, postAxios, putAxios, deleteAxios };

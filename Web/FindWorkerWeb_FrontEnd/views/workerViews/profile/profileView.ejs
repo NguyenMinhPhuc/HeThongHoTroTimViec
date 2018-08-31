@@ -33,7 +33,7 @@
                                                         <img alt="image" width="100%" class="img-responsive" src="<%=myProfile.Image%>">
                                                     </div>
                                                     <div class="ibox-content profile-content">
-                                                        <h4><strong> <%=myProfile.FullName%></strong></h4>
+                                                        <h4 class="text-info"><strong> <%=myProfile.FullName%></strong></h4>
                                                         <h5><i class="fa fa-user-o"></i><i>
                                                             <% if(myProfile.UserTypeID==1 ){%>
                                                                 admin
@@ -71,10 +71,39 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <div class="ibox-content">
-                                            <div class="ibox float-e-margins">
-                                                <h4>Hiển thị hồ sơ của cá nhân đã được xác nhận</h4>
+                                        <div class="ibox-title">
+                                                <h2 class="text-center">Danh sách hồ sơ</h2>
                                             </div>
+                                        <div class="ibox-content forum-container">
+                                            <%if(!myCV.success){%>
+                                                <h3 class="text-center"><%=myCV.message%></h3>
+                                            <%}else{ var stt=0;%>
+                                                <% myCV.result.forEach(function(cv){ stt++%>
+                                                    <div class="forum-item">
+                                                            <div class="row">
+                                                                <div class="col-md-10">
+                                                                    <div class="forum-icon text-primary">
+                                                                        <h1><%=stt%></h1>
+                                                                    </div>
+                                                                    <h3 class="forum-item-title text-info"><%=cv.NameJobCategory%></h3>
+                                                                    <div class="forum-sub-title">
+                                                                        <b>Trình độ chuyên môn:</b> <%=cv.Qualifications%>.<br>
+                                                                        <b>Thông tin chung:</b> <%=cv.GeneralInformation%>.<br>
+                                                                        <i>Ngày tạo tài khoản: <%=cv.DateCreateAccount%> - Ngày nạp hồ sơ: <%=cv.DateCreateCV%>.</i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2 forum-info">
+                                                                    <span class="views-number">
+                                                                        <%=cv.Exprience%>
+                                                                    </span>
+                                                                    <div>
+                                                                        <small>Năm kinh ngiệm</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                <% }); %>
+                                            <%}%>
                                         </div>
                                     </div>
                                 </div>

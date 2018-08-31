@@ -118,7 +118,7 @@ router.get('/profile/:useraccountid', async (req, res) => {
         let result = await accountModel.getProfileInform(req.params.useraccountid)//get thông tin profile
         if (result.length > 0) { return res.json(200, result[0]); }
         else {
-            return res.json(400, {
+            return res.json(404, {
                 "error": "invalid_grant",
                 "error_description": "ID không tồn tại"
             });
