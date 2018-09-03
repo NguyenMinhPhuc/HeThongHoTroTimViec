@@ -24,25 +24,25 @@ app.use(session({
   saveUninitialized: true
 }));
 
-var loginRouter = require('./routes/account/loginRouter'),
-  logoutRouter = require('./routes/account/logoutRouter'),
-  signupRouter = require('./routes/account/signupRouter'),
-  profileRouter = require('./routes/profile/profileRouter'),
-  //
-  indexAdminRouter = require('./routes/adminRouter/indexRouter'),
-  cvAdminRouter = require('./routes/adminRouter/cv/cvRouter'),
-  //
-  indexWorkerRouter = require('./routes/workerRouter/indexRouter'),
-  cvWorkerRouter = require('./routes/workerRouter/cv/cvRouter');
+var loginRouter = require('./routes/account/loginRouter');
+var logoutRouter = require('./routes/account/logoutRouter');
+var signupRouter = require('./routes/account/signupRouter');
+var profileRouter = require('./routes/profile/profileRouter');
+//
+var indexAdminRouter = require('./routes/adminRouter/indexRouter');
+var cvAdminRouter = require('./routes/adminRouter/cv/cvRouter');
+//
+var indexWorkerRouter = require('./routes/workerRouter/indexRouter');
+var cvWorkerRouter = require('./routes/workerRouter/cv/cvRouter');
 
-app.use('/login', loginRouter)
-  .use('/logout', logoutRouter)
-  .use('/signup', signupRouter)
-  .use('/profile', profileRouter)
-  .use('/admin', indexAdminRouter)
-  .use('/admin/cv', cvAdminRouter)
-  .use('/', indexWorkerRouter)
-  .use('/cv', cvWorkerRouter)
+app.use('/login', loginRouter);
+app.use('/logout', logoutRouter);
+app.use('/signup', signupRouter);
+app.use('/trang-ca-nhan', profileRouter);
+app.use('/admin', indexAdminRouter);
+app.use('/admin/cv', cvAdminRouter);
+app.use('/', indexWorkerRouter);
+app.use('/cv', cvWorkerRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));

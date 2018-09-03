@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 //http method GET
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
     if (req.session.account) {
         if (req.session.account.UserTypeID == 1) {
             res.render('./adminViews/index.ejs', {

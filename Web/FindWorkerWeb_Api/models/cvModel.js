@@ -47,6 +47,15 @@ function putActiveCV(cvUpdateMD) {
     });
 };
 
+function putNotActivatedCV(cv) {
+    return new Promise((resolve, reject) => {
+        db.connection.query(CVScript.updateNotActivatedCV, [cv.exprience, cv.qualifications, cv.generalinformation, cv.imagestore, cv.categoryid, cv.userworkerid], (err, results) => {
+            if (err) { return reject(err); }
+            resolve(results);
+        });
+    });
+};
+
 //DELETE
 function deleteCV(cvdelete) {
     return new Promise((resolve, reject) => {
@@ -58,4 +67,4 @@ function deleteCV(cvdelete) {
 };
 
 
-module.exports = { getJobCategoryByID, getUserNotActivated, getUserActivated, postJobCategoryByCategoryID, putActiveCV, deleteCV };
+module.exports = { getJobCategoryByID, getUserNotActivated, getUserActivated, postJobCategoryByCategoryID, putActiveCV, putNotActivatedCV, deleteCV };

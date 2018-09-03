@@ -11,7 +11,6 @@ async function getAxios(token, namePath) {
         }
     };
     return await axios.get(urlTemp, config);
-
 };
 
 //HTTP METHOD POST

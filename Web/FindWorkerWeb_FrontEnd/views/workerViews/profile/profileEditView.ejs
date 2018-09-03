@@ -15,6 +15,7 @@
     <link href="/stylesheets/styleMyEdited.css" rel="stylesheet">
     <!--  -->
     <link href="/stylesheets/plugins/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="/stylesheets/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 </head>
 
 <body>
@@ -32,7 +33,7 @@
                                         </div>
                                         <div>
                                             <div class="ibox-content profile-content col-lg-12">
-                                                <form class="form-horizontal" id="fProfileUpdate" name="fProfileUpdate" action="/profile/edit">
+                                                <form class="form-horizontal" id="fProfileUpdate" name="fProfileUpdate">
                                                     <div class="text-center m-t-lg">
                                                         <div class="form-group">
                                                             <label class="col-md-2 control-label">Họ và Tên:
@@ -104,6 +105,8 @@
     <%- include('../layout_index/index_script.ejs') -%>
         <script src="/javascripts/plugins/datapicker/bootstrap-datepicker.js"></script>
         <!-- <script src="https://raw.githubusercontent.com/jquery/jquery-ui/master/ui/i18n/datepicker-vi.js"></script> -->
+        <script src="/javascripts/plugins/sweetalert/sweetalert.min.js"></script>
+        <script src="/javascripts/HTTPMethods/ajax/methodsPublic.js"></script>
         <script src="/javascripts/HTTPMethods/profilePublic.js"></script>
 </body>
 

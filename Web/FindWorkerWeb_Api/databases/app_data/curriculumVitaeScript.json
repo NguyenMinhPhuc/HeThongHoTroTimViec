@@ -4,5 +4,6 @@
     "selectCVActivated": "select ujc.CategoryID, jc.NameJobCategory, ujc.Exprience, ujc.Qualifications, ujc.GeneralInformation, ujc.ImageStore, DATE_FORMAT(ua.CreateDate, '%d/%m/%Y') as DateCreateAccount, DATE_FORMAT(ujc.CreateDate, '%d/%m/%Y') as DateCreateCV from userjobcategories as ujc inner join jobcategories as jc on ujc.CategoryID = jc.CategoryID inner join useraccounts as ua on ua.UserAccountID = ujc.UserWorkerID where ujc.UserWorkerID = ? and ujc.ActiveStatus = ?",
     "insertJobCategoryByCategoryID": "INSERT INTO userjobcategories(CategoryID, UserWorkerID, Exprience, Qualifications, GeneralInformation, ImageStore) SELECT ?,?,?,?,?,? WHERE NOT EXISTS(SELECT * FROM userjobcategories WHERE CategoryID = ? and UserWorkerID = ?) LIMIT 1",
     "updateActiveCV": "UPDATE userjobcategories SET ActiveStatus = 1, ActiveDate = CURRENT_TIMESTAMP, UserAdminActive = ? WHERE CategoryID = ? AND UserWorkerID = ?",
+    "updateNotActivatedCV": "UPDATE userjobcategories SET Exprience = ?, Qualifications = ?, GeneralInformation = ?, ImageStore = ? WHERE CategoryID = ? AND UserWorkerID = ?",
     "deleteCV": "DELETE FROM userjobcategories WHERE CategoryID = ? AND UserWorkerID = ? AND ActiveStatus = 0"
 }

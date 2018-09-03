@@ -3,8 +3,8 @@ var router = express.Router();
 
 var axiosModel = require('../../../models/axiosModel');
 
-//get all cv not activated
-router.get('/worker-category-not-activated', async (req, res) => {
+//get all cv not activated /worker-category-not-activated
+router.get('/danh-sach-tho-doi-duyet', async (req, res) => {
     if (req.session.token) {
         try {
             if (req.session.account.UserTypeID == 1) {
@@ -13,7 +13,7 @@ router.get('/worker-category-not-activated', async (req, res) => {
                     tittle: "Danh sách người làm chưa được kính hoạt | Hệ thống hỗ trợ tìm việc",
                     userAccount: req.session.account,
                     userCategories: resultgACV.data.result,
-                    slideBarSTT: 4
+                    slideBarSTT: 2
                 });
             } else { res.redirect('/logout'); }
         } catch (errJWT) {
@@ -23,7 +23,7 @@ router.get('/worker-category-not-activated', async (req, res) => {
     } else { res.redirect('/logout'); }
 });
 //http method PUT - active a cv
-router.put('/worker-category-not-activated', async (req, res) => {
+router.put('/danh-sach-tho-doi-duyet', async (req, res) => {
     if (req.session.token) {
         try {
             if (req.session.account.UserTypeID == 1) {
@@ -47,7 +47,7 @@ router.put('/worker-category-not-activated', async (req, res) => {
     } else { res.redirect('/logout'); }
 });
 //http method DELETE - delete a cv
-router.delete('/worker-category-not-activated', async (req, res) => {
+router.delete('/danh-sach-tho-doi-duyet', async (req, res) => {
     if (req.session.token) {
         try {
             if (req.session.account.UserTypeID == 1) {
