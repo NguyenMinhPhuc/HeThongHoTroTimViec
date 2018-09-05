@@ -5,7 +5,7 @@ function getProfileInform(UserAccountID) {
     return new Promise((resolve, reject) => {
         db.connection.query(AccountScript.selectProfileInform, [UserAccountID], (err, results) => {
             if (err) { return reject(err); }
-            return resolve(results)
+            return resolve(results);
         })
     });
 }

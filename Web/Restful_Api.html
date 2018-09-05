@@ -188,7 +188,53 @@
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
+				<tr>
+					<th colspan="5" style="background-color: deepskyblue;color: white">
+						<h4>Địa điểm</h4>
+					</th>
+				</tr>
+				<tr>
+					<th scope="row">/api/location/all-province</th>
+					<td class="text-left">
+						<h5 class="text-center">Lấy tất cả danh sách tên Tỉnh, Thành phố</h5>
+						<i>5/9/2018-5/9/2018</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/location/all-district-by-provinceid</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Lấy tất cả danh sách tên Quận, Huyện, Thành phố theo mã Tỉnh, Thành phố</h5>
+						<b>body:</b> provinceid: <br>
+						<i>5/9/2018-5/9/2018</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/location/all-ward-by-districtid</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Lấy tất cả danh sách tên Phường, Xã theo mã Quận, Huyện, Thành phố</h5>
+						<b>body:</b> districtid: <br>
+						<i>5/9/2018-5/9/2018</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
 			</tbody>
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Resource</th>
+					<th scope="col">GET</th>
+					<th scope="col">POST</th>
+					<th scope="col">PUT</th>
+					<th scope="col">DELETE</th>
+				</tr>
+			</thead>
 		</table>
 	</div>
 

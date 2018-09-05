@@ -1,0 +1,5 @@
+{
+    "selectAllProvince": "SELECT * FROM province",
+    "selectAllDistrictByProvinceid": "SELECT districtid, name, type FROM district WHERE provinceid = ?",
+    "selectAllWardByDistrictid": "SELECT wardid, name, type FROM ward WHERE districtid = ?"
+}
