@@ -63,8 +63,8 @@ router.post('/post', async (req, res) => {
 //router ACTIVE CV
 //PUT active Hồ sơ người đăng
 router.put('/active-cv', async (req, res) => {
-    req.checkBody('categoryid', 'Sai định dạng danh mục').trim().isInt();
-    req.checkBody('userworkerid', 'Sai định dạng tài khoản id').trim().isInt();
+    req.checkBody('categoryid', 'Sai định dạng danh mục').isInt();
+    req.checkBody('userworkerid', 'Sai định dạng tài khoản id').isInt();
     if (req.validationErrors()) return res.status(400).json({ "error": req.validationErrors() });
     else {
         try {
@@ -72,8 +72,8 @@ router.put('/active-cv', async (req, res) => {
             if (resultOfJWT.UserTypeID == 1) {
                 let cvMD = {
                     useraccountid: resultOfJWT.UserAccountID,
-                    categoryid: req.body.categoryid.trim(),
-                    userworkerid: req.body.userworkerid.trim()
+                    categoryid: req.body.categoryid,
+                    userworkerid: req.body.userworkerid
                 };
                 let resultOfCVM = await cvModel.putActiveCV(cvMD);
                 if (resultOfCVM.affectedRows > 0) {//kiểm tra số dòng đã được update
@@ -101,16 +101,16 @@ router.put('/active-cv', async (req, res) => {
 });
 //Delete hồ sơ chưa active
 router.delete('/active-cv', async (req, res) => {
-    req.checkBody('categoryid', 'Sai định dạng danh mục').trim().isInt();
-    req.checkBody('userworkerid', 'Sai định dạng tài khoản id').trim().isInt();
+    req.checkBody('categoryid', 'Sai định dạng danh mục').isInt();
+    req.checkBody('userworkerid', 'Sai định dạng tài khoản id').isInt();
     if (req.validationErrors()) return res.status(400).json({ "error": req.validationErrors() });
     else {
         try {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
             if (resultOfJWT.UserTypeID == 1) {
                 let cvdelete = {
-                    categoryid: req.body.categoryid.trim(),
-                    userworkerid: req.body.userworkerid.trim()
+                    categoryid: req.body.categoryid,
+                    userworkerid: req.body.userworkerid
                 };
                 let resultOfCVM = await cvModel.deleteCV(cvdelete);
                 if (resultOfCVM.affectedRows > 0) { res.status(200).json({ "success": true }); }

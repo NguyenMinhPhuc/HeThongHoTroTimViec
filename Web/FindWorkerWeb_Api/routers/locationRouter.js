@@ -4,6 +4,8 @@ var router = express.Router();
 var locationModel = require('../models/locationModel');
 var helper = require('../helpers/helper');
 
+var validator = require('validator');
+
 router.get('/all-province', async (req, res) => {
     try {
         let result = await locationModel.getAllProvince();
@@ -21,7 +23,9 @@ router.get('/all-province', async (req, res) => {
 router.post('/all-district-by-provinceid', async (req, res) => {
     req.checkBody('provinceid', 'Mã Tỉnh, Thành phố phải là kiểu số').isInt();
     req.checkBody('provinceid', 'Mã Tỉnh, Thành phố chứa nhiều nhất nhất 2 ký tự').trim().isLength({ max: 2 });
-    if (req.validationErrors()) return res.status(400).json({ "error": req.validationErrors() });
+    if (req.validationErrors()) {
+        console.log(req.body.provinceid);
+        return res.status(400).json({ "error": req.validationErrors() });}
     else {
         try {
             let result = await locationModel.postAllDistrictByProvinceid(req.body.provinceid.trim());
@@ -53,6 +57,46 @@ router.post('/all-ward-by-districtid', async (req, res) => {
                 "error_description": "Lỗi khi lấy tên tỉnh"
             });
         }
+    }
+});
+
+router.put('/geolocation', async (req, res) => {
+    if (validator.isLatLong(`${req.body.latitude},${req.body.longitude}`)) {
+        try {
+            let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+            if (resultOfJWT.UserTypeID > 0 && resultOfJWT.UserTypeID < 4) {
+                let geolocationMD = {
+                    useraccountid: resultOfJWT.UserAccountID,
+                    longitude: req.body.longitude,
+                    latitude: req.body.latitude
+                };
+                let resultOfCVM = await locationModel.putInfoGeolocationByUserID(geolocationMD);
+                if (resultOfCVM.affectedRows > 0) {//kiểm tra số dòng đã được update
+                    res.status(200).json({ "success": true });
+                } else {
+                    return res.status(400).json({
+                        "error": "invalid_grant",
+                        "error_description": "Không tìm thấy dữ liệu để cập nhật vị trí"
+                    });
+                }
+            } else {
+                return res.status(400).json({
+                    "error": "invalid_grant",
+                    "error_description": "Bạn không có quyền cập nhật vị trí"
+                });
+            }
+        } catch (err) {
+            console.log(err.message);
+            return res.status(500).json({
+                "error": "invalid_grant",
+                "error_description": "Lỗi xác thực token"
+            });
+        }
+    } else {
+        return res.status(400).json({
+            "error": "invalid_grant",
+            "error_description": "Sai định dạng kinh độ và vĩ độ"
+        })
     }
 });
 

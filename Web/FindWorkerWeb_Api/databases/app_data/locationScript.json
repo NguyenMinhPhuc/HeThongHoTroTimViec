@@ -1,5 +1,7 @@
 {
     "selectAllProvince": "SELECT * FROM province",
     "selectAllDistrictByProvinceid": "SELECT districtid, name, type FROM district WHERE provinceid = ?",
-    "selectAllWardByDistrictid": "SELECT wardid, name, type FROM ward WHERE districtid = ?"
+    "selectAllWardByDistrictid": "SELECT wardid, name, type FROM ward WHERE districtid = ?",
+    "updateInfoLocation": "UPDATE useraccounts SET ProvinceID = ?, DistrictID =?, WardID = ?, StreetName =? WHERE UserAccountID = ?",
+    "updateInfoGeolocation": "UPDATE useraccounts SET Longitude = ?, Latitude =? WHERE UserAccountID = ?"
 }

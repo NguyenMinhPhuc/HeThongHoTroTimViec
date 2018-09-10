@@ -27,5 +27,14 @@ function postAllWardByDistrictid(Districtid) {
         })
     });
 };
+//PUT
+function putInfoGeolocationByUserID(locationData) {
+    return new Promise((resolve, reject) => {
+        db.connection.query(locationScript.updateInfoGeolocation, [locationData.longitude, locationData.latitude, locationData.useraccountid], (err, results) => {
+            if (err) { return reject(err); }
+            return resolve(results);
+        })
+    });
+};
 
-module.exports = { getAllProvince, postAllDistrictByProvinceid, postAllWardByDistrictid };
+module.exports = { getAllProvince, postAllDistrictByProvinceid, postAllWardByDistrictid, putInfoGeolocationByUserID };

@@ -24,15 +24,29 @@ router.post('/login', async (req, res) => {
                 };
                 let result = await accountModel.postCheckInforLogin(user);//Select and check user and password
                 if (result.length > 0) {
-                    var resultObject = JSON.parse(JSON.stringify({ "UserAccountID": result[0].UserAccountID, "UserTypeID": result[0].UserTypeID }));
-                    jwt.sign(resultObject, process.env.FW_SECRET, { algorithm: process.env.FW_ALGORITHM, expiresIn: '1d' }, (err, token) => {
+                    var resultObject = JSON.parse(JSON.stringify({
+                        "UserAccountID": result[0].UserAccountID,
+                        "UserTypeID": result[0].UserTypeID
+                    }));
+                    jwt.sign(resultObject, process.env.FW_SECRET, {
+                        algorithm: process.env.FW_ALGORITHM,
+                        expiresIn: '1 days'
+                    }, (err, token) => {
                         if (err) return res.json(500, { error: err });
-                        return res.json(200, { "success": true, "token": token, "UserAccountID": result[0].UserAccountID, "FullName": result[0].FullName, "Image": result[0].Image, "UserTypeID": result[0].UserTypeID });
+                        return res.json(200, {
+                            "success": true,
+                            "token": token,
+                            "UserAccountID": result[0].UserAccountID,
+                            "FullName": result[0].FullName,
+                            "Image": result[0].Image,
+                            "NameUserType": result[0].NameUserType,
+                            "UserTypeID": result[0].UserTypeID
+                        });
                     });
                 } else {
                     return res.json(400, {
                         "error": "invalid_grant",
-                        "error_description": "Username hoặc Password là không đúng"
+                        "error_description": "Tài khoản hoặc mật khẩu không đúng"
                     });
                 }
             } catch (err) {
@@ -48,7 +62,8 @@ router.post('/login', async (req, res) => {
 });
 
 //signup
-router.post('/signup_for_guest', [check('username').custom(value => {//sử dụng express-validator để custom username không có khoảng cách
+router.post('/signup-for-guest', [check('username').custom(value => {
+    //sử dụng express-validator để custom username không có khoảng cách
     if (value.indexOf(' ') >= 0) {
         return Promise.reject('Username không chứa khoảng cách');
     }
@@ -79,7 +94,7 @@ router.post('/signup_for_guest', [check('username').custom(value => {//sử dụ
         }
     }
 });
-router.post('/signup_for_worker', [check('username').custom(value => {//sử dụng express-validator để custom username không có khoảng cách
+router.post('/signup-for-worker', [check('username').custom(value => {//sử dụng express-validator để custom username không có khoảng cách
     if (value.indexOf(' ') >= 0) {
         return Promise.reject('Username không chứa khoảng cách');
     }
@@ -174,5 +189,4 @@ router.put('/profile', [check('birthday').custom(value => {//sử dụng express
         }
     }
 });
-//isLatLong check if the string is a valid latitude-longitude coordinate in the format lat,long or lat, long.
 module.exports = router;
