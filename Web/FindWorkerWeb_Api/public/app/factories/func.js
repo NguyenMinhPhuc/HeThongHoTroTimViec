@@ -16,6 +16,7 @@
 
 	function func($http, $rootScope, $log, $timeout, $location, $cookies, Flash) {
 		var service = {
+			configTouchspin: configTouchspin,
 			getPathLocationArray: getPathLocationArray,
 			checkParamOfUrl: checkParamOfUrl,
 			storeCookie: storeCookie,
@@ -88,6 +89,23 @@
 				clearCookie();
 				$rootScope.info = "";
 				window.location.href = "/#!/tai-khoan/dang-nhap";
+			}
+		};
+
+		/**
+		* define a object to config touchspin
+		* @param {String} titleName Title content of Sweet
+		* @param {String} textName Text content of Sweet
+		* @param {Function} callbackFunction Callback Function in Sweet alert
+		*/
+		function configTouchspin() {
+			return {
+				min: 0,
+				max: 70,
+				step: 0.5,
+				decimals: 1,
+				buttonDownClass: 'btn btn-white',
+				buttonUpClass: 'btn btn-white'
 			}
 		};
 

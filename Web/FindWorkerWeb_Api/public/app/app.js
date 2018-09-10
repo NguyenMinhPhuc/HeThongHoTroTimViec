@@ -8,7 +8,7 @@
 		// Custom modules
 
 		// 3rd Party Modules
-		'ngCookies', 'ngFlash'
+		'ngCookies', 'ngFlash', 'nk.touchspin'
 	])
 		.run([
 			'$rootScope', 'seed', function ($rootScope, seed) {
@@ -21,6 +21,8 @@
 				});
 			}])
 		.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
+
+			//account
 			$routeProvider.when("/tai-khoan/dang-nhap", {
 				controller: "loginController",
 				templateUrl: "/module_views/account/login.html"
@@ -31,19 +33,31 @@
 				templateUrl: "/module_views/account/signup.html"
 			});
 
+			//admin
 			$routeProvider.when("/admin", {
-				controller: "signupController",
+				controller: "adminDashboardController",
 				templateUrl: "/module_views/admin/dashboard.html"
-			});
-
-			$routeProvider.when("/", {
-				controller: "signupController",
-				templateUrl: "/module_views/worker/dashboard.html"
 			});
 
 			$routeProvider.when("/admin/ho-so/danh-sach-tho-doi-duyet", {
 				controller: "listNotActivatedController",
 				templateUrl: "/module_views/admin/cv/listNotActivated.html"
+			});
+
+			//worker
+			$routeProvider.when("/", {
+				controller: "workerDashboardController",
+				templateUrl: "/module_views/worker/dashboard.html"
+			});
+
+			$routeProvider.when("/ho-so/dang-ho-so", {
+				controller: "cvPostController",
+				templateUrl: "/module_views/worker/cv/cvPost.html"
+			});
+
+			$routeProvider.when("/ho-so/danh-sach-ho-so-doi-duyet", {
+				controller: "cvNotActivatedByUseridController",
+				templateUrl: "/module_views/worker/cv/cvNotActivatedByUserid.html"
 			});
 
 			$routeProvider.otherwise({ redirectTo: "/tai-khoan/dang-nhap" });

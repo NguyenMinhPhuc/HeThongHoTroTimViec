@@ -8,7 +8,8 @@ router.get('/get-all', async (req, res) => {
     try {
         await helper.jwtVerifyLogin(req.header("authorization"));
         let resultOfgAJC = await categoryModel.getAllJobCategory();
-        res.status(200).json(resultOfgAJC);
+        if (resultOfgAJC.length > 0) { res.status(200).json({ "success": true, "result": resultOfgAJC }); }
+        else { res.status(200).json({ "success": false, "message": "Danh sách trống!!!" }); }
     } catch (err) {
         console.log(err.message);
         return res.status(400).json({

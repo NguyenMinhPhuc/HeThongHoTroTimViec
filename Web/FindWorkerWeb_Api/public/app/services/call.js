@@ -8,6 +8,7 @@
                 $http.defaults.headers.common['Authorization'] = $cookies.get("access_token");
                 return $http({
                     method: 'GET',
+                    headers: { 'Content-Type': 'application/json;charset=utf-8' },
                     url: controller
                 }).then(function (result) {
                     return $q.resolve(result.data);

@@ -7,7 +7,7 @@ var helper = require('../helpers/helper');
 //router post
 //POST đăng hồ sơ để đợi duyệt
 router.post('/post', async (req, res) => {
-    req.checkBody('categoryid', 'Danh mục bị lỗi').trim().isInt();
+    req.checkBody('categoryid', 'Danh mục bị lỗi').isInt();
     req.checkBody('namejobcategory', 'Tên danh mục bị sai định dạng').trim().isLength({ min: 3 });
     req.checkBody('exprience', 'Sai định dạng kiểu dữ liệu của năm kinh nghiệm').isFloat({ min: 0.0 });
     req.checkBody('qualifications', 'Bằng cấp chứa ít nhất 5 ký tự').trim().isLength({ min: 5 });
@@ -19,10 +19,10 @@ router.post('/post', async (req, res) => {
         try {
             let results = await helper.jwtVerifyLogin(req.header("authorization"));
             if (results.UserTypeID == 2) {
-                cv.categoryid = req.body.categoryid.trim();
+                cv.categoryid = req.body.categoryid;
                 cv.namejobcategory = req.body.namejobcategory.trim();
                 cv.userworkerid = results.UserAccountID;
-                cv.exprience = req.body.exprience.trim();
+                cv.exprience = req.body.exprience;
                 cv.qualifications = req.body.qualifications.trim();
                 cv.generalinformation = req.body.generalinformation.trim();
                 cv.imagestore = req.body.imagestore.trim();

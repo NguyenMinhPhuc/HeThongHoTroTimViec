@@ -17,7 +17,11 @@
                 "ACTIVE_CV": {
                     "PUT": localhost + "/api/cv/active-cv",
                     "DELETE": localhost + "/api/cv/active-cv"
-                }
+                },
+                "POST_CV": { "POST": localhost + "/api/cv/post" }
+            },
+            "CATAGORY": {
+                "GET_ALL": { "GET": localhost + "/api/category/get-all" }
             }
         };
         return service;
