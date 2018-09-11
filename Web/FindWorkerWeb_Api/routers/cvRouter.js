@@ -209,81 +209,87 @@ router.get('/not-activated-by-userid', async (req, res) => {
     }
 });
 router.put('/not-activated-by-userid', async (req, res) => {
-    req.checkBody('categoryid', 'Danh mục bị lỗi').trim().isInt();
+    req.checkBody('categoryid', 'Danh mục bị lỗi').isInt();
     req.checkBody('exprience', 'Sai định dạng kiểu dữ liệu của năm kinh nghiệm').isFloat({ min: 0.0 });
     req.checkBody('qualifications', 'Bằng cấp chứa ít nhất 5 ký tự').trim().isLength({ min: 5 });
     req.checkBody('generalinformation', 'Thông tin chung chứa ít nhất 10 ký tự').trim().isLength({ min: 10 });
     req.checkBody('imagestore', 'Định dạng không phải là URL').trim().isURL();
-    try {
-        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
-        if (resultOfJWT.UserTypeID == 2) {
-            let cv = {
-                categoryid: req.body.categoryid.trim(),
-                userworkerid: resultOfJWT.UserAccountID,
-                exprience: req.body.exprience.trim(),
-                qualifications: req.body.qualifications.trim(),
-                generalinformation: req.body.generalinformation.trim(),
-                imagestore: req.body.imagestore.trim()
-            };
-            let resultNACV = await cvModel.putNotActivatedCV(cv);
-            if (resultNACV.affectedRows > 0) {
-                res.status(200).json({
-                    "success": true,
-                    "message": "Đã chỉnh sửa hồ sơ thành công"
-                });
+    if (req.validationErrors()) return res.status(400).json({ "error": req.validationErrors() });
+    else {
+        try {
+            let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+            if (resultOfJWT.UserTypeID == 2) {
+                let cv = {
+                    categoryid: req.body.categoryid,
+                    userworkerid: resultOfJWT.UserAccountID,
+                    exprience: req.body.exprience,
+                    qualifications: req.body.qualifications.trim(),
+                    generalinformation: req.body.generalinformation.trim(),
+                    imagestore: req.body.imagestore.trim()
+                };
+                let resultNACV = await cvModel.putNotActivatedCV(cv);
+                if (resultNACV.affectedRows > 0) {
+                    res.status(200).json({
+                        "success": true,
+                        "message": "Đã chỉnh sửa hồ sơ thành công"
+                    });
+                } else {
+                    return res.status(400).json({
+                        "error": "invalid_grant",
+                        "error_description": "Hồ sơ không tồn tại"
+                    });
+                }
             } else {
-                return res.status(400).json({
+                res.status(400).json({
                     "error": "invalid_grant",
-                    "error_description": "Hồ sơ không tồn tại"
+                    "error_description": "Loại tài khoản của bạn không có quyền chỉnh sửa hồ sơ"
                 });
             }
-        } else {
-            res.status(400).json({
+        } catch (err) {
+            console.log(err.message);
+            return res.status(500).json({
                 "error": "invalid_grant",
-                "error_description": "Loại tài khoản của bạn không có quyền chỉnh sửa hồ sơ"
+                "error_description": "Lỗi xác thực token"
             });
         }
-    } catch (err) {
-        console.log(err.message);
-        return res.status(500).json({
-            "error": "invalid_grant",
-            "error_description": "Lỗi xác thực token"
-        });
     }
 });
 router.delete('/not-activated-by-userid', async (req, res) => {
-    req.checkBody('categoryid', 'Danh mục bị lỗi').trim().isInt();
-    try {
-        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
-        if (resultOfJWT.UserTypeID == 2) {
-            let cv = {
-                categoryid: req.body.categoryid.trim(),
-                userworkerid: resultOfJWT.UserAccountID
-            };
-            let resultDCV = await cvModel.deleteCV(cv);
-            if (resultDCV.affectedRows > 0) {
-                res.status(200).json({
-                    "success": true,
-                    "message": "Đã xóa hồ sơ thành công"
-                });
+    req.checkBody('categoryid', 'Danh mục bị lỗi').isInt();
+    if (req.validationErrors()) return res.status(400).json({ "error": req.validationErrors() });
+    else {
+        try {
+            let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+            if (resultOfJWT.UserTypeID == 2) {
+                let cv = {
+                    categoryid: req.body.categoryid,
+                    userworkerid: resultOfJWT.UserAccountID
+                };
+                let resultDCV = await cvModel.deleteCV(cv);
+                if (resultDCV.affectedRows > 0) {
+                    res.status(200).json({
+                        "success": true,
+                        "message": "Đã xóa hồ sơ thành công"
+                    });
+                } else {
+                    return res.status(400).json({
+                        "error": "invalid_grant",
+                        "error_description": "Hồ sơ không tồn tại"
+                    });
+                }
             } else {
-                return res.status(400).json({
+                res.status(400).json({
                     "error": "invalid_grant",
-                    "error_description": "Hồ sơ không tồn tại"
+                    "error_description": "Loại tài khoản của bạn không có quyền xóa hồ sơ"
                 });
             }
-        } else {
-            res.status(400).json({
+        } catch (err) {
+            console.log(err.message);
+            return res.status(500).json({
                 "error": "invalid_grant",
-                "error_description": "Loại tài khoản của bạn không có quyền xóa hồ sơ"
+                "error_description": "Lỗi xác thực token"
             });
         }
-    } catch (err) {
-        console.log(err.message);
-        return res.status(500).json({
-            "error": "invalid_grant",
-            "error_description": "Lỗi xác thực token"
-        });
     }
 });
 module.exports = router;

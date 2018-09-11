@@ -14,15 +14,13 @@
         //load data
         $scope.loadListWorkerNotActivated = function () {
             try {
-                call.GET(api.CV.NOT_ACTIVATED.GET)
+                call.GET(api.CV.NOT_ACTIVATED)
                     .then(function (result) {
-                        if (result.success) {
-                            $scope.userCategories = result.result;
-                            $log.info($scope.userCategories);
-                        }
+                        $scope.success = result.success;
+                        $scope.userCategories = result.result;
+                        $scope.message = result.message;
                     })
                     .catch(function (err) {
-                        $log.error(err);
                         func.showToastError(err);
                     });
             } catch (err) {
@@ -42,7 +40,7 @@
                     throw "Thông tin không được để trống";
                 }
 
-                call.PUT(api.CV.ACTIVE_CV.PUT, cvData)
+                call.PUT(api.CV.ACTIVE_CV, cvData)
                     .then(function (result) {
                         if (result.success) {
                             func.showToastSuccess("Bạn đã duyệt hồ sơ: " + namejobcategory + "." + "<br>Của thợ: " + fullname + ".");
@@ -71,7 +69,7 @@
                 }
 
                 let functionOfSweet = function () {
-                    call.DELETE(api.CV.ACTIVE_CV.DELETE, cvData)
+                    call.DELETE(api.CV.ACTIVE_CV, cvData)
                         .then(function (result) {
                             if (result.success) {
                                 swal.close();

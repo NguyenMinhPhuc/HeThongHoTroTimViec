@@ -17,7 +17,7 @@
                 password: $scope.PassWord,
                 grant_type: "password"
             };
-            call.POST(api.ACCOUNT.LOGIN.POST, userData)
+            call.POST(api.ACCOUNT.LOGIN, userData)
                 .then(function (result) {
                     if (result.UserTypeID == 1) {
                         func.storeCookie(result);
@@ -50,7 +50,7 @@
                 if (!userSignup.username || !userSignup.password || !userSignup.email || !userSignup.fullname) {
                     throw "Không được để trống";
                 }
-                call.POST(api.ACCOUNT.SIGNUP.POST, userSignup)
+                call.POST(api.ACCOUNT.SIGNUP, userSignup)
                     .then(function (result) {
                         if (result.success) {
                             window.location.href = "/account/#!/tai-khoan/dang-nhap";

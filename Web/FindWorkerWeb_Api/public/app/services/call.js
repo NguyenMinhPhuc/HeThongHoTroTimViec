@@ -4,11 +4,17 @@
     angular
         .module('app')
         .service('call', ['$http', '$cookies', '$log', '$q', function ($http, $cookies, $log, $q) {
+
+            var header = {
+                'Authorization': $cookies.get("access_token"),
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+
             this.GET = function (controller) {
                 $http.defaults.headers.common['Authorization'] = $cookies.get("access_token");
                 return $http({
                     method: 'GET',
-                    headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                    headers: header,
                     url: controller
                 }).then(function (result) {
                     return $q.resolve(result.data);
@@ -28,7 +34,7 @@
                 return $http({
                     method: 'POST',
                     url: controller,
-                    headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                    headers: header,
                     data: data
                 }).then(function (result) {
                     return $q.resolve(result.data);
@@ -49,7 +55,7 @@
                 return $http({
                     method: 'PUT',
                     url: controller,
-                    headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                    headers: header,
                     data: data
                 }).then(function (result) {
                     return $q.resolve(result.data);
@@ -70,7 +76,7 @@
                 return $http({
                     method: 'DELETE',
                     url: controller,
-                    headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                    headers: header,
                     data: data
                 }).then(function (result) {
                     return $q.resolve(result.data);
