@@ -1,40 +1,32 @@
-var db = require('../databases/createPool');
 var locationScript = require('../databases/app_data/locationScript.json');
+var helper = require('../helpers/helper');
 
 //GET
 function getAllProvince() {
-    return new Promise((resolve, reject) => {
-        db.connection.query(locationScript.selectAllProvince, (err, results) => {
-            if (err) { return reject(err); }
-            return resolve(results);
-        })
-    });
+    return helper.sendQueryToDatabase(
+        locationScript.selectAllProvince,
+        null
+    );
 };
 //POST
 function postAllDistrictByProvinceid(Provinceid) {
-    return new Promise((resolve, reject) => {
-        db.connection.query(locationScript.selectAllDistrictByProvinceid, [Provinceid], (err, results) => {
-            if (err) { return reject(err); }
-            return resolve(results);
-        })
-    });
+    return helper.sendQueryToDatabase(
+        locationScript.selectAllDistrictByProvinceid,
+        [Provinceid]
+    );
 };
 function postAllWardByDistrictid(Districtid) {
-    return new Promise((resolve, reject) => {
-        db.connection.query(locationScript.selectAllWardByDistrictid, [Districtid], (err, results) => {
-            if (err) { return reject(err); }
-            return resolve(results);
-        })
-    });
+    return helper.sendQueryToDatabase(
+        locationScript.selectAllWardByDistrictid,
+        [Districtid]
+    );
 };
 //PUT
 function putInfoGeolocationByUserID(locationData) {
-    return new Promise((resolve, reject) => {
-        db.connection.query(locationScript.updateInfoGeolocation, [locationData.longitude, locationData.latitude, locationData.useraccountid], (err, results) => {
-            if (err) { return reject(err); }
-            return resolve(results);
-        })
-    });
+    return helper.sendQueryToDatabase(
+        locationScript.updateInfoGeolocation,
+        [locationData.longitude, locationData.latitude, locationData.useraccountid]
+    );
 };
 
 module.exports = { getAllProvince, postAllDistrictByProvinceid, postAllWardByDistrictid, putInfoGeolocationByUserID };

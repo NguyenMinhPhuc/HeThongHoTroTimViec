@@ -1,3 +1,4 @@
 {
-    "selectAllJobCategory": "SELECT * FROM jobcategories"
+    "selectAllJobCategory": "SELECT * FROM jobcategories",
+    "selectJobCategoryByUserWorkerID": "SELECT * FROM jobcategories WHERE CategoryID NOT IN (SELECT CategoryID FROM userjobcategories WHERE UserWorkerID = ?)"
 }

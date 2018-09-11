@@ -17,11 +17,13 @@
 
         $scope.loadListCategory = function () {
             try {
-                call.GET(api.CATAGORY.GET_ALL.GET)
+                call.GET(api.CATAGORY.GET_BY_USERWORKERID.GET)
                     .then(function (result) {
                         if (result.success) {
                             $scope.categories = result.result;
                             $log.info($scope.categories);
+                        }else{
+                            $scope.categories = [];
                         }
                     })
                     .catch(function (err) {

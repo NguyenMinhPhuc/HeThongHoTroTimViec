@@ -1,14 +1,20 @@
-var db = require('../databases/createPool');
+// var db = require('../databases/createPool');
 var CategoryScript = require('../databases/app_data/categoryScript.json');
+var helper = require('../helpers/helper');
 
 //GET
 function getAllJobCategory() {
-    return new Promise((resolve, reject) => {
-        db.connection.query(CategoryScript.selectAllJobCategory, (err, results) => {
-            if (err) { return reject(err); }
-            resolve(results);
-        });
-    });
+    return helper.sendQueryToDatabase(
+        CategoryScript.selectAllJobCategory,
+        null
+    );
 };
 
-module.exports = { getAllJobCategory };
+function getJobCategoryByUserWorkerID(useraccount) {
+    return helper.sendQueryToDatabase(
+        CategoryScript.selectJobCategoryByUserWorkerID,
+        [useraccount.useraccountid]
+    );
+};
+
+module.exports = { getAllJobCategory, getJobCategoryByUserWorkerID };
