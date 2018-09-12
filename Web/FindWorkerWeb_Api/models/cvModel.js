@@ -20,6 +20,12 @@ function getUserActivated(UserWorkerID, ActiveStatus) {
         [UserWorkerID, ActiveStatus]
     );
 };
+function getCVByCategoryID(CategoryID, ActiveStatus) {
+    return helper.sendQueryToDatabase(
+        CVScript.selectCVByCategoryID,
+        [CategoryID, ActiveStatus]
+    );
+};
 
 //POST
 function postJobCategoryByCategoryID(cv) {
@@ -47,12 +53,6 @@ function putActiveCV(cvUpdateMD) {
 };
 
 function putNotActivatedCV(cv) {
-    // return new Promise((resolve, reject) => {
-    //     db.connection.query(CVScript.updateNotActivatedCV, [cv.exprience, cv.qualifications, cv.generalinformation, cv.imagestore, cv.categoryid, cv.userworkerid], (err, results) => {
-    //         if (err) { return reject(err); }
-    //         resolve(results);
-    //     });
-    // });
     return helper.sendQueryToDatabase(
         CVScript.updateNotActivatedCV,
         [
@@ -75,4 +75,4 @@ function deleteCV(cvdelete) {
 };
 
 
-module.exports = { getJobCategoryByID, getUserNotActivated, getUserActivated, postJobCategoryByCategoryID, putActiveCV, putNotActivatedCV, deleteCV };
+module.exports = { getJobCategoryByID, getUserNotActivated, getUserActivated, getCVByCategoryID, postJobCategoryByCategoryID, putActiveCV, putNotActivatedCV, deleteCV };

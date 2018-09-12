@@ -38,6 +38,11 @@
 				controller: "adminDashboardController",
 				templateUrl: "/module_views/admin/dashboard.html"
 			});
+			
+			$routeProvider.when("/admin/ho-so/danh-muc-tho", {
+				controller: "categoriesWorkerController",
+				templateUrl: "/module_views/admin/cv/categoriesWorker.html"
+			});
 
 			$routeProvider.when("/admin/ho-so/danh-sach-tho-doi-duyet", {
 				controller: "listNotActivatedController",

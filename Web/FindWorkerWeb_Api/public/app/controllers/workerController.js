@@ -35,6 +35,7 @@
                 func.showToastError(err);
             }
         };
+        
         $scope.submitCV = function () {
             try {
                 let categoryData = {
@@ -45,7 +46,7 @@
                     generalinformation: $scope.iGeneralinformation,
                     imagestore: "https://png.icons8.com/color/300/000000/small-business.png"
                 };
-                if (!categoryData.categoryid || !categoryData.namejobcategory || !categoryData.exprience || !categoryData.qualifications || !categoryData.generalinformation || !categoryData.imagestore) {
+                if (!categoryData.categoryid || !categoryData.exprience || !categoryData.qualifications || !categoryData.generalinformation || !categoryData.imagestore) {
                     throw "Thông tin không được để trống";
                 }
                 call.POST(api.CV.POST_CV, categoryData)

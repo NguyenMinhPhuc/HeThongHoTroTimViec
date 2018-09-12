@@ -5,6 +5,7 @@
 
     app.controller('adminDashboardController', ['$scope', 'func', adminDashboardController]);
     app.controller('listNotActivatedController', ['$scope', '$log', 'call', 'api', 'func', listNotActivatedController]);
+    app.controller('categoriesWorkerController', ['$scope', '$log', 'call', 'api', 'func', categoriesWorkerController]);
 
     function adminDashboardController($scope, func) {
 
@@ -85,6 +86,49 @@
                 };
 
                 func.showSweetAlertDelete("Bạn có muốn xóa hồ sơ này?", null, functionOfSweet);
+            } catch (err) {
+                $log.error(err);
+                func.showToastError(err);
+            }
+        };
+    };
+
+    function categoriesWorkerController($scope, $log, call, api, func) {
+        //load data
+        $scope.loadListCategory = function () {
+            try {
+                call.GET(api.CATAGORY.GET_ALL)
+                    .then(function (result) {
+                        if (result.success) {
+                            $scope.categories = result.result;
+                        } else {
+                            $scope.categories = [];
+                        }
+                    })
+                    .catch(function (err) {
+                        func.showToastError(err);
+                    });
+            } catch (err) {
+                $log.error(err);
+                func.showToastError(err);
+            }
+        };
+
+        $scope.changeCategory = function () {
+            $scope.loadListWorkerActivated($scope.selectedCategory.CategoryID);
+        };
+
+        $scope.loadListWorkerActivated = function (CategoryID) {
+            try {
+                call.GET(`${api.CV.ACTIVATED_BY_CATEGORYID}?categoryid=${CategoryID}`)
+                    .then(function (result) {
+                        $scope.success = result.success;
+                        $scope.userCategories = result.result;
+                        $scope.message = result.message;
+                    })
+                    .catch(function (err) {
+                        func.showToastError(err);
+                    });
             } catch (err) {
                 $log.error(err);
                 func.showToastError(err);

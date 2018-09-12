@@ -292,4 +292,30 @@ router.delete('/not-activated-by-userid', async (req, res) => {
         }
     }
 });
+
+//Router get all cv not activated by userID
+router.get('/activated-by-categoryid', async (req, res) => {
+    try {
+        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+        if (resultOfJWT.UserTypeID == 1) {
+            let resultOfUA = await cvModel.getCVByCategoryID(req.query.categoryid, 1);
+            if (resultOfUA.length > 0) {
+                res.status(200).json({ "success": true, "result": resultOfUA });
+            } else {
+                res.status(200).json({ "success": false, "message": "Danh sách trống!!!" });
+            }
+        } else {
+            res.status(400).json({
+                "error": "invalid_grant",
+                "error_description": "Loại tài khoản của bạn không có quyền lấy danh sách"
+            });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+            "error": "invalid_grant",
+            "error_description": "Lỗi xác thực token"
+        });
+    }
+});
 module.exports = router;
