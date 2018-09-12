@@ -6,6 +6,7 @@
     app.controller('workerDashboardController', ['$scope', 'func', workerDashboardController]);
     app.controller('cvPostController', ['$scope', '$log', 'call', 'api', 'func', cvPostController]);
     app.controller('cvNotActivatedByUseridController', ['$scope', '$log', 'call', 'api', 'func', cvNotActivatedByUseridController]);
+    app.controller('cvActivatedByUseridController', ['$scope', '$log', 'call', 'api', 'func', cvActivatedByUseridController]);
 
     function workerDashboardController($scope, func) {
         $scope.pagename = function () { return func.getPathLocationArray()[1]; }
@@ -142,6 +143,65 @@
                             func.showToastSuccess(`Đã chỉnh sửa hồ sơ: ${$scope.NameJobCategory}.`);
                             $('.modal').modal('toggle');
                             $scope.loadListCVNotActiveted();
+                        }
+                    })
+                    .catch(function (err) {
+                        $log.error(err);
+                        func.showToastError(err);
+                    });
+            }catch (err) {
+                func.showToastError(err);
+            }
+        }
+    };
+
+    function cvActivatedByUseridController($scope, $log, call, api, func) {
+        $scope.loadListCVActiveted = function () {
+            try {
+                call.GET(`${api.CV.ACTIVATED_BY_USERID}/${func.getCookieAccount().UserAccountID}`)
+                    .then(function (result) {
+                        $scope.success = result.success;
+                        $scope.myCV = result.result;
+                        $scope.message = result.message;
+                    })
+                    .catch(function (err) {
+                        func.showToastError(err);
+                    });
+            } catch (err) {
+                $log.error(err);
+                func.showToastError(err);
+            }
+        };
+
+        $scope.clickEditCV = function (ImageStore, CategoryID, NameJobCategory, Exprience, Qualifications, GeneralInformation) {
+            $scope.optionsVariable = func.configTouchspin();
+            $scope.ImageStore = ImageStore;
+            $scope.CategoryID = CategoryID;
+            $scope.NameJobCategory = NameJobCategory;
+            $scope.iExprience = Exprience;
+            $scope.iQualifications = Qualifications;
+            $scope.iGeneralInformation = GeneralInformation;
+        }
+
+        $scope.submitEditCV = function () {
+            try {
+                $log.info($scope.iExprience, $scope.iQualifications, $scope.iGeneralInformation, $scope.CategoryID);
+                let cvData = {
+                    categoryid: $scope.CategoryID,
+                    exprience: $scope.iExprience,
+                    qualifications: $scope.iQualifications,
+                    generalinformation: $scope.iGeneralInformation,
+                    imagestore: $scope.ImageStore
+                };
+                if (!cvData.categoryid || !cvData.exprience || !cvData.qualifications || !cvData.generalinformation || !cvData.imagestore) {
+                    throw "Thông tin không được để trống";
+                }
+                call.PUT(api.CV.NOT_ACTIVATED_BY_USERID, cvData)
+                    .then(function (result) {
+                        if (result.success) {
+                            func.showToastSuccess(`Đã chỉnh sửa hồ sơ: ${$scope.NameJobCategory}.`);
+                            $('.modal').modal('toggle');
+                            $scope.loadListCVActiveted();
                         }
                     })
                     .catch(function (err) {

@@ -16,7 +16,8 @@
                 "NOT_ACTIVATED": localhost + "/api/cv/not-activated",
                 "ACTIVE_CV": localhost + "/api/cv/active-cv",
                 "POST_CV": localhost + "/api/cv/post",
-                "NOT_ACTIVATED_BY_USERID": localhost + "/api/cv/not-activated-by-userid"
+                "NOT_ACTIVATED_BY_USERID": localhost + "/api/cv/not-activated-by-userid",
+                "ACTIVATED_BY_USERID": localhost + "/api/cv/activated"
             },
             "CATAGORY": {
                 "GET_ALL": localhost + "/api/category/get-all",

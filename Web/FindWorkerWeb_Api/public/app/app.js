@@ -60,6 +60,11 @@
 				templateUrl: "/module_views/worker/cv/cvNotActivatedByUserid.html"
 			});
 
+			$routeProvider.when("/ho-so/danh-sach-da-duyet", {
+				controller: "cvActivatedByUseridController",
+				templateUrl: "/module_views/worker/cv/cvActivatedByUserid.html"
+			});
+
 			$routeProvider.otherwise({ redirectTo: "/tai-khoan/dang-nhap" });
 		}]);
 
