@@ -26,9 +26,6 @@
                         } else {
                             $scope.categories = [];
                         }
-                    })
-                    .catch(function (err) {
-                        func.showToastError(err);
                     });
             } catch (err) {
                 $log.error(err);
@@ -54,9 +51,6 @@
                         if (result.success) {
                             func.showToastSuccess(`Đã đăng hồ sơ: ${categoryData.namejobcategory}.`);
                         }
-                    })
-                    .catch(function (err) {
-                        func.showToastError(err);
                     });
             } catch (err) {
                 $log.error(err);
@@ -73,9 +67,6 @@
                         $scope.success = result.success;
                         $scope.myCV = result.result;
                         $scope.message = result.message;
-                    })
-                    .catch(function (err) {
-                        func.showToastError(err);
                     });
             } catch (err) {
                 $log.error(err);
@@ -101,11 +92,6 @@
                                 func.showToastSuccess(`Bạn đã xóa hồ sơ: ${namejobcategory}.`);
                                 $scope.loadListCVNotActiveted();
                             }
-                        })
-                        .catch(function (err) {
-                            $log.error(err);
-                            swal.close();
-                            func.showToastError(err);
                         });
                 };
 
@@ -145,10 +131,6 @@
                             $('.modal').modal('toggle');
                             $scope.loadListCVNotActiveted();
                         }
-                    })
-                    .catch(function (err) {
-                        $log.error(err);
-                        func.showToastError(err);
                     });
             }catch (err) {
                 func.showToastError(err);
@@ -164,9 +146,6 @@
                         $scope.success = result.success;
                         $scope.myCV = result.result;
                         $scope.message = result.message;
-                    })
-                    .catch(function (err) {
-                        func.showToastError(err);
                     });
             } catch (err) {
                 $log.error(err);
@@ -204,10 +183,6 @@
                             $('.modal').modal('toggle');
                             $scope.loadListCVActiveted();
                         }
-                    })
-                    .catch(function (err) {
-                        $log.error(err);
-                        func.showToastError(err);
                     });
             }catch (err) {
                 func.showToastError(err);

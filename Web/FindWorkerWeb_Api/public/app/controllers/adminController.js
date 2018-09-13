@@ -20,9 +20,6 @@
                         $scope.success = result.success;
                         $scope.userCategories = result.result;
                         $scope.message = result.message;
-                    })
-                    .catch(function (err) {
-                        func.showToastError(err);
                     });
             } catch (err) {
                 $log.error(err);
@@ -47,10 +44,6 @@
                             func.showToastSuccess("Bạn đã duyệt hồ sơ: " + namejobcategory + "." + "<br>Của thợ: " + fullname + ".");
                             $scope.loadListWorkerNotActivated();
                         }
-                    })
-                    .catch(function (err) {
-                        $log.error(err);
-                        func.showToastError(err);
                     });
             } catch (err) {
                 $log.error(err);
@@ -77,11 +70,6 @@
                                 func.showToastSuccess("Bạn đã xóa hồ sơ: " + namejobcategory + "." + "<br>Của thợ: " + fullname + ".");
                                 $scope.loadListWorkerNotActivated();
                             }
-                        })
-                        .catch(function (err) {
-                            $log.error(err);
-                            swal.close();
-                            func.showToastError(err);
                         });
                 };
 
@@ -104,9 +92,6 @@
                         } else {
                             $scope.categories = [];
                         }
-                    })
-                    .catch(function (err) {
-                        func.showToastError(err);
                     });
             } catch (err) {
                 $log.error(err);
@@ -126,9 +111,6 @@
                         $scope.userCategories = result.result;
                         $scope.message = result.message;
                     })
-                    .catch(function (err) {
-                        func.showToastError(err);
-                    });
             } catch (err) {
                 $log.error(err);
                 func.showToastError(err);

@@ -53,7 +53,7 @@
 		*/
 		function storeCookie(res) {
 			var now = new Date();
-			var exp = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2);
+			var exp = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 
 			$cookies.put('access_token', res.token, { expires: exp });
 			$cookies.putObject('account', {
@@ -71,6 +71,21 @@
 		function checkCookie() {
 			if ($cookies.get('access_token')) { return true; }
 			return false;
+		};
+
+		/*
+		* Get cookie in browser return true or false
+		*/
+		function getCookieAccount() {
+			return $cookies.getObject('account');
+		};
+
+		/*
+		* Clear cookie in browser
+		*/
+		function clearCookie() {
+			$cookies.remove('access_token');
+			$cookies.remove('account');
 		};
 
 		/*
@@ -107,21 +122,6 @@
 				buttonDownClass: 'btn btn-white',
 				buttonUpClass: 'btn btn-white'
 			}
-		};
-
-		/*
-		* Get cookie in browser return true or false
-		*/
-		function getCookieAccount() {
-			return $cookies.getObject('account');
-		};
-
-		/*
-		* Clear cookie in browser
-		*/
-		function clearCookie() {
-			$cookies.remove('access_token');
-			$cookies.remove('account');
 		};
 
 		/*

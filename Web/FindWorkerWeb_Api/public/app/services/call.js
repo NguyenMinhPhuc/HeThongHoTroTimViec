@@ -3,12 +3,14 @@
 
     angular
         .module('app')
-        .service('call', ['$http', '$cookies', '$log', '$q', function ($http, $cookies, $log, $q) {
+        .service('call', ['$http', '$cookies', '$log', '$q', 'func', function ($http, $cookies, $log, $q, func) {
 
             var header = {
                 'Authorization': $cookies.get("access_token"),
                 'Content-Type': 'application/json; charset=utf-8'
             }
+
+            var lbErr = "";
 
             this.GET = function (controller) {
                 $http.defaults.headers.common['Authorization'] = $cookies.get("access_token");
@@ -20,12 +22,12 @@
                     return $q.resolve(result.data);
                 }, err => {
                     $log.info(err);
-                    let lbErr = "";
+                    lbErr = "";
                     if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
                     else if (err.data.error["0"].msg) { lbErr = err.data.error["0"].msg }
                     else if (err.message) { lbErr = err.message }
                     else { lbErr = err }
-                    return $q.reject(lbErr);
+                    func.showToastError(lbErr);
                 });
             };
 
@@ -40,7 +42,27 @@
                     return $q.resolve(result.data);
                 }).catch(function (err) {
                     $log.info(err);
-                    let lbErr = "";
+                    lbErr = "";
+                    if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
+                    else if (err.data.error["0"].msg) { lbErr = err.data.error["0"].msg }
+                    else if (err.message) { lbErr = err.message }
+                    else { lbErr = err }
+                    func.showToastError(lbErr);
+                });
+            };
+
+            this.POSTACCOUNT = function (controller, data) {
+                $http.defaults.headers.common['Authorization'] = $cookies.get("access_token");
+                return $http({
+                    method: 'POST',
+                    url: controller,
+                    headers: header,
+                    data: data
+                }).then(function (result) {
+                    return $q.resolve(result.data);
+                }).catch(function (err) {
+                    $log.info(err);
+                    lbErr = "";
                     if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
                     else if (err.data.error["0"].msg) { lbErr = err.data.error["0"].msg }
                     else if (err.message) { lbErr = err.message }
@@ -61,12 +83,12 @@
                     return $q.resolve(result.data);
                 }, err => {
                     $log.info(err);
-                    let lbErr = "";
+                    lbErr = "";
                     if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
                     else if (err.data.error["0"].msg) { lbErr = err.data.error["0"].msg }
                     else if (err.message) { lbErr = err.message }
                     else { lbErr = err }
-                    return $q.reject(lbErr);
+                    func.showToastError(lbErr);
                 });
             };
 
@@ -82,12 +104,13 @@
                     return $q.resolve(result.data);
                 }, err => {
                     $log.info(err);
-                    let lbErr = "";
+                    lbErr = "";
                     if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
                     else if (err.data.error["0"].msg) { lbErr = err.data.error["0"].msg }
                     else if (err.message) { lbErr = err.message }
                     else { lbErr = err }
-                    return $q.reject(lbErr);
+                    swal.close();
+                    func.showToastError(lbErr);
                 });
             };
 
