@@ -18,6 +18,7 @@ function postSignUpForAllUser(account, UserTypeID) {
             account.username,
             account.password,
             account.fullname,
+            account.codeActive,
             UserTypeID,
             account.email,
             account.username

@@ -4,6 +4,7 @@ var md5 = require('md5');
 var moment = require('moment');
 
 var accountModel = require('../models/accountModel');
+var linkServer = require('../configs/config.json');
 var helper = require('../helpers/helper');
 var { check } = require('express-validator/check');
 
@@ -75,22 +76,31 @@ router.post('/signup-for-guest', [check('username').custom(value => {
     if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
     else {
         let account = {
-            email: req.body.email.trim(),
-            username: req.body.username.trim(),
+            email: req.body.email,
+            username: req.body.username,
             password: md5(req.body.password.trim()),
-            fullname: req.body.fullname.trim()
+            fullname: req.body.fullname.trim(),
+            codeActive: helper.generateRandom6Number()
         };
         try {
             let result = await accountModel.postSignUpForAllUser(account, 3);
-            if (result.affectedRows > 0) {//kiểm tra số dòng đã insert thành công
-                return res.json(200, { "success": true });
+            if (result.affectedRows > 0) {
+                let linkVerify = `${linkServer.hethonghotrotimviec.urlServer}/#!/tai-khoan/verify?email=${account.email}&code=${account.codeActive}`;
+                helper.sendVerifyUseEmail(account.email, account.fullname, linkVerify)
+                    .then(resultVeri => {
+                        return res.status(200).json({ "success": true, "message": `Link xác thực tài khoản đã gởi tới email: ${account.email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.` });
+                    })
+                    .catch(err => {
+                        return res.json(500, { "error": err });
+                    });
+            } else {
+                return res.json(400, {
+                    "error": "invalid_grant",
+                    "error_description": "Username hoặc Email đã tồn tại"
+                });
             }
-            return res.json(400, {
-                "error": "invalid_grant",
-                "error_description": "Username hoặc Email đã tồn tại"
-            });
         } catch (err) {
-            return res.json(500, { "error": err });
+            return res.status(500).json({ "error": err });
         }
     }
 });
@@ -109,17 +119,27 @@ router.post('/signup-for-worker', [check('username').custom(value => {//sử d�
             email: req.body.email.trim(),
             username: req.body.username.trim(),
             password: md5(req.body.password.trim()),
-            fullname: req.body.fullname.trim()
+            fullname: req.body.fullname.trim(),
+            codeActive: helper.generateRandom6Number()
         };
         try {
             let result = await accountModel.postSignUpForAllUser(account, 2);
             if (result.affectedRows > 0) {//kiểm tra số dòng đã insert thành công
-                return res.json(200, { "success": true });
+                let linkVerify = `${linkServer.hethonghotrotimviec.urlServer}/#!/tai-khoan/verify?email=${account.email}&code=${account.codeActive}`;
+                helper.sendVerifyUseEmail(account.email, account.fullname, linkVerify)
+                    .then(resultVeri => {
+                        return res.status(200).json({ "success": true, "message": `Link xác thực tài khoản đã gởi tới email: ${account.email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.` });
+                    })
+                    .catch(err => {
+                        return res.json(500, { "error": err });
+                    });
             }
-            return res.json(400, {
-                "error": "invalid_grant",
-                "error_description": "Username hoặc Email đã tồn tại"
-            });
+            else {
+                return res.json(400, {
+                    "error": "invalid_grant",
+                    "error_description": "Username hoặc Email đã tồn tại"
+                });
+            }
         } catch (err) {
             return res.json(500, { "error": err });
         }

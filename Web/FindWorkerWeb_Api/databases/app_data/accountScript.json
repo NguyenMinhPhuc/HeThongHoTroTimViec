@@ -1,6 +1,6 @@
 {
     "selectProfileInform": "SELECT UserAccountID, Email, FullName, IsMale, PhoneNumber, PlaceName, ProvinceID, DistrictID, WardID, DATE_FORMAT(Birthday, '%d/%m/%Y') as Birthday, Image, DATE_FORMAT(CreateDate, '%d/%m/%Y') as CreateDate, PersonID, PointsAverage, UserTypeID FROM useraccounts WHERE UserAccountID = ?",
     "selectCheckInforLogin": "SELECT ua.UserAccountID, ua.Username, ua.UserTypeID, ua.FullName, ua.Image, ut.NameUserType FROM useraccounts as ua INNER JOIN usertype as ut ON ua.UserTypeID = ut.UserTypeID WHERE ua.Username = ? and ua.Password = ? LIMIT 1",
-    "insertSignUpForAllUser": "INSERT INTO useraccounts ( Email , Username , Password , FullName , UserTypeID) SELECT ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT UserAccountID FROM useraccounts WHERE Email = ? OR Username = ?) LIMIT 1",
+    "insertSignUpForAllUser": "INSERT INTO useraccounts ( Email , Username , Password , FullName , CodeActive , UserTypeID) SELECT ?, ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT UserAccountID FROM useraccounts WHERE Email = ? OR Username = ?) LIMIT 1",
     "updateProfileInform": "UPDATE useraccounts SET FullName=?, IsMale=?, PhoneNumber=?, Place=?, Birthday=STR_TO_DATE(?, '%d/%m/%Y'), Image=?, PersonID=? WHERE UserAccountID = ?"
 }
