@@ -3,11 +3,18 @@ var helper = require('../helpers/helper');
 
 //LOGIN AND SIGNUP
 //POST
-function postCheckInforLogin(user) {
-    return helper.sendQueryToDatabase(
-        AccountScript.selectCheckInforLogin,
-        [user.username, user.password]
-    );
+function postCheckInforLoginUseUsername(user, isMail) {
+    if (isMail) {
+        return helper.sendQueryToDatabase(
+            AccountScript.selectCheckInforLoginUseEmail,
+            [user]
+        );
+    } else {
+        return helper.sendQueryToDatabase(
+            AccountScript.selectCheckInforLogin,
+            [user]
+        );
+    }
 };
 
 function postSignUpForAllUser(account, UserTypeID) {
@@ -52,4 +59,4 @@ function updateProfileInform(profile) {
     );
 };
 
-module.exports = { postCheckInforLogin, postSignUpForAllUser, getProfileInform, updateProfileInform };
+module.exports = { postCheckInforLoginUseUsername, postSignUpForAllUser, getProfileInform, updateProfileInform };

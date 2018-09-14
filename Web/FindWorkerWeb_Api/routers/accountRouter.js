@@ -12,49 +12,72 @@ var router = express.Router();
 
 //Login
 router.post('/login', async (req, res) => {
-    req.checkBody('username', 'Không để trống Username').trim().notEmpty();
+    let isEmail = false;
+    if (req.body.username.indexOf("@") > -1 && req.body.username.indexOf(".") > -1) {
+        isEmail = true;
+        req.checkBody('username', 'Sai định dạng Email').isEmail();
+    } else {
+        isEmail = false;
+        req.checkBody('username', 'Không để trống Username').notEmpty();
+    }
     req.checkBody('password', 'Không để trống Password').trim().notEmpty();
     req.checkBody('grant_type', 'Không để trống Grant type').trim().notEmpty();
-    if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
+    if (req.validationErrors()) return res.status(400).json({ "error": req.validationErrors() });
     else {
         if (req.body.grant_type === "password") {
             try {
-                let user = {
-                    username: req.body.username.trim(),
-                    password: md5(req.body.password.trim())
-                };
-                let result = await accountModel.postCheckInforLogin(user);//Select and check user and password
+                let result = await accountModel.postCheckInforLoginUseUsername(req.body.username, isEmail);
                 if (result.length > 0) {
-                    var resultObject = JSON.parse(JSON.stringify({
-                        "UserAccountID": result[0].UserAccountID,
-                        "UserTypeID": result[0].UserTypeID
-                    }));
-                    jwt.sign(resultObject, process.env.FW_SECRET, {
-                        algorithm: process.env.FW_ALGORITHM,
-                        expiresIn: '1 days'
-                    }, (err, token) => {
-                        if (err) return res.json(500, { error: err });
-                        return res.json(200, {
-                            "success": true,
-                            "token": token,
-                            "UserAccountID": result[0].UserAccountID,
-                            "FullName": result[0].FullName,
-                            "Image": result[0].Image,
-                            "NameUserType": result[0].NameUserType,
-                            "UserTypeID": result[0].UserTypeID
+                    if (result[0].StatusAccount == 0) {
+                        return res.status(200).json({
+                            "success": false,
+                            "message": "Tài khoản chưa được active kiểm tra email hoặc thùng rác"
                         });
-                    });
+                    } else if (result[0].StatusAccount == 1) {
+                        if (result[0].Password == md5(req.body.password)) {//check password
+                            let resultObject = JSON.parse(JSON.stringify({
+                                "UserAccountID": result[0].UserAccountID,
+                                "UserTypeID": result[0].UserTypeID
+                            }));
+                            jwt.sign(resultObject, process.env.FW_SECRET, {
+                                algorithm: process.env.FW_ALGORITHM,
+                                expiresIn: '1 days'
+                            }, (err, token) => {
+                                if (err) return res.status(500).json({ error: err });
+                                return res.status(200).json({
+                                    "success": true,
+                                    "token": token,
+                                    "UserAccountID": result[0].UserAccountID,
+                                    "FullName": result[0].FullName,
+                                    "Image": result[0].Image,
+                                    "NameUserType": result[0].NameUserType,
+                                    "UserTypeID": result[0].UserTypeID
+                                });
+                            });
+                        } else {
+                            return res.status(400).json({
+                                "error": "invalid_grant",
+                                "error_description": "Tài khoản hoặc mật khẩu không đúng"
+                            });
+                        }
+                    } else {
+                        return res.status(400).json({
+                            "error": "invalid_grant",
+                            "error_description": "Tài khoản đã bị khóa"
+                        });
+                    }
+
                 } else {
-                    return res.json(400, {
+                    return res.status(400).json({
                         "error": "invalid_grant",
                         "error_description": "Tài khoản hoặc mật khẩu không đúng"
                     });
                 }
             } catch (err) {
-                return res.json(500, err);
+                return res.status(500).json(err);
             }
         } else {
-            return res.json(400, {
+            return res.status(400).json({
                 "error": "invalid_grant",
                 "error_description": "Grant type không đúng"
             });
@@ -91,10 +114,10 @@ router.post('/signup-for-guest', [check('username').custom(value => {
                         return res.status(200).json({ "success": true, "message": `Link xác thực tài khoản đã gởi tới email: ${account.email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.` });
                     })
                     .catch(err => {
-                        return res.json(500, { "error": err });
+                        return res.status(500).json({ "error": err });
                     });
             } else {
-                return res.json(400, {
+                return res.status(400).json({
                     "error": "invalid_grant",
                     "error_description": "Username hoặc Email đã tồn tại"
                 });
@@ -113,7 +136,7 @@ router.post('/signup-for-worker', [check('username').custom(value => {//sử d�
     req.checkBody('email', 'Không phải là Email').isEmail();
     req.checkBody('password', 'Password phải chứa ít nhất là 6 ký tự').trim().isLength({ min: 6 });
     req.checkBody('fullname', 'Fullname phải chứa ít nhất là 3 ký tự').trim().isLength({ min: 3 });
-    if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
+    if (req.validationErrors()) return res.status(400).json({ "error": req.validationErrors() });
     else {
         let account = {
             email: req.body.email.trim(),
@@ -131,17 +154,17 @@ router.post('/signup-for-worker', [check('username').custom(value => {//sử d�
                         return res.status(200).json({ "success": true, "message": `Link xác thực tài khoản đã gởi tới email: ${account.email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.` });
                     })
                     .catch(err => {
-                        return res.json(500, { "error": err });
+                        return res.status(500).json({ "error": err });
                     });
             }
             else {
-                return res.json(400, {
+                return res.status(400).json({
                     "error": "invalid_grant",
                     "error_description": "Username hoặc Email đã tồn tại"
                 });
             }
         } catch (err) {
-            return res.json(500, { "error": err });
+            return res.status(500).json({ "error": err });
         }
     }
 });
@@ -153,13 +176,13 @@ router.get('/profile/:useraccountid', async (req, res) => {
         let result = await accountModel.getProfileInform(req.params.useraccountid)//get thông tin profile
         if (result.length > 0) { return res.json(200, result[0]); }
         else {
-            return res.json(404, {
+            return res.status(404).json({
                 "error": "invalid_grant",
                 "error_description": "ID không tồn tại"
             });
         }
     } catch (err) {
-        return res.json(500, {
+        return res.status(500).json({
             "error": "invalid_grant",
             "error_description": "Token không tồn tại hoặc đã hết hạn"
         });
@@ -194,15 +217,15 @@ router.put('/profile', [check('birthday').custom(value => {//sử dụng express
             };
             let rows = await accountModel.updateProfileInform(profile)
             if (rows.affectedRows > 0) {
-                return res.json(200, { "success": true });
+                return res.status(200).json({ "success": true });
             }
-            return res.json(400, {
+            return res.status(400).json({
                 "error": "invalid_grant",
                 "error_description": "Account ID không tồn tại"
             });
         } catch (err) {
             console.log(err);
-            return res.json(400, {
+            return res.status(400).json({
                 "error": "invalid_grant",
                 "error_description": "Token không tồn tại hoặc đã hết hạn"
             });
