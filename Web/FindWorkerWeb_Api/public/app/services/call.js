@@ -6,7 +6,6 @@
         .service('call', ['$http', '$cookies', '$log', '$q', 'func', function ($http, $cookies, $log, $q, func) {
 
             var header = {
-                'Authorization': $cookies.get("access_token"),
                 'Content-Type': 'application/json; charset=utf-8'
             }
 
@@ -20,7 +19,7 @@
                     url: controller
                 }).then(function (result) {
                     return $q.resolve(result.data);
-                }, err => {
+                }, function (err) {
                     $log.info(err);
                     lbErr = "";
                     if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
@@ -33,6 +32,7 @@
 
             this.POST = function (controller, data) {
                 $http.defaults.headers.common['Authorization'] = $cookies.get("access_token");
+                data = JSON.stringify(data);
                 return $http({
                     method: 'POST',
                     url: controller,
@@ -40,7 +40,7 @@
                     data: data
                 }).then(function (result) {
                     return $q.resolve(result.data);
-                }).catch(function (err) {
+                }, function (err) {
                     $log.info(err);
                     lbErr = "";
                     if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
@@ -48,26 +48,6 @@
                     else if (err.message) { lbErr = err.message }
                     else { lbErr = err }
                     func.showToastError(lbErr);
-                });
-            };
-
-            this.POSTACCOUNT = function (controller, data) {
-                $http.defaults.headers.common['Authorization'] = $cookies.get("access_token");
-                return $http({
-                    method: 'POST',
-                    url: controller,
-                    headers: header,
-                    data: data
-                }).then(function (result) {
-                    return $q.resolve(result.data);
-                }).catch(function (err) {
-                    $log.info(err);
-                    lbErr = "";
-                    if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
-                    else if (err.data.error["0"].msg) { lbErr = err.data.error["0"].msg }
-                    else if (err.message) { lbErr = err.message }
-                    else { lbErr = err }
-                    return $q.reject(lbErr);
                 });
             };
 
@@ -81,7 +61,7 @@
                     data: data
                 }).then(function (result) {
                     return $q.resolve(result.data);
-                }, err => {
+                }, function (err) {
                     $log.info(err);
                     lbErr = "";
                     if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
@@ -94,7 +74,7 @@
 
             this.DELETE = function (controller, data) {
                 $http.defaults.headers.common['Authorization'] = $cookies.get("access_token");
-                $log.info(data);
+                data = JSON.stringify(data);
                 return $http({
                     method: 'DELETE',
                     url: controller,
@@ -102,7 +82,7 @@
                     data: data
                 }).then(function (result) {
                     return $q.resolve(result.data);
-                }, err => {
+                }, function (err) {
                     $log.info(err);
                     lbErr = "";
                     if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
@@ -114,5 +94,46 @@
                 });
             };
 
+
+            //EDIT
+            this.POSTACCOUNT = function (controller, data) {
+                data = JSON.stringify(data);
+                return $http({
+                    method: 'POST',
+                    url: controller,
+                    contentType: 'application/json; charset=utf-8',
+                    data: data
+                }).then(function (result) {
+                    return $q.resolve(result.data);
+                }, function (err) {
+                    $log.info(err);
+                    lbErr = "";
+                    if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
+                    else if (err.data.error["0"].msg) { lbErr = err.data.error["0"].msg }
+                    else if (err.message) { lbErr = err.message }
+                    else { lbErr = err }
+                    return $q.reject(lbErr);
+                });
+            };
+
+            this.PUTACCOUNT = function (controller, data) {
+                data = JSON.stringify(data);
+                return $http({
+                    method: 'PUT',
+                    url: controller,
+                    contentType: 'application/json; charset=utf-8',
+                    data: data
+                }).then(function (result) {
+                    return $q.resolve(result.data);
+                }, function (err) {
+                    $log.info(err);
+                    lbErr = "";
+                    if (err.data.error == "invalid_grant") { lbErr = err.data.error_description }
+                    else if (err.data.error["0"].msg) { lbErr = err.data.error["0"].msg }
+                    else if (err.message) { lbErr = err.message }
+                    else { lbErr = err }
+                    return $q.reject(lbErr);
+                });
+            };
         }]);
 })();

@@ -3,13 +3,14 @@
 
     const app = angular.module('app');
 
-    app.controller('loginController', loginController);
-    app.controller('signupController', signupController);
+    app.controller('loginController', ['$scope', 'call', 'func', 'api', loginController]);
+    app.controller('signupController', ['$scope', 'call', signupController]);
+    app.controller('verifyController', ['$scope', '$routeParams', 'call', 'api', verifyController]);
 
-    loginController.$inject = ['$scope', 'call', 'func', 'api'];
-    signupController.$inject = ['$scope', 'call'];
+    var objValue = {};
 
     function loginController($scope, call, func, api) {
+        func.clearCookie();
         $scope.seed.SUBMIT_NAME = "Đăng nhập";
         $scope.LoginSubmit = function () {
             try {
@@ -68,4 +69,29 @@
             }
         }
     };
+
+    function verifyController($scope, $routeParams, call, api) {
+        try {
+            $scope.message = "Đợi xác thực tài khoản.";
+            objValue = {
+                email: $routeParams.email,
+                codeactive: $routeParams.code
+            };
+            if (objValue.email || objValue.codeactive) {
+                call.PUTACCOUNT(api.ACCOUNT.VERIFY, objValue)
+                    .then(function (result) {
+                        if (result.success) {
+                            $scope.message = result.message;
+                        }
+                    })
+                    .catch(function (err) {
+                        $scope.message = err.error_description;
+                    });
+            } else {
+                throw "Email và code không rỗng";
+            }
+        } catch (err) {
+            $scope.message = err;
+        }
+    }
 })();

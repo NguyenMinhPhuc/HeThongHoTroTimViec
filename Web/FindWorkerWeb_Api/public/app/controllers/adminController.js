@@ -3,12 +3,23 @@
 
     const app = angular.module('app');
 
-    app.controller('adminDashboardController', ['$scope', 'func', adminDashboardController]);
+    app.controller('adminDashboardController', ['$rootScope', 'func', adminDashboardController]);
     app.controller('listNotActivatedController', ['$scope', '$log', 'call', 'api', 'func', listNotActivatedController]);
     app.controller('categoriesWorkerController', ['$scope', '$log', 'call', 'api', 'func', categoriesWorkerController]);
 
-    function adminDashboardController($scope, func) {
-
+    function adminDashboardController($rootScope, func) {
+        if (func.checkCookie()) {
+            var account = func.getCookieAccount();
+            $rootScope.info = {
+                Image: account.Image,
+                FullName: account.FullName,
+                NameUserType: account.NameUserType,
+                UserTypeID: account.UserTypeID
+            }
+            func.checkParamOfUrl();
+        } else {
+            window.location.href = '/#!/dang-nhap';
+        }
     };
 
     function listNotActivatedController($scope, $log, call, api, func) {

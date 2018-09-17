@@ -32,6 +32,11 @@
 				controller: "signupController",
 				templateUrl: "/module_views/account/signup.html"
 			});
+			
+			$routeProvider.when("/tai-khoan/verify", {
+				controller: "verifyController",
+				templateUrl: "/module_views/account/verify.html"
+			});
 
 			//admin
 			$routeProvider.when("/admin", {

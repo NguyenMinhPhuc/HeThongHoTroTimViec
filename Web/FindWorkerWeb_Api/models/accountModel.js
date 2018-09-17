@@ -58,5 +58,24 @@ function updateProfileInform(profile) {
         ]
     );
 };
+function updateStatusAccount(profile, statusAccount) {
+    return helper.sendQueryToDatabase(
+        AccountScript.updateStatusAccount,
+        [
+            statusAccount,
+            profile.email,
+            profile.codeactive
+        ]
+    );
+};
+function updateCodeActive(objectValue) {
+    return helper.sendQueryToDatabase(
+        AccountScript.updateStatusAccount,
+        [
+            objectValue.email,
+            objectValue.codeactive
+        ]
+    );
+};
 
-module.exports = { postCheckInforLoginUseUsername, postSignUpForAllUser, getProfileInform, updateProfileInform };
+module.exports = { postCheckInforLoginUseUsername, postSignUpForAllUser, getProfileInform, updateProfileInform, updateStatusAccount, updateCodeActive };

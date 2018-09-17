@@ -39,31 +39,31 @@
 						<h5 class="text-center">Đăng nhập</h5>
 						<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 						<b>body:</b> username: - password: - grant_type: 'password'<br>
-						<i>8/8/2018-10/8/2018</i>
+						<i>"8/8/2018-10/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
-					<th scope="row">/api/account/signup_for_guest</th>
+					<th scope="row">/api/account/signup-for-guest</th>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-left">
 						<h5 class="text-center">Đăng ký cho khách</h5>
 						<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 						<b>body:</b> email: - username: - password: - fullname:<br>
-						<i>10/8/2018-13/8/2018</i>
+						<i>"10/8/2018-13/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
-					<th scope="row">/api/account/signup_for_worker</th>
+					<th scope="row">/api/account/signup-for-worker</th>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-left">
 						<h5 class="text-center">Đăng ký cho người thợ</h5>
 						<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 						<b>body:</b> email: - username: - password: - fullname:<br>
-						<i>13/8/2018-13/8/2018</i>
+						<i>"13/8/2018-13/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -72,8 +72,8 @@
 					<th scope="row">/api/account/profile/:useraccountid</th>
 					<td class="text-left">
 						<h5 class="text-center">Lấy thông tin của một profile</h5>
-						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<i>14/8/2018-14/8/2018</i>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"14/8/2018-14/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -88,7 +88,20 @@
 						<h5 class="text-center">Cập nhật thông tin của một profile</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 						<b>body:</b> fullname: - ismale: - phonenumber: - place: - birthday: - image: - personid:<br>
-						<i>14/8/2018-15/8/2018</i>
+						<i>"14/8/2018-15/8/2018"</i>
+					</td>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/account/verify</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Xác nhận một tài khoản khi đăng ký</h5>
+						<b>headers:</b>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+						<b>body:</b> email: - codeactive: <br>
+						<i>"14/9/2018-15/9/2018"</i>
 					</td>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -102,13 +115,22 @@
 					<th scope="row">/api/category/get-all</th>
 					<td class="text-left">
 						<h5 class="text-center">Lấy danh sách tất cả danh mục</h5>
-						<b>headers:</b> 'Authorization': 'token' && <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<i>14/8/2018-14/8/2018</i>
-					</td>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"14/8/2018-14/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/category/get-by-userworkerid</th>
+					<td class="text-left">
+						<h5 class="text-center">Lấy danh sách danh mục theo mã userId</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"14/8/2018-14/8/2018"</i>
 					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
@@ -123,7 +145,7 @@
 						<h5 class="text-center">Tạo mới một CV</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 						<b>body:</b> categoryid: - namejobcategory: - exprience: - qualifications: - generalinformation: - imagestore<br>
-						<i>15/8/2018-17/8/2018</i>
+						<i>"15/8/2018-17/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -136,21 +158,34 @@
 						<h5 class="text-center">Active một CV</h5>
 						<b>headers:</b> 'Authorization': 'token' && <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 						<b>body:</b> categoryid: - userworkerid:<br>
-						<i>18/8/2018-20/8/2018</i>
+						<i>"18/8/2018-20/8/2018"</i>
 					</td>
 					<td class="text-left">
 						<h5 class="text-center">Xóa một CV</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 						<b>body:</b> categoryid: - userworkerid:<br>
-						<i>20/8/2018-20/8/2018</i>
+						<i>"20/8/2018-20/8/2018"</i>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">/api/cv/not-activated</th>
 					<td class="text-left">
 						<h5 class="text-center">Lấy danh sách tất cả các cv chưa active</h5>
-						<b>headers:</b> 'Authorization': 'token' && <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<i>14/8/2018-14/8/2018</i>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"14/8/2018-14/8/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/cv/activated-by-categoryid<br>
+						<i>ex:<font style="color:red">/api/cv/activated-by-categoryid/?categoryid=1002</font></i>
+					</th>
+					<td class="text-left">
+						<h5 class="text-center">Lấy danh sách tất cả các user đã active theo categoryid</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"14/8/2018-14/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -160,29 +195,29 @@
 					<th scope="row">/api/cv/not-activated-by-userid</th>
 					<td class="text-left">
 						<h5 class="text-center">Lấy danh sách các cv của một thợ chưa kích hoạt</h5>
-						<b>headers:</b> 'Authorization': 'token' && <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<i>14/8/2018-14/8/2018</i>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"14/8/2018-14/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-left">
 						<h5 class="text-center">Cập nhật thông tin của một hồ sơ chưa active từ một thợ</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 						<b>body:</b> categoryid: - exprience: - qualifications: - generalinformation: - imagestore<br>
-						<i>1/9/2018-2/9/2018</i>
+						<i>"1/9/2018-2/9/2018"</i>
 					</td>
 					<td class="text-left">
 						<h5 class="text-center">Xóa một hồ sơ chưa active từ một thợ</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
 						<b>body:</b> categoryid: <br>
-						<i>1/9/2018-2/9/2018</i>
+						<i>"1/9/2018-2/9/2018"</i>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">/api/cv/activated/:useraccountid</th>
 					<td class="text-left">
-						<h5 class="text-center">Lấy danh sách cv của một thợ đã kích hoạt</h5>
-						<b>headers:</b> 'Authorization': 'token' && <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<i>14/8/2018-14/8/2018</i>
+						<h5 class="text-center">Lấy danh sách cv của một thợ đã kích hoạt bởi userid</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"14/8/2018-14/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -194,10 +229,22 @@
 					</th>
 				</tr>
 				<tr>
+					<th scope="row">/api/location/geolocation</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Cập nhật thông tin vị trí của một user</h5>
+						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+						<b>body:</b> longitude: - latitude: <br>
+						<i>"5/9/2018-5/9/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
 					<th scope="row">/api/location/all-province</th>
 					<td class="text-left">
 						<h5 class="text-center">Lấy tất cả danh sách tên Tỉnh, Thành phố</h5>
-						<i>5/9/2018-5/9/2018</i>
+						<i>"5/9/2018-5/9/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -209,7 +256,7 @@
 					<td class="text-left">
 						<h5 class="text-center">Lấy tất cả danh sách tên Quận, Huyện, Thành phố theo mã Tỉnh, Thành phố</h5>
 						<b>body:</b> provinceid: <br>
-						<i>5/9/2018-5/9/2018</i>
+						<i>"5/9/2018-5/9/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -220,7 +267,7 @@
 					<td class="text-left">
 						<h5 class="text-center">Lấy tất cả danh sách tên Phường, Xã theo mã Quận, Huyện, Thành phố</h5>
 						<b>body:</b> districtid: <br>
-						<i>5/9/2018-5/9/2018</i>
+						<i>"5/9/2018-5/9/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>

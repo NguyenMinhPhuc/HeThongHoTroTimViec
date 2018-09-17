@@ -3,15 +3,26 @@
 
     const app = angular.module('app');
 
-    app.controller('workerDashboardController', ['$scope', 'func', workerDashboardController]);
+    app.controller('workerDashboardController', ['$rootScope', 'func', workerDashboardController]);
     app.controller('cvPostController', ['$scope', '$log', 'call', 'api', 'func', cvPostController]);
     app.controller('cvNotActivatedByUseridController', ['$scope', '$log', 'call', 'api', 'func', cvNotActivatedByUseridController]);
     app.controller('cvActivatedByUseridController', ['$scope', '$log', 'call', 'api', 'func', cvActivatedByUseridController]);
 
-    function workerDashboardController($scope, func) {
-        $scope.pagename = function () { return func.getPathLocationArray()[1]; }
+    function workerDashboardController($rootScope, func) {
+        if (func.checkCookie()) {
+            var account = func.getCookieAccount();
+            $rootScope.info = {
+                Image: account.Image,
+                FullName: account.FullName,
+                NameUserType: account.NameUserType,
+                UserTypeID: account.UserTypeID
+            }
+            func.checkParamOfUrl();
+        } else {
+            window.location.href = '/#!/dang-nhap';
+        }
     };
-    
+
     function cvPostController($scope, $log, call, api, func) {
         $scope.iExprience = 0.5;
 
@@ -32,7 +43,7 @@
                 func.showToastError(err);
             }
         };
-        
+
         $scope.submitCV = function () {
             try {
                 let categoryData = {
@@ -132,7 +143,7 @@
                             $scope.loadListCVNotActiveted();
                         }
                     });
-            }catch (err) {
+            } catch (err) {
                 func.showToastError(err);
             }
         }
@@ -184,7 +195,7 @@
                             $scope.loadListCVActiveted();
                         }
                     });
-            }catch (err) {
+            } catch (err) {
                 func.showToastError(err);
             }
         }

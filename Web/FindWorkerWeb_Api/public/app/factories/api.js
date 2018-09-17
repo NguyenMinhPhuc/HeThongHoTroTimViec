@@ -10,7 +10,8 @@
         var service = {
             "ACCOUNT": {
                 "LOGIN": localhost + "/api/account/login",
-                "SIGNUP": localhost + "/api/account/signup_for_worker"
+                "SIGNUP": localhost + "/api/account/signup_for_worker",
+                "VERIFY": localhost + "/api/account/verify"
             },
             "CV": {
                 "NOT_ACTIVATED": localhost + "/api/cv/not-activated",

@@ -10,6 +10,8 @@ var { check } = require('express-validator/check');
 
 var router = express.Router();
 
+var result = {};
+var objectValue = {};
 //Login
 router.post('/login', async (req, res) => {
     let isEmail = false;
@@ -26,7 +28,8 @@ router.post('/login', async (req, res) => {
     else {
         if (req.body.grant_type === "password") {
             try {
-                let result = await accountModel.postCheckInforLoginUseUsername(req.body.username, isEmail);
+                result = "";
+                result = await accountModel.postCheckInforLoginUseUsername(req.body.username, isEmail);
                 if (result.length > 0) {
                     if (result[0].StatusAccount == 0) {
                         return res.status(200).json({
@@ -106,7 +109,8 @@ router.post('/signup-for-guest', [check('username').custom(value => {
             codeActive: helper.generateRandom6Number()
         };
         try {
-            let result = await accountModel.postSignUpForAllUser(account, 3);
+            result = "";
+            result = await accountModel.postSignUpForAllUser(account, 3);
             if (result.affectedRows > 0) {
                 let linkVerify = `${linkServer.hethonghotrotimviec.urlServer}/#!/tai-khoan/verify?email=${account.email}&code=${account.codeActive}`;
                 helper.sendVerifyUseEmail(account.email, account.fullname, linkVerify)
@@ -136,7 +140,7 @@ router.post('/signup-for-worker', [check('username').custom(value => {//sử d�
     req.checkBody('email', 'Không phải là Email').isEmail();
     req.checkBody('password', 'Password phải chứa ít nhất là 6 ký tự').trim().isLength({ min: 6 });
     req.checkBody('fullname', 'Fullname phải chứa ít nhất là 3 ký tự').trim().isLength({ min: 3 });
-    if (req.validationErrors()) return res.status(400).json({ "error": req.validationErrors() });
+    if (req.validationErrors()) { return res.status(400).json({ "error": req.validationErrors() }); }
     else {
         let account = {
             email: req.body.email.trim(),
@@ -146,7 +150,8 @@ router.post('/signup-for-worker', [check('username').custom(value => {//sử d�
             codeActive: helper.generateRandom6Number()
         };
         try {
-            let result = await accountModel.postSignUpForAllUser(account, 2);
+            result = "";
+            result = await accountModel.postSignUpForAllUser(account, 2);
             if (result.affectedRows > 0) {//kiểm tra số dòng đã insert thành công
                 let linkVerify = `${linkServer.hethonghotrotimviec.urlServer}/#!/tai-khoan/verify?email=${account.email}&code=${account.codeActive}`;
                 helper.sendVerifyUseEmail(account.email, account.fullname, linkVerify)
@@ -173,7 +178,8 @@ router.post('/signup-for-worker', [check('username').custom(value => {//sử d�
 router.get('/profile/:useraccountid', async (req, res) => {
     try {
         await helper.jwtVerifyLogin(req.header("authorization"));//verify token trong header
-        let result = await accountModel.getProfileInform(req.params.useraccountid)//get thông tin profile
+        result = "";
+        result = await accountModel.getProfileInform(req.params.useraccountid)//get thông tin profile
         if (result.length > 0) { return res.json(200, result[0]); }
         else {
             return res.status(404).json({
@@ -204,7 +210,8 @@ router.put('/profile', [check('birthday').custom(value => {//sử dụng express
     if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
     else {
         try {
-            let result = await helper.jwtVerifyLogin(req.header("authorization"));
+            result = "";
+            result = await helper.jwtVerifyLogin(req.header("authorization"));
             let profile = {
                 useraccountid: result.UserAccountID,
                 fullname: req.body.fullname.trim(),
@@ -219,10 +226,12 @@ router.put('/profile', [check('birthday').custom(value => {//sử dụng express
             if (rows.affectedRows > 0) {
                 return res.status(200).json({ "success": true });
             }
-            return res.status(400).json({
-                "error": "invalid_grant",
-                "error_description": "Account ID không tồn tại"
-            });
+            else {
+                return res.status(400).json({
+                    "error": "invalid_grant",
+                    "error_description": "Account ID không tồn tại"
+                });
+            }
         } catch (err) {
             console.log(err);
             return res.status(400).json({
@@ -232,4 +241,39 @@ router.put('/profile', [check('birthday').custom(value => {//sử dụng express
         }
     }
 });
+
+router.put('/verify', async (req, res) => {
+    try {
+        req.checkBody('email', 'Không phải là Email').isEmail();
+        req.checkBody('codeactive', 'Password phải chứa ít nhất là 6 ký tự và nhiều nhất 7 ký tự').isInt().isLength({ min: 6, max: 6 });
+        if (req.validationErrors()) { return res.status(400).json({ "error": req.validationErrors() }); }
+        else {
+            objectValue = {};
+            result = {};
+            objectValue = {
+                email: req.body.email,
+                codeactive: req.body.codeactive
+            };
+            result = await accountModel.updateStatusAccount(objectValue, 1);
+            if (result.affectedRows > 0) {
+                return res.status(200).json({
+                    "success": true,
+                    "message": "Đã xác thực tài khoản thành công."
+                });
+            } else {
+                return res.status(400).json({
+                    "error": "invalid_grant",
+                    "error_description": "Xác thực không thành công yêu cầu kiểm tra lại link."
+                });
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            "error": "invalid_grant",
+            "error_description": "Lỗi server khi xác nhận tài khoản."
+        });
+    }
+});
+
 module.exports = router;
