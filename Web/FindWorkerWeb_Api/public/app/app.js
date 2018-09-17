@@ -22,6 +22,12 @@
 			}])
 		.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
 
+			//ALL
+			$routeProvider.when("/trang-ca-nhan", {
+				controller: "profileController",
+				templateUrl: "/module_views/account/profile.html"
+			});
+
 			//account
 			$routeProvider.when("/tai-khoan/dang-nhap", {
 				controller: "loginController",
@@ -75,7 +81,10 @@
 				templateUrl: "/module_views/worker/cv/cvActivatedByUserid.html"
 			});
 
-			$routeProvider.otherwise({ redirectTo: "/tai-khoan/dang-nhap" });
+			$routeProvider.otherwise({ 
+				// redirectTo: "/tai-khoan/dang-nhap" 
+				templateUrl: "/module_views/error404.html"
+			});
 		}]);
 
 })();
