@@ -2,6 +2,13 @@ var AccountScript = require('../databases/app_data/accountScript.json');
 var helper = require('../helpers/helper');
 
 //LOGIN AND SIGNUP
+//GET
+function getVerifyByEmail(email) {
+    return helper.sendQueryToDatabase(
+        AccountScript.selectVerifyByEmail,
+        [email]
+    );
+};
 //POST
 function postCheckInforLoginUseUsername(user, isMail) {
     if (isMail) {
@@ -78,4 +85,4 @@ function updateCodeActive(objectValue) {
     );
 };
 
-module.exports = { postCheckInforLoginUseUsername, postSignUpForAllUser, getProfileInform, updateProfileInform, updateStatusAccount, updateCodeActive };
+module.exports = { getVerifyByEmail, postCheckInforLoginUseUsername, postSignUpForAllUser, getProfileInform, updateProfileInform, updateStatusAccount, updateCodeActive };

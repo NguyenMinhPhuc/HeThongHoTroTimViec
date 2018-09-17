@@ -80,9 +80,7 @@
             if (objValue.email || objValue.codeactive) {
                 call.PUTACCOUNT(api.ACCOUNT.VERIFY, objValue)
                     .then(function (result) {
-                        if (result.success) {
-                            $scope.message = result.message;
-                        }
+                        $scope.message = result.message;
                     })
                     .catch(function (err) {
                         $scope.message = err.error_description;

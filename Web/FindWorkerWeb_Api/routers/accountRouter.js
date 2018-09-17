@@ -254,16 +254,34 @@ router.put('/verify', async (req, res) => {
                 email: req.body.email,
                 codeactive: req.body.codeactive
             };
-            result = await accountModel.updateStatusAccount(objectValue, 1);
-            if (result.affectedRows > 0) {
+            result = await accountModel.getVerifyByEmail(objectValue.email)
+            if (result[0].StatusAccount == 0) {
+                if (result[0].CodeActive == objectValue.codeactive) {
+                    await accountModel.updateStatusAccount(objectValue, 1);
+                    return res.status(200).json({
+                        "success": true,
+                        "message": "Đã xác thực tài khoản thành công."
+                    });
+                } else {
+                    return res.status(400).json({
+                        "error": "invalid_grant",
+                        "error_description": "Xác thực không thành công yêu cầu kiểm tra lại link."
+                    });
+                }
+            } else if (result[0].StatusAccount == 1) {
                 return res.status(200).json({
+                    "success": false,
+                    "message": "Tài khoản đã xác thực trước đó."
+                });
+            } else if (result[0].StatusAccount == -1) {
+                return res.status(400).json({
                     "success": true,
-                    "message": "Đã xác thực tài khoản thành công."
+                    "message": "Tài khoản đã bị khóa."
                 });
             } else {
                 return res.status(400).json({
-                    "error": "invalid_grant",
-                    "error_description": "Xác thực không thành công yêu cầu kiểm tra lại link."
+                    "success": true,
+                    "message": "Tài khoản bị sai tham số khi xác thực."
                 });
             }
         }
