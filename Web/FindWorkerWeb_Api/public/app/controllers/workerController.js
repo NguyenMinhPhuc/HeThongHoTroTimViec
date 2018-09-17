@@ -15,11 +15,12 @@
                 Image: account.Image,
                 FullName: account.FullName,
                 NameUserType: account.NameUserType,
-                UserTypeID: account.UserTypeID
+                UserTypeID: account.UserTypeID,
+                UserAccountID: account.UserAccountID
             }
             func.checkParamOfUrl();
         } else {
-            window.location.href = '/#!/dang-nhap';
+            window.location.href = '/#!/tai-khoan/dang-nhap';
         }
     };
 

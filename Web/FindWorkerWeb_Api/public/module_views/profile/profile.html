@@ -1,0 +1,84 @@
+<div class="wrapper wrapper-content animated fadeInRight" ng-init="loadProfile()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <div class="">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2 class="text-center">Chi tiết trang cá nhân</h2>
+                        </div>
+                        <div>
+                            <div class="ibox-content no-padding border-left-right">
+                                <img alt="image" width="100%" class="img-responsive" src="{{myProfile.Image}}">
+                            </div>
+                            <div class="ibox-content profile-content">
+                                <h4 class="text-info"><strong ng-bind="myProfile.FullName"></strong></h4>
+                                <h5><i class="fa fa-user-o"></i>
+                                    <i ng-if="myProfile.UserTypeID==1">Admin</i>
+                                    <i ng-if="myProfile.UserTypeID!=1">Người làm</i>
+                                </h5>
+                                <h5><i class="fa fa-envelope"></i> <span ng-bind="myProfile.Email"></span></h5>
+                                <h5><i class="fa fa-phone"></i> <span ng-bind="myProfile.PhoneNumber"></span></h5>
+                                <p><i class="fa fa-map-marker"></i> <span ng-bind="myProfile.PlaceName"></span></p>
+                                <p><i class="fa fa-birthday-cake"> Ngày sinh:</i><span ng-bind="myProfile.Birthday"></span></p>
+                                <h5><i class="fa fa-calendar"></i> Ngày tham gia vào hệ thống: <b ng-bind="myProfile.CreateDate"></b></h5>
+                                <p><i class="fa fa-check"></i> Điểm đánh giá: <b ng-bind="myProfile.PointsAverage"></b></p>
+                                <div class="user-button">
+                                    <div class="row">
+                                        <div class="col-lg-12" ng-if="$root.info.UserAccountID==myProfile.UserAccountID">
+                                            <a href="/trang-ca-nhan/chinh-sua">
+                                                <button type="button" class="btn btn-default btn-sm btn-block"><i class="fa fa-edit"></i>
+                                                    Sửa thông tin</button>
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-12" ng-if="$root.info.UserAccountID!=myProfile.UserAccountID">
+                                            <button type="button" class="btn btn-primary btn-sm btn-block"><i class="fa fa-comments-o"></i>
+                                                Gởi tin nhắn</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="ibox-title">
+                    <h2 class="text-center">Danh sách hồ sơ</h2>
+                </div>
+                <div class="ibox-content forum-container" ng-switch="cvSuccess">
+                    <div ng-switch-when=true>
+                        <div class="forum-item" ng-repeat="cv in myCV">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="forum-icon text-primary">
+                                        <h1 ng-bind="$index"></h1>
+                                    </div>
+                                    <h3 class="forum-item-title text-info" ng-bind="cv.NameJobCategory"></h3>
+                                    <div class="forum-sub-title">
+                                        <b>Trình độ chuyên môn:</b>
+                                        {{cv.Qualifications}}.<br>
+                                        <b>Thông tin chung:</b>
+                                        {{cv.GeneralInformation}}.<br>
+                                        <i>Ngày tạo tài khoản:
+                                            {{cv.DateCreateAccount}} - Ngày nạp hồ sơ:
+                                            {{cv.DateCreateCV}}.</i>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 forum-info">
+                                    <span class="views-number" ng-bind="cv.Exprience"></span>
+                                    <div>
+                                        <small>Năm kinh ngiệm</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-switch-when=false>
+                        <h3 class="text-center" ng-bind="cvMessage"></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -23,9 +23,9 @@
 		.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
 
 			//ALL
-			$routeProvider.when("/trang-ca-nhan", {
+			$routeProvider.when("/p/:profileid", {
 				controller: "profileController",
-				templateUrl: "/module_views/account/profile.html"
+				templateUrl: "/module_views/profile/profile.html"
 			});
 
 			//account
@@ -82,8 +82,8 @@
 			});
 
 			$routeProvider.otherwise({ 
-				// redirectTo: "/tai-khoan/dang-nhap" 
-				templateUrl: "/module_views/error404.html"
+				redirectTo: "/tai-khoan/dang-nhap" 
+				// templateUrl: "/module_views/error404.html"
 			});
 		}]);
 

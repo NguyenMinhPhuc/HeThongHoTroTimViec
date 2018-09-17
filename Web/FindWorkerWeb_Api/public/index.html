@@ -15,7 +15,7 @@
 
 	<!-- Plugins CSS -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-	
+
 	<link href="/assets/template/css/style.css" rel="stylesheet">
 
 	<!-- Plugins CSS -->
@@ -34,8 +34,24 @@
 		<div ng-switch-when="tai-khoan">
 			<account-template-index></account-template-index>
 		</div>
+		<!-- <div ng-switch-default>
+			<div ng-if="$root.info.UserTypeID==1">
+				<admin-template-index></admin-template-index>
+			</div>
+			<div ng-if="$root.info.UserTypeID==2">
+				<worker-template-index></worker-template-index>
+			</div>
+		</div> -->
 		<div ng-switch-when="admin">
 			<admin-template-index></admin-template-index>
+		</div>
+		<div ng-switch-when="p">
+			<div ng-if="$root.info.UserTypeID==1">
+				<admin-template-index></admin-template-index>
+			</div>
+			<div ng-if="$root.info.UserTypeID==2">
+				<worker-template-index></worker-template-index>
+			</div>
 		</div>
 		<div ng-switch-default>
 			<worker-template-index></worker-template-index>

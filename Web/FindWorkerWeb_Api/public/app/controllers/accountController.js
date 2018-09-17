@@ -6,6 +6,7 @@
     app.controller('loginController', ['$scope', 'call', 'func', 'api', loginController]);
     app.controller('signupController', ['$scope', 'call', signupController]);
     app.controller('verifyController', ['$scope', '$routeParams', 'call', 'api', verifyController]);
+    app.controller('profileController', ['$q', '$scope', '$routeParams', 'call', 'func', 'api', profileController]);
 
     var objValue = {};
 
@@ -91,5 +92,27 @@
         } catch (err) {
             $scope.message = err;
         }
-    }
+    };
+
+    function profileController($q, $scope, $routeParams, call, func, api) {
+        $scope.loadProfile = function () {
+            try {
+                if ($routeParams.profileid > 100000000) {
+                    $q.all([
+                        call.GET(`${api.PROFILE.GET}/${$routeParams.profileid}`),
+                        call.GET(`${api.CV.ACTIVATED}/${$routeParams.profileid}`)])
+                        .then(function (result) {
+                            $scope.myProfile = result[0];
+                            $scope.cvSuccess = result[1].success;
+                            $scope.myCV = result[1].result;
+                            $scope.cvMessage = result[1].message;
+                        });
+                } else {
+                    throw "Đường dẫn bị sai";
+                }
+            } catch (err) {
+                func.showToastError(err);
+            }
+        }
+    };
 })();
