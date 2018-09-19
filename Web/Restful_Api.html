@@ -45,12 +45,12 @@
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
-					<th scope="row">/api/account/signup-for-guest</th>
+					<th scope="row">/api/account/signup-for-both</th>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-left">
 						<h5 class="text-center">Đăng ký cho khách</h5>
 						<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> email: - username: - password: - fullname:<br>
+						<b>body:</b> email: - username: - password: - fullname: - typeaccount:<br>
 						<i>"10/8/2018-13/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -81,7 +81,7 @@
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
-					<th scope="row">/api/account/profile/edit/:useraccountid</th>
+					<th scope="row">/api/account/profile</th>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-left">
@@ -179,9 +179,7 @@
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
-					<th scope="row">/api/cv/activated-by-categoryid<br>
-						<i>ex:<font style="color:red">/api/cv/activated-by-categoryid/?categoryid=1002</font></i>
-					</th>
+					<th scope="row">/api/cv/activated-by-categoryid?categoryid=</th>
 					<td class="text-left">
 						<h5 class="text-center">Lấy danh sách tất cả các user đã active theo categoryid</h5>
 						<b>headers:</b> 'Authorization': 'token'<br>
@@ -251,8 +249,7 @@
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
-					<th scope="row">/api/location/all-district-by-provinceid</th>
-					<td class="text-danger"><b>ERROR</b></td>
+					<th scope="row">/api/location/all-district-by-provinceid?provinceid=</th>
 					<td class="text-left">
 						<h5 class="text-center">Lấy tất cả danh sách tên Quận, Huyện, Thành phố theo mã Tỉnh, Thành phố</h5>
 						<b>body:</b> provinceid: <br>
@@ -260,15 +257,16 @@
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
-					<th scope="row">/api/location/all-ward-by-districtid</th>
-					<td class="text-danger"><b>ERROR</b></td>
+					<th scope="row">/api/location/all-ward-by-districtid?districtid=</th>
 					<td class="text-left">
 						<h5 class="text-center">Lấy tất cả danh sách tên Phường, Xã theo mã Quận, Huyện, Thành phố</h5>
 						<b>body:</b> districtid: <br>
 						<i>"5/9/2018-5/9/2018"</i>
 					</td>
+					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
