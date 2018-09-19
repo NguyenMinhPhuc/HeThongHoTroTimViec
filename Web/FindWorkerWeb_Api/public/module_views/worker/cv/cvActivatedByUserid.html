@@ -22,7 +22,7 @@
                                     </tr>
                                     <tr ng-repeat="cv in myCV | orderBy : 'DateCreateCV' : true">
                                         <td ng-bind="$index"><b></b></td>
-                                        <td class="client-avatar"><img alt="image" src="{{cv.ImageStore}}"> </td>
+                                        <td class="client-avatar"><img alt="image" ng-src="{{cv.ImageStore}}"> </td>
                                         <td ng-bind="cv.NameJobCategory"></td>
                                         <td class="text-center" ng-bind="cv.Exprience"></td>
                                         <td ng-bind="cv.Qualifications"></td>
@@ -66,7 +66,7 @@
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Đóng</span></button>
-                <img alt="image" src="{{ImageStore}}" width="100px">
+                <img alt="image" ng-src="{{ImageStore}}" width="100px">
                 <h4 class="modal-title" ng-bind="NameJobCategory"></h4>
             </div>
             <div class="modal-body">

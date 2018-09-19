@@ -9,7 +9,7 @@
                         </div>
                         <div>
                             <div class="ibox-content no-padding border-left-right">
-                                <img alt="image" width="100%" class="img-responsive" src="{{myProfile.Image}}">
+                                <img alt="image" width="100%" class="img-responsive" ng-src="{{myProfile.Image}}">
                             </div>
                             <div class="ibox-content profile-content">
                                 <h4 class="text-info"><strong ng-bind="myProfile.FullName"></strong></h4>
@@ -19,14 +19,14 @@
                                 </h5>
                                 <h5><i class="fa fa-envelope"></i> <span ng-bind="myProfile.Email"></span></h5>
                                 <h5><i class="fa fa-phone"></i> <span ng-bind="myProfile.PhoneNumber"></span></h5>
-                                <p><i class="fa fa-map-marker"></i> <span ng-bind="myProfile.PlaceName"></span></p>
+                                <p><i class="fa fa-map-marker"></i> <span ng-bind="myProfile.StreetName"></span></p>
                                 <p><i class="fa fa-birthday-cake"> Ngày sinh:</i><span ng-bind="myProfile.Birthday"></span></p>
                                 <h5><i class="fa fa-calendar"></i> Ngày tham gia vào hệ thống: <b ng-bind="myProfile.CreateDate"></b></h5>
                                 <p><i class="fa fa-check"></i> Điểm đánh giá: <b ng-bind="myProfile.PointsAverage"></b></p>
                                 <div class="user-button">
                                     <div class="row">
                                         <div class="col-lg-12" ng-if="$root.info.UserAccountID==myProfile.UserAccountID">
-                                            <a href="/trang-ca-nhan/chinh-sua">
+                                            <a ng-href="/#!/trang-ca-nhan/chinh-sua">
                                                 <button type="button" class="btn btn-default btn-sm btn-block"><i class="fa fa-edit"></i>
                                                     Sửa thông tin</button>
                                             </a>

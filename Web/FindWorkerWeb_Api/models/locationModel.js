@@ -8,14 +8,13 @@ function getAllProvince() {
         null
     );
 };
-//POST
-function postAllDistrictByProvinceid(Provinceid) {
+function getAllDistrictByProvinceid(Provinceid) {
     return helper.sendQueryToDatabase(
         locationScript.selectAllDistrictByProvinceid,
         [Provinceid]
     );
 };
-function postAllWardByDistrictid(Districtid) {
+function getAllWardByDistrictid(Districtid) {
     return helper.sendQueryToDatabase(
         locationScript.selectAllWardByDistrictid,
         [Districtid]
@@ -29,4 +28,4 @@ function putInfoGeolocationByUserID(locationData) {
     );
 };
 
-module.exports = { getAllProvince, postAllDistrictByProvinceid, postAllWardByDistrictid, putInfoGeolocationByUserID };
+module.exports = { getAllProvince, getAllDistrictByProvinceid, getAllWardByDistrictid, putInfoGeolocationByUserID };

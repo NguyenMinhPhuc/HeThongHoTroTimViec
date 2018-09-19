@@ -26,7 +26,8 @@
 			showToastSuccess: showToastSuccess,
 			showToast: showToast,
 			showToastError: showToastError,
-			showSweetAlertDelete: showSweetAlertDelete
+			showSweetAlertDelete: showSweetAlertDelete,
+			goBackHistory: goBackHistory
 		};
 
 		var objConfigToastr = {
@@ -131,6 +132,11 @@
 			return $location.path().split("/");
 		};
 
+		function goBackHistory(){
+			window.history.back();
+		};
+
+		//show notification
 		/**
 		 * Show toast when see errors or create/update/delete
 		 * @param {any} msg Message of alert

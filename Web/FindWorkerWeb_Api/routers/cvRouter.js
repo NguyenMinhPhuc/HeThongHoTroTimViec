@@ -318,4 +318,5 @@ router.get('/activated-by-categoryid', async (req, res) => {
         });
     }
 });
+
 module.exports = router;

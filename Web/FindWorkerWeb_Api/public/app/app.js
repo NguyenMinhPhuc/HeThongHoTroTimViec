@@ -28,6 +28,11 @@
 				templateUrl: "/module_views/profile/profile.html"
 			});
 
+			$routeProvider.when("/trang-ca-nhan/chinh-sua", {
+				controller: "changeProfileController",
+				templateUrl: "/module_views/profile/changeProfile.html"
+			});
+
 			//account
 			$routeProvider.when("/tai-khoan/dang-nhap", {
 				controller: "loginController",

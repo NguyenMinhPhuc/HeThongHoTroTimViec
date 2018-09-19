@@ -33,9 +33,9 @@
 
                                     <tr ng-repeat="userCategory in userCategories | orderBy : 'CreateDateJobCategory' : true">
                                         <td><b ng-bind="$index"></b></td>
-                                        <td class="client-avatar"><img alt="image" src="{{userCategory.Image}}"> </td>
+                                        <td class="client-avatar"><img alt="image" ng-src="{{userCategory.Image}}"> </td>
                                         <td style="width:120px">
-                                            <a href="/#!/p/{{userCategory.UserAccountID}}" class="client-link"
+                                            <a ng-href="/#!/p/{{userCategory.UserAccountID}}" class="client-link"
                                                 target="_blank" ng-bind="userCategory.FullName"></a>
                                         </td>
                                         <td ng-bind="userCategory.PersonID"></td>
@@ -47,7 +47,7 @@
                                         <td>
                                             <div style="display:inline">
                                                 <abbr title="Xem profile của người thợ này">
-                                                    <a href="/#!/p/{{userCategory.UserAccountID}}" class="client-link">
+                                                    <a ng-href="/#!/p/{{userCategory.UserAccountID}}" class="client-link">
                                                         <button type="button" class="btn btn-primary btn-xs">
                                                             <i class="fa fa-search-plus"></i>
                                                         </button>

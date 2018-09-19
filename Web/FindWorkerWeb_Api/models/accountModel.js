@@ -57,10 +57,13 @@ function updateProfileInform(profile) {
             profile.fullname,
             profile.ismale,
             profile.phonenumber,
-            profile.place,
             profile.birthday,
             profile.image,
             profile.personid,
+            profile.provinceid,
+            profile.districtid,
+            profile.wardid,
+            profile.streetname,
             profile.useraccountid
         ]
     );

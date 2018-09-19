@@ -7,11 +7,12 @@
     app.controller('signupController', ['$scope', 'call', signupController]);
     app.controller('verifyController', ['$scope', '$routeParams', 'call', 'api', verifyController]);
     app.controller('profileController', ['$q', '$scope', '$routeParams', 'call', 'func', 'api', profileController]);
+    app.controller('changeProfileController', ['$q', '$rootScope', '$scope', 'call', 'func', 'api', changeProfileController]);
 
     var objValue = {};
 
     function loginController($scope, call, func, api) {
-        func.clearCookie();
+        // func.clearCookie();
         $scope.seed.SUBMIT_NAME = "Đăng nhập";
         $scope.LoginSubmit = function () {
             try {
@@ -114,5 +115,62 @@
                 func.showToastError(err);
             }
         }
+    };
+
+    function changeProfileController($q, $rootScope, $scope, call, func, api) {
+        $scope.loadProfile = function () {
+            try {
+                $q.all([
+                    call.GET(`${api.PROFILE.GET}/${func.getCookieAccount().UserAccountID}`),
+                    call.GET(api.LOCATION.GET_ALL_PROVINCE)
+                ]).then(function (result) {
+                    $scope.myProfile = result[0];
+                    $scope.provinces = result[1].result;
+                    loadAllDistrictByProvinceid(result[0].ProvinceID);
+                    loadAllWardByDistrictid(result[0].DistrictID);
+                    if ($scope.myProfile.ProvinceID > 0 && $scope.myProfile.DistrictID > 99 && $scope.myProfile.WardID > 9999) {
+                        $scope.selectedProvince = $scope.myProfile.ProvinceID + "";
+                        $scope.selectedDistrict = $scope.myProfile.DistrictID + "";
+                        $scope.selectedWard = $scope.myProfile.WardID + "";
+                    }
+                });
+            } catch (err) { func.showToastError(err); }
+        };
+        $scope.loadDistrict = function () {
+            loadAllDistrictByProvinceid($scope.selectedProvince);
+            $scope.wards = "";
+        };
+        $scope.loadWard = function () { loadAllWardByDistrictid($scope.selectedDistrict); };
+        $scope.submitProfile = function () {
+            try {
+                $scope.myProfile.ProvinceID = $scope.selectedProvince;
+                $scope.myProfile.DistrictID = $scope.selectedDistrict;
+                $scope.myProfile.WardID = $scope.selectedWard;
+                if ($scope.myProfile.ProvinceID === undefined) { throw "Phải chọn Tỉnh hoặc Thành Phố." }
+                if ($scope.myProfile.DistrictID === undefined) { throw "Phải chọn tên Thành Phố, Quận, Huyện." }
+                if ($scope.myProfile.WardID === undefined) { throw "Phải chọn tên Phường Xã." }
+                call.PUT(api.PROFILE.UPDATE, $scope.myProfile)
+                    .then(function (result) {
+                        func.showToastSuccess(result.message);
+                        window.location.href = `/#!/p/${$rootScope.info.UserAccountID}`;
+                    });
+            } catch (err) { func.showToastError(err); }
+        };
+        $scope.clickCheckbox = function () { $scope.myProfile.IsMale = !$scope.myProfile.IsMale; };
+        $scope.goBackHistory = function () { func.goBackHistory(); };
+
+        //Function
+        function loadAllDistrictByProvinceid(provinceid) {
+            if (provinceid > 0) {
+                call.GET(`${api.LOCATION.GET_ALL_DISTRICT_BY_PROVINCEID}?provinceid=${provinceid}`)
+                    .then(function (resultDistrict) { $scope.districts = resultDistrict.result; });
+            } else { $scope.districts = ""; }
+        };
+        function loadAllWardByDistrictid(districtid) {
+            if (districtid > 99) {
+                call.GET(`${api.LOCATION.GET_ALL_WARD_BY_DISTRICTID}?districtid=${districtid}`)
+                    .then(function (resultWard) { $scope.wards = resultWard.result; });
+            } else { $scope.wards = ""; }
+        };
     };
 })();

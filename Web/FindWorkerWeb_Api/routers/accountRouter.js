@@ -128,7 +128,7 @@ router.post('/signup-for-both', [check('username').custom(value => {
                         "error_description": "Username hoặc Email đã tồn tại."
                     });
                 }
-            }else{
+            } else {
                 return res.status(400).json({
                     "error": "invalid_grant",
                     "error_description": "Loại tài khoản sai."
@@ -190,12 +190,12 @@ router.put('/profile', [check('Birthday').custom(value => {//sử dụng express
                 provinceid: req.body.ProvinceID,
                 districtid: req.body.DistrictID,
                 wardid: req.body.WardID,
-                placename: req.body.PlaceName,
+                streetname: req.body.StreetName,
                 personid: req.body.PersonID.trim()
             };
             let rows = await accountModel.updateProfileInform(profile)
             if (rows.affectedRows > 0) {
-                return res.status(200).json({ "success": true });
+                return res.status(200).json({ "success": true, "message": "Đã cập thật thông tin thành công" });
             }
             else {
                 return res.status(400).json({

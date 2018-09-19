@@ -29,6 +29,11 @@
             "CATAGORY": {
                 "GET_ALL": localhost + "/api/category/get-all",
                 "GET_BY_USERWORKERID": localhost + "/api/category/get-by-userworkerid"
+            },
+            "LOCATION": {
+                "GET_ALL_PROVINCE": localhost + "/api/location/all-province",
+                "GET_ALL_DISTRICT_BY_PROVINCEID": localhost + "/api/location/all-district-by-provinceid",
+                "GET_ALL_WARD_BY_DISTRICTID": localhost + "/api/location/all-ward-by-districtid"
             }
         };
         return service;

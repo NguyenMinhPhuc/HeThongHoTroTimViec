@@ -1,0 +1,118 @@
+<div class="wrapper wrapper-content animated fadeInRight" ng-init="loadProfile()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h2>Chi tiết trang cá nhân</h2>
+                    </div>
+                    <div>
+                        <div class="ibox-content profile-content col-lg-12">
+                            <form class="form-horizontal" ng-submit="submitProfile()">
+                                <div class="text-center m-t-lg">
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Họ và Tên:
+                                            <abbr title="Bắt buộc điền Họ và Tên" class="initialism">
+                                                <font class="text-danger">(*)</font>
+                                            </abbr>
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input type="text" tabindex="1" class="form-control" ng-model="myProfile.FullName"
+                                                required autofocus>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Giới tính:</label>
+                                        <div class="col-md-10 text-left">
+                                            <input type="checkbox" tabindex="2" ng-checked="myProfile['IsMale']"
+                                                ng-click="clickCheckbox()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Ngày sinh:</label>
+                                        <div class="col-md-10">
+                                            <div class="input-group">
+                                                <span datepicker class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                                <input datepicker data-date-end-date="0d" type="text" tabindex="3" class="form-control" ng-model="myProfile.Birthday">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Địa chỉ:</label>
+                                        <div class="col-md-10">
+                                            <div class="col-md-3">
+                                                <!-- <input list="Provinces" class="form-control" placeholder="Chọn tên Tỉnh, Thành Phố...">
+                                                <datalist id="Provinces">
+                                                    <option ng-repeat="province in provinces" value="{{province.provinceid}}"
+                                                        ng-selected="{{province.provinceid==myProfile.ProvinceID}}">{{province.type}}
+                                                        {{province.name}}</option>
+                                                </datalist> -->
+                                                <select class="form-control" ng-options="province.provinceid as province.type + ' ' + province.name for province in provinces | orderBy:'name'"
+                                                    ng-model="selectedProvince" ng-selected="{{province.provinceid==54}}"
+                                                    ng-change="loadDistrict()">
+                                                    <option value="" disabled selected hidden>Chọn tên Tỉnh, Thành
+                                                        Phố...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <!-- <input list="Districts" class="form-control" placeholder="Chọn tên Thành Phố, Quận, Huyện...">
+                                                <datalist id="Districts">
+                                                    <option ng-repeat="district in districts" value="{{district.districtid}}"
+                                                        ng-selected="district.districtid==myProfile.DistrictID">{{district.type}}
+                                                        {{district.name}}</option>
+                                                </datalist> -->
+                                                <select class="form-control" ng-options="district.districtid as district.type + ' ' + district.name for district in districts | orderBy:'name'"
+                                                    ng-model="selectedDistrict" ng-selected="{{district.districtid==myProfile.DistrictID}}"
+                                                    ng-change="loadWard()">
+                                                    <option value="" disabled selected hidden>Chọn tên Thành Phố, Quận,
+                                                        Huyện...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <!-- <input list="Wards" class="form-control" placeholder="Chọn tên Phường Xã...">
+                                                <datalist id="Wards">
+                                                    <option ng-repeat="ward in wards" value="{{ward.wardid}}"
+                                                        ng-selected="ward.wardid==myProfile.WardID">{{ward.type}}
+                                                        {{ward.name}}</option>
+                                                </datalist> -->
+                                                <select class="form-control" ng-options="ward.wardid as ward.type + ' ' + ward.name for ward in wards | orderBy:'name'"
+                                                    ng-model="selectedWard" ng-selected="{{ward.wardid==myProfile.WardID}}">
+                                                    <option value="" disabled selected hidden>Chọn tên Phường Xã...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" tabindex="5" class="form-control" ng-model="myProfile.StreetName"
+                                                    placeholder="Tên đường, số nhà...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Số điện thoại:</label>
+                                        <div class="col-md-10">
+                                            <input type="text" tabindex="5" class="form-control" ng-model="myProfile.PhoneNumber"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Chứng minh nhân dân:</label>
+                                        <div class="col-md-10">
+                                            <input type="text" tabindex="6" class="form-control" ng-model="myProfile.PersonID"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 text-center m-t-lg">
+                                        <button ng-click="goBackHistory()" class="btn btn-secondary" tabindex="8">Hủy</button>
+                                        <button type="submit" class="btn btn-primary" tabindex="7">Cập
+                                            nhật thông tin</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
