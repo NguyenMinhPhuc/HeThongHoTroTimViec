@@ -27,7 +27,8 @@
 			showToast: showToast,
 			showToastError: showToastError,
 			showSweetAlertDelete: showSweetAlertDelete,
-			goBackHistory: goBackHistory
+			goBackHistory: goBackHistory,
+			getCookieAccessToken: getCookieAccessToken
 		};
 
 		var objConfigToastr = {
@@ -72,6 +73,13 @@
 		function checkCookie() {
 			if ($cookies.get('access_token')) { return true; }
 			return false;
+		};
+
+		/*
+		* Get cookie in browser return true or false
+		*/
+		function getCookieAccessToken() {
+			return $cookies.get('access_token');
 		};
 
 		/*

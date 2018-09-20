@@ -87,7 +87,7 @@
 			});
 
 			$routeProvider.otherwise({ 
-				redirectTo: "/tai-khoan/dang-nhap" 
+				redirectTo: "/" 
 				// templateUrl: "/module_views/error404.html"
 			});
 		}]);

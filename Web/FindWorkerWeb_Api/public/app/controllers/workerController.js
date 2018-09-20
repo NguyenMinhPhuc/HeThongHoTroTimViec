@@ -9,7 +9,7 @@
     app.controller('cvActivatedByUseridController', ['$scope', '$log', 'call', 'api', 'func', cvActivatedByUseridController]);
 
     function workerDashboardController($rootScope, func) {
-        if (func.checkCookie()) {
+        if (func.getCookieAccessToken()) {
             var account = func.getCookieAccount();
             $rootScope.info = {
                 Image: account.Image,

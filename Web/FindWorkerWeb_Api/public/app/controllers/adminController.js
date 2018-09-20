@@ -8,7 +8,7 @@
     app.controller('categoriesWorkerController', ['$scope', '$log', 'call', 'api', 'func', categoriesWorkerController]);
 
     function adminDashboardController($rootScope, func) {
-        if (func.checkCookie()) {
+        if (func.getCookieAccessToken()) {
             var account = func.getCookieAccount();
             $rootScope.info = {
                 Image: account.Image,
@@ -24,7 +24,6 @@
     };
 
     function listNotActivatedController($scope, $log, call, api, func) {
-        //load data
         $scope.loadListWorkerNotActivated = function () {
             try {
                 call.GET(api.CV.NOT_ACTIVATED)

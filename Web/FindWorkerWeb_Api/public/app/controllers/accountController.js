@@ -4,7 +4,7 @@
     const app = angular.module('app');
 
     app.controller('loginController', ['$scope', 'call', 'func', 'api', loginController]);
-    app.controller('signupController', ['$scope', 'call', signupController]);
+    app.controller('signupController', ['$scope', 'call', 'func', 'api', signupController]);
     app.controller('verifyController', ['$scope', '$routeParams', 'call', 'api', verifyController]);
     app.controller('profileController', ['$q', '$scope', '$routeParams', 'call', 'func', 'api', profileController]);
     app.controller('changeProfileController', ['$q', '$rootScope', '$scope', 'call', 'func', 'api', changeProfileController]);
@@ -13,7 +13,6 @@
 
     function loginController($scope, call, func, api) {
         // func.clearCookie();
-        $scope.seed.SUBMIT_NAME = "Đăng nhập";
         $scope.LoginSubmit = function () {
             try {
                 let userData = {
@@ -42,13 +41,14 @@
         };
     };
 
-    function signupController($scope, call) {
+    function signupController($scope, call, func, api) {
         $scope.signupSubmit = function () {
             let userSignup = {
                 username: $scope.UserName,
                 password: $scope.Password,
                 email: $scope.Email,
-                fullname: $scope.Fullname
+                fullname: $scope.Fullname,
+                typeaccount: 2
             };
             try {
                 if (userSignup.password != $scope.Password2) {
@@ -60,7 +60,7 @@
                 call.POSTACCOUNT(api.ACCOUNT.SIGNUP, userSignup)
                     .then(function (result) {
                         if (result.success) {
-                            window.location.href = "/account/#!/tai-khoan/dang-nhap";
+                            func.showToast(result.message, 'success', 'alert alert-success text-center');
                         }
                     })
                     .catch(function (err) {

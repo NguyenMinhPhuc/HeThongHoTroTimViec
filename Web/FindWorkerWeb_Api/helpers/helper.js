@@ -54,4 +54,35 @@ function generateRandom6Number() {
     return result;
 };
 
-module.exports = { jwtVerifyLogin, sendQueryToDatabase, sendVerifyUseEmail, generateRandom6Number };
+//RETURN JSON
+function jsonError(strErr) {
+    return {
+        "error": strErr
+    };
+};
+function jsonErrorDescription(strErr) {
+    return {
+        "error": "invalid_grant",
+        "error_description": strErr
+    };
+};
+function jsonSuccessFalse(strMessage) {
+    return {
+        "success": false,
+        "message": strMessage
+    };
+};
+function jsonSuccessTrue(strMessage) {
+    return {
+        "success": true,
+        "message": strMessage
+    };
+};
+function jsonSuccessTrueResult(strMessage) {
+    return {
+        "success": true,
+        "result": strMessage
+    };
+};
+
+module.exports = { jwtVerifyLogin, sendQueryToDatabase, sendVerifyUseEmail, generateRandom6Number, jsonErrorDescription, jsonSuccessFalse, jsonSuccessTrue, jsonSuccessTrueResult, jsonError };

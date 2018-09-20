@@ -3,14 +3,16 @@
         <h1 class="logo-name">FW</h1>
     </div>
     <h3>Chào mừng bạn đến với Website<br> <b>Hệ Thống Hỗ Trợ Tìm Việc</b></h3>
-    <form class="m-t" role="form" ng-submit="LoginSubmit()" name="fLogin">
+    <form class="m-t" role="form" ng-submit="LoginSubmit()">
         <div class="form-group">
             <input type="text" ng-model="UserName" class="form-control" placeholder="Tài khoản" tabindex="1" required autofocus>
         </div>
         <div class="form-group">
             <input type="password" ng-model="PassWord" class="form-control" placeholder="Mật khẩu" tabindex="2" required>
         </div>
-        <div ng-include="'/partial_views/buttons/btnSubmit.html'"></div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary block full-width m-b" tabindex="3">Đăng nhập</button>
+        </div>
         <flash-message duration="10000" ></flash-message>
         <a ng-href="#" tabindex="4">
             <small>Quên Mật Khẩu?</small>

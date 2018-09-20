@@ -43,10 +43,7 @@
                     zIndexOffset: 1000,
                     format: 'dd/mm/yyyy'
                 });
-                console.log(scope);
-                console.log(attrs);
-                console.log(element);
             }
         };
-    }
+    };
 })();

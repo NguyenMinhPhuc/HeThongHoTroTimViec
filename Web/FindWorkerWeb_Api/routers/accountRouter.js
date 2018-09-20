@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
     }
     req.checkBody('password', 'Không để trống Password').trim().notEmpty();
     req.checkBody('grant_type', 'Không để trống Grant type').trim().notEmpty();
-    if (req.validationErrors()) return res.status(400).json({ "error": req.validationErrors() });
+    if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         if (req.body.grant_type === "password") {
             try {
@@ -32,10 +32,7 @@ router.post('/login', async (req, res) => {
                 result = await accountModel.postCheckInforLoginUseUsername(req.body.username, isEmail);
                 if (result.length > 0) {
                     if (result[0].StatusAccount == 0) {
-                        return res.status(200).json({
-                            "success": false,
-                            "message": "Tài khoản chưa được active kiểm tra email hoặc thùng rác"
-                        });
+                        return res.status(200).json(helper.jsonSuccessFalse("Tài khoản chưa được active kiểm tra email hoặc thùng rác"));
                     } else if (result[0].StatusAccount == 1) {
                         if (result[0].Password == md5(req.body.password)) {//check password
                             let resultObject = JSON.parse(JSON.stringify({
@@ -46,7 +43,7 @@ router.post('/login', async (req, res) => {
                                 algorithm: process.env.FW_ALGORITHM,
                                 expiresIn: '1 days'
                             }, (err, token) => {
-                                if (err) return res.status(500).json({ error: err });
+                                if (err) return res.status(500).json(helper.jsonError(err.message));
                                 return res.status(200).json({
                                     "success": true,
                                     "token": token,
@@ -58,32 +55,20 @@ router.post('/login', async (req, res) => {
                                 });
                             });
                         } else {
-                            return res.status(400).json({
-                                "error": "invalid_grant",
-                                "error_description": "Tài khoản hoặc mật khẩu không đúng"
-                            });
+                            return res.status(400).json(helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng"));
                         }
                     } else {
-                        return res.status(400).json({
-                            "error": "invalid_grant",
-                            "error_description": "Tài khoản đã bị khóa"
-                        });
+                        return res.status(400).json(helper.jsonErrorDescription("Tài khoản đã bị khóa"));
                     }
-
                 } else {
-                    return res.status(400).json({
-                        "error": "invalid_grant",
-                        "error_description": "Tài khoản hoặc mật khẩu không đúng"
-                    });
+                    return res.status(400).json(helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng"));
                 }
             } catch (err) {
+                console.log(err.message);
                 return res.status(500).json(err);
             }
         } else {
-            return res.status(400).json({
-                "error": "invalid_grant",
-                "error_description": "Grant type không đúng"
-            });
+            return res.status(400).json(helper.jsonErrorDescription("Grant type không đúng"));
         }
     };
 });
@@ -100,7 +85,7 @@ router.post('/signup-for-both', [check('username').custom(value => {
     req.checkBody('password', 'Password phải chứa ít nhất là 6 ký tự').trim().isLength({ min: 6 });
     req.checkBody('fullname', 'Fullname phải chứa ít nhất là 3 ký tự').trim().isLength({ min: 3 });
     req.checkBody('typeaccount', 'Loại tài khoản phải là số').isInt();
-    if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
+    if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         let account = {
             email: req.body.email,
@@ -117,25 +102,19 @@ router.post('/signup-for-both', [check('username').custom(value => {
                     let linkVerify = `${linkServer.hethonghotrotimviec.urlServer}/#!/tai-khoan/verify?email=${account.email}&code=${account.codeActive}`;
                     helper.sendVerifyUseEmail(account.email, account.fullname, linkVerify)
                         .then(resultVeri => {
-                            return res.status(200).json({ "success": true, "message": `Link xác thực tài khoản đã gởi tới email: ${account.email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.` });
+                            return res.status(200).json(helper.jsonSuccessTrue(`Link xác thực tài khoản đã gởi tới email: ${account.email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.`));
                         })
                         .catch(err => {
-                            return res.status(500).json({ "error": err });
+                            return res.status(500).json(helper.jsonError(err.message));
                         });
                 } else {
-                    return res.status(400).json({
-                        "error": "invalid_grant",
-                        "error_description": "Username hoặc Email đã tồn tại."
-                    });
+                    return res.status(400).json(helper.jsonErrorDescription("Username hoặc Email đã tồn tại."));
                 }
             } else {
-                return res.status(400).json({
-                    "error": "invalid_grant",
-                    "error_description": "Loại tài khoản sai."
-                });
+                return res.status(400).json(helper.jsonErrorDescription("Loại tài khoản sai."));
             }
         } catch (err) {
-            return res.status(500).json({ "error": err });
+            return res.status(500).json(helper.jsonError(err.message));
         }
     }
 });
@@ -146,18 +125,12 @@ router.get('/profile/:useraccountid', async (req, res) => {
         await helper.jwtVerifyLogin(req.header("authorization"));//verify token trong header
         result = "";
         result = await accountModel.getProfileInform(req.params.useraccountid)//get thông tin profile
-        if (result.length > 0) { return res.json(200, result[0]); }
+        if (result.length > 0) { return res.status(200).json(result[0]); }
         else {
-            return res.status(404).json({
-                "error": "invalid_grant",
-                "error_description": "ID không tồn tại"
-            });
+            return res.status(404).json(helper.jsonErrorDescription("ID không tồn tại"));
         }
     } catch (err) {
-        return res.status(500).json({
-            "error": "invalid_grant",
-            "error_description": "Token không tồn tại hoặc đã hết hạn"
-        });
+        return res.status(500).json(helper.jsonErrorDescription("Token không tồn tại hoặc đã hết hạn"));
     }
 });
 //PUT
@@ -175,7 +148,7 @@ router.put('/profile', [check('Birthday').custom(value => {//sử dụng express
     req.checkBody('ProvinceID', 'Sai định dạng Tỉnh').isInt().isLength({ min: 1, max: 2 });
     req.checkBody('DistrictID', 'Sai định dạng Huyện, Thành Phố').isInt().isLength({ min: 1, max: 3 });
     req.checkBody('WardID', 'Sai định dạng Phường, Xã').isInt().isLength({ min: 1, max: 5 });
-    if (req.validationErrors()) return res.json(400, { "error": req.validationErrors() });
+    if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         try {
             result = "";
@@ -195,20 +168,14 @@ router.put('/profile', [check('Birthday').custom(value => {//sử dụng express
             };
             let rows = await accountModel.updateProfileInform(profile)
             if (rows.affectedRows > 0) {
-                return res.status(200).json({ "success": true, "message": "Đã cập thật thông tin thành công" });
+                return res.status(200).json(helper.jsonSuccessTrue("Đã cập thật thông tin thành công"));
             }
             else {
-                return res.status(400).json({
-                    "error": "invalid_grant",
-                    "error_description": "Tài khoản không tồn tại"
-                });
+                return res.status(400).json(helper.jsonErrorDescription("Tài khoản không tồn tại"));
             }
         } catch (err) {
             console.log(err);
-            return res.status(400).json({
-                "error": "invalid_grant",
-                "error_description": "Token không tồn tại hoặc đã hết hạn"
-            });
+            return res.status(400).json(helper.jsonErrorDescription("Token không tồn tại hoặc đã hết hạn"));
         }
     }
 });
@@ -217,7 +184,7 @@ router.put('/verify', async (req, res) => {
     try {
         req.checkBody('email', 'Không phải là Email').isEmail();
         req.checkBody('codeactive', 'Password phải chứa ít nhất là 6 ký tự và nhiều nhất 7 ký tự').isInt().isLength({ min: 6, max: 6 });
-        if (req.validationErrors()) { return res.status(400).json({ "error": req.validationErrors() }); }
+        if (req.validationErrors()) { return res.status(400).json(helper.jsonError(req.validationErrors())); }
         else {
             objectValue = {};
             result = {};
@@ -229,39 +196,21 @@ router.put('/verify', async (req, res) => {
             if (result[0].StatusAccount == 0) {
                 if (result[0].CodeActive == objectValue.codeactive) {
                     await accountModel.updateStatusAccount(objectValue, 1);
-                    return res.status(200).json({
-                        "success": true,
-                        "message": "Đã xác thực tài khoản thành công."
-                    });
+                    return res.status(200).json(helper.jsonSuccessTrue("Đã xác thực tài khoản thành công."));
                 } else {
-                    return res.status(400).json({
-                        "error": "invalid_grant",
-                        "error_description": "Xác thực không thành công yêu cầu kiểm tra lại link."
-                    });
+                    return res.status(400).json(helper.jsonErrorDescription("Xác thực không thành công yêu cầu kiểm tra lại link."));
                 }
             } else if (result[0].StatusAccount == 1) {
-                return res.status(200).json({
-                    "success": false,
-                    "message": "Tài khoản đã xác thực trước đó."
-                });
+                return res.status(200).json(helper.jsonSuccessFalse("Tài khoản đã xác thực."));
             } else if (result[0].StatusAccount == -1) {
-                return res.status(400).json({
-                    "success": true,
-                    "message": "Tài khoản đã bị khóa."
-                });
+                return res.status(400).json(helper.jsonErrorDescription("Tài khoản đã bị khóa."));
             } else {
-                return res.status(400).json({
-                    "success": true,
-                    "message": "Tài khoản bị sai tham số khi xác thực."
-                });
+                return res.status(400).json(helper.jsonErrorDescription("Sai tham số khi xác thực."));
             }
         }
     } catch (err) {
-        console.log(err);
-        return res.status(500).json({
-            "error": "invalid_grant",
-            "error_description": "Lỗi server khi xác nhận tài khoản."
-        });
+        console.log(err.message);
+        return res.status(500).json(helper.jsonErrorDescription("Lỗi server khi xác nhận tài khoản."));
     }
 });
 
