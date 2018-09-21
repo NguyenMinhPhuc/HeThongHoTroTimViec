@@ -26,6 +26,11 @@ function getCVByCategoryID(CategoryID, ActiveStatus) {
         [CategoryID, ActiveStatus]
     );
 };
+function getCVByQuery(strQuery, UserTypeID, ActiveStatus) {
+    return helper.sendQueryToDatabase(
+        strQuery, [UserTypeID, ActiveStatus]
+    );
+};
 
 //POST
 function postJobCategoryByCategoryID(cv) {
@@ -75,4 +80,4 @@ function deleteCV(cvdelete) {
 };
 
 
-module.exports = { getJobCategoryByID, getUserNotActivated, getUserActivated, getCVByCategoryID, postJobCategoryByCategoryID, putActiveCV, putNotActivatedCV, deleteCV };
+module.exports = { getCVByQuery, getJobCategoryByID, getUserNotActivated, getUserActivated, getCVByCategoryID, postJobCategoryByCategoryID, putActiveCV, putNotActivatedCV, deleteCV };

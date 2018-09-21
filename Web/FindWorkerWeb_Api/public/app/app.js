@@ -65,6 +65,11 @@
 				templateUrl: "/module_views/admin/cv/listNotActivated.html"
 			});
 
+			$routeProvider.when("/admin/danh-muc/phan-loai-tho", {
+				controller: "classifyWorkersController",
+				templateUrl: "/module_views/admin/categories/classifyWorkers.html"
+			});
+
 			//worker
 			$routeProvider.when("/", {
 				controller: "workerDashboardController",

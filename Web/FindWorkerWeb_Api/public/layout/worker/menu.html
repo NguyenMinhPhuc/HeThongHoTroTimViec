@@ -1,12 +1,12 @@
 ﻿<nav class="navbar-default navbar-static-side" role="navigation">
 	<div class="sidebar-collapse">
-		<ul class="nav metismenu" id="side-menu">
+		<ul metis-menu class="nav metismenu" id="side-menu">
 			<li class="nav-header">
 				<div class="dropdown profile-element">
 					<span>
-						<img alt="image" class="img-circle" width="48px" src="{{$root.info.Image}}">
+						<img alt="image" class="img-circle" width="48px" ng-src="{{$root.info.Image}}">
 					</span>
-					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<a data-toggle="dropdown" class="dropdown-toggle">
 						<span class="clear">
 							<span class="block m-t-xs">
 								<strong class="font-bold" ng-bind="$root.info.FullName"></strong>
@@ -14,6 +14,8 @@
 						</span>
 					</a>
 					<ul class="dropdown-menu animated fadeInRight m-t-xs">
+						<li><a ng-href="/#!/p/{{$root.info.UserAccountID}}">Trang cá nhân</a></li>
+						<li class="divider"></li>
 						<li ng-click="logout()"><a>Đăng xuất</a></li>
 					</ul>
 				</div>
@@ -22,7 +24,7 @@
 				</div>
 			</li>
 			<li>
-				<a href="/#!/"><i class="fa fa-th-large"></i> <span class="nav-label">Trang tổng quan</span></a>
+				<a ng-href="/#!/"><i class="fa fa-th-large"></i> <span class="nav-label">Trang tổng quan</span></a>
 			</li>
 			<li>
 				<a>
@@ -30,15 +32,15 @@
 					<span class="nav-label"> Hồ sơ</span>
 					<span class="fa arrow"></span>
 				</a>
-				<ul class="nav nav-second-level collapse in">
+				<ul class="nav nav-second-level collapse">
 					<li>
-						<a href="/#!/ho-so/dang-ho-so"><i class="fa fa-file-text"></i> Đăng hồ sơ</a>
+						<a ng-href="/#!/ho-so/dang-ho-so"><i class="fa fa-file-text"></i> Đăng hồ sơ</a>
 					</li>
 					<li>
-						<a href="/#!/ho-so/danh-sach-ho-so-doi-duyet"><i class="fa fa-list-ul"></i> Hồ sơ đợi duyệt</a>
+						<a ng-href="/#!/ho-so/danh-sach-ho-so-doi-duyet"><i class="fa fa-list-ul"></i> Hồ sơ đợi duyệt</a>
 					</li>
 					<li>
-						<a href="/#!/ho-so/danh-sach-da-duyet"><i class="fa fa-list-alt"></i> Hồ sơ đã duyệt</a>
+						<a ng-href="/#!/ho-so/danh-sach-da-duyet"><i class="fa fa-list-alt"></i> Hồ sơ đã duyệt</a>
 					</li>
 				</ul>
 			</li>

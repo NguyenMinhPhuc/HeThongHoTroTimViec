@@ -31,130 +31,28 @@
 </head>
 
 <body ng-controller="indexController">
-	<!-- <div ng-switch on="pagename()">
-		<div ng-switch-when="tai-khoan">
+	<div ng-switch on="pagename()">
+		<div ng-if="pagename()=='tai-khoan'">
 			<account-template-index></account-template-index>
 		</div>
-		<div ng-switch-when="admin">
-			<admin-template-index></admin-template-index>
-		</div>
-		<div ng-switch-when="p">
-			<div ng-if="$root.info.UserTypeID==1">
+		<div ng-controller="homeController">
+			<div ng-if="pagename()=='admin'">
 				<admin-template-index></admin-template-index>
 			</div>
-			<div ng-if="$root.info.UserTypeID==2">
+			<div ng-if="pagename()=='p' || pagename()=='trang-ca-nhan'">
+				<div ng-if="$root.info.UserTypeID==1">
+					<admin-template-index></admin-template-index>
+				</div>
+				<div ng-if="$root.info.UserTypeID==2">
+					<worker-template-index></worker-template-index>
+				</div>
+			</div>
+			<div ng-if="pagename()!='tai-khoan' && pagename()!='admin' && pagename()!='p' && pagename()!='trang-ca-nhan'">
 				<worker-template-index></worker-template-index>
 			</div>
 		</div>
-		<div ng-switch-default>
-			<worker-template-index></worker-template-index>
-		</div>
-	</div> -->
-
-	<div ng-if="pagename()=='tai-khoan'">
-		<div class="middle-box text-center loginscreen animated fadeInDown">
-			<ng-view></ng-view>
-		</div>
 	</div>
-	<div ng-controller="homeController">
-		<div ng-if="pagename()=='admin'">
-			<div id="wrapper">
-				<div ng-include="'/layout/admin/menu.html'"></div>
-				<div id="page-wrapper" class="gray-bg">
-					<div class="row border-bottom">
-						<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-							<div class="navbar-header">
-								<a class="navbar-minimalize minimalize-styl-2 btn btn-primary"><i class="fa fa-bars"></i> </a>
-							</div>
-							<ul class="nav navbar-top-links navbar-right">
-								<li ng-click="logout()">
-									<a>
-										<i class="fa fa-sign-out"></i> Đăng xuất
-									</a>
-								</li>
-							</ul>
-						</nav>
-					</div>
-					<ng-view></ng-view>
-					<div ng-include="'/layout/admin/bottom.html'"></div>
-
-				</div>
-			</div>
-		</div>
-		<div ng-if="pagename()=='p'">
-			<div ng-if="$root.info.UserTypeID==1">
-				<div id="wrapper">
-					<div ng-include="'/layout/admin/menu.html'"></div>
-					<div id="page-wrapper" class="gray-bg">
-						<div class="row border-bottom">
-							<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-								<div class="navbar-header">
-									<a class="navbar-minimalize minimalize-styl-2 btn btn-primary"><i class="fa fa-bars"></i> </a>
-								</div>
-								<ul class="nav navbar-top-links navbar-right">
-									<li ng-click="logout()">
-										<a>
-											<i class="fa fa-sign-out"></i> Đăng xuất
-										</a>
-									</li>
-								</ul>
-							</nav>
-						</div>
-						<ng-view></ng-view>
-						<div ng-include="'/layout/admin/bottom.html'"></div>
-
-					</div>
-				</div>
-			</div>
-			<div ng-if="$root.info.UserTypeID==2">
-				<div id="wrapper">
-					<div ng-include="'/layout/worker/menu.html'"></div>
-					<div id="page-wrapper" class="gray-bg">
-						<div class="row border-bottom">
-							<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-								<div class="navbar-header">
-									<a class="navbar-minimalize minimalize-styl-2 btn btn-primary"><i class="fa fa-bars"></i> </a>
-								</div>
-								<ul class="nav navbar-top-links navbar-right">
-									<li ng-click="logout()">
-										<a>
-											<i class="fa fa-sign-out"></i> Đăng xuất
-										</a>
-									</li>
-								</ul>
-							</nav>
-						</div>
-						<ng-view></ng-view>
-						<div ng-include="'/layout/worker/bottom.html'"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div ng-if="pagename()!='tai-khoan' && pagename()!='admin' && pagename()!='p'">
-			<div id="wrapper">
-				<div ng-include="'/layout/worker/menu.html'"></div>
-				<div id="page-wrapper" class="gray-bg">
-					<div class="row border-bottom">
-						<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-							<div class="navbar-header">
-								<a class="navbar-minimalize minimalize-styl-2 btn btn-primary"><i class="fa fa-bars"></i> </a>
-							</div>
-							<ul class="nav navbar-top-links navbar-right">
-								<li ng-click="logout()">
-									<a>
-										<i class="fa fa-sign-out"></i> Đăng xuất
-									</a>
-								</li>
-							</ul>
-						</nav>
-					</div>
-					<ng-view></ng-view>
-					<div ng-include="'/layout/worker/bottom.html'"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-
+	
 	<!-- script -->
 	<script src="/assets/template/js/jquery-3.1.1.min.js"></script>
 

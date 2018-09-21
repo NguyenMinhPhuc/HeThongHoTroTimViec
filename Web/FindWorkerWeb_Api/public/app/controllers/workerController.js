@@ -31,7 +31,7 @@
 
         $scope.loadListCategory = function () {
             try {
-                call.GET(api.CATAGORY.GET_BY_USERWORKERID)
+                call.GET(api.CATEGORY.GET_BY_USERWORKERID)
                     .then(function (result) {
                         if (result.success) {
                             $scope.categories = result.result;

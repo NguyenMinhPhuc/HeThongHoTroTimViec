@@ -3,7 +3,9 @@ var router = express.Router();
 
 var cvModel = require('../models/cvModel');
 var helper = require('../helpers/helper');
+var CVScript = require('../databases/app_data/curriculumVitaeScript.json');
 
+var result = {};
 //router post
 //POST đăng hồ sơ để đợi duyệt
 router.post('/post', async (req, res) => {
@@ -219,18 +221,32 @@ router.delete('/not-activated-by-userid', async (req, res) => {
 });
 
 //Router get all cv not activated by userID
-router.get('/activated-by-categoryid', async (req, res) => {
+router.get('/activated-by-query', async (req, res) => {
     try {
-        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
-        if (resultOfJWT.UserTypeID == 1) {
-            let resultOfUA = await cvModel.getCVByCategoryID(req.query.categoryid, 1);
+        result = {};
+        result = await helper.jwtVerifyLogin(req.header("authorization"));
+        if (result.UserTypeID > 0 && result.UserTypeID < 4) {
+            let strQuery = CVScript.selectCVByQuery;
+            if (!isNaN(req.query.categoryid) && req.query.categoryid !== undefined && req.query.categoryid != "") {
+                strQuery = `${strQuery} AND ujc.CategoryID = ${req.query.categoryid}`
+            }
+            if (!isNaN(req.query.provinceid) && req.query.provinceid !== undefined && req.query.provinceid != "") {
+                strQuery = `${strQuery} AND ua.ProvinceID = ${req.query.provinceid}`
+            }
+            if (!isNaN(req.query.districtid) && req.query.districtid !== undefined && req.query.districtid != "") {
+                strQuery = `${strQuery} AND ua.DistrictID = ${req.query.districtid}`
+            }
+            if (!isNaN(req.query.wardid) && req.query.wardid !== undefined && req.query.wardid != "") {
+                strQuery = `${strQuery} AND ua.WardID = ${req.query.wardid}`
+            }
+            let resultOfUA = await cvModel.getCVByQuery(strQuery, 2, 1);
             if (resultOfUA.length > 0) {
                 res.status(200).json(helper.jsonSuccessTrueResult(resultOfUA));
             } else {
                 res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!"));
             }
         } else {
-            res.status(400).json(helper.jsonErrorDescription("Loại tài khoản của bạn không có quyền lấy danh sách"));
+            return res.status(400).json(helper.jsonErrorDescription("Loại tài khoản của bạn không có quyền lấy danh sách"));
         }
     } catch (err) {
         console.log(err.message);

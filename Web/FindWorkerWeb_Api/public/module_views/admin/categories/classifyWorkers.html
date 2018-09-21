@@ -1,0 +1,103 @@
+<div class="wrapper wrapper-content animated fadeInRight" ng-init="loadListCategory()">
+    <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title text-center">
+                <h1>Lọc Thợ theo danh mục ngành nghề và địa điểm</h1>
+            </div>
+            <div class="tab-pane active">
+                <div class="ibox-content profile-content col-md-12">
+                    <div class="form-group col-md-12">
+                        <select class="form-control" ng-options="category.CategoryID as category.NameJobCategory for category in categories"
+                            ng-model="selectedCategory" ng-change="changeCategory()">
+                            <option value="" disabled selected hidden>Chọn một danh mục để tải danh sách thợ ...</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="col-md-4">
+                            <select class="form-control" ng-options="province.provinceid as province.type + ' ' + province.name for province in provinces | orderBy:'name'"
+                                ng-model="selectedProvince" ng-change="loadDistrict()">
+                                <option value="" disabled selected hidden>Chọn tên Tỉnh, Thành
+                                    Phố...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" ng-options="district.districtid as district.type + ' ' + district.name for district in districts | orderBy:'name'"
+                                ng-model="selectedDistrict" ng-change="loadWard()">
+                                <option value="" disabled selected hidden>Chọn tên Thành Phố, Quận,
+                                    Huyện...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" ng-options="ward.wardid as ward.type + ' ' + ward.name for ward in wards | orderBy:'name'"
+                                ng-model="selectedWard" ng-change="loadWorkerWard()">
+                                <option value="" disabled selected hidden>Chọn tên Phường Xã...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="m-t-60" ng-switch="success">
+                        <div ng-switch-when=true>
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>#</th>
+                                        <th></th>
+                                        <th>Họ và Tên</th>
+                                        <th>CMND</th>
+                                        <th>Năm kinh nghiệm</th>
+                                        <th>Trình độ chuyên môn</th>
+                                        <th>Thông tin chung</th>
+                                        <th>Tổng điểm</th>
+                                        <th>Ngày nạp hồ sơ</th>
+                                        <th style="width:30px"></th>
+                                    </tr>
+
+                                    <tr ng-repeat="userCategory in userCategories | orderBy : 'CreateDateJobCategory' : true">
+                                        <td><b ng-bind="$index"></b></td>
+                                        <td class="client-avatar"><img alt="image" ng-src="{{userCategory.Image}}">
+                                        </td>
+                                        <td style="width:120px">
+                                            <a ng-href="/#!/p/{{userCategory.UserAccountID}}" class="client-link"
+                                                target="_blank" ng-bind="userCategory.FullName"></a>
+                                        </td>
+                                        <td ng-bind="userCategory.PersonID"></td>
+                                        <td class="text-center" ng-bind="userCategory.Exprience"></td>
+                                        <td ng-bind="userCategory.Qualifications"></td>
+                                        <td ng-bind="userCategory.GeneralInformation"></td>
+                                        <td ng-bind="userCategory.PointsAverage"></td>
+                                        <td ng-bind="userCategory.CreateDateJobCategory"></td>
+                                        <td>
+                                            <div style="display:inline">
+                                                <abbr title="Xem profile của người thợ này">
+                                                    <a ng-href="/#!/p/{{userCategory.UserAccountID}}" class="client-link">
+                                                        <button type="button" class="btn btn-primary btn-xs">
+                                                            <i class="fa fa-search-plus"></i>
+                                                        </button>
+                                                    </a>
+                                                </abbr>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th></th>
+                                        <th>Họ và Tên</th>
+                                        <th>CMND</th>
+                                        <th>Năm kinh nghiệm</th>
+                                        <th>Trình độ chuyên môn</th>
+                                        <th>Thông tin chung</th>
+                                        <th>Tổng điểm</th>
+                                        <th>Ngày nạp hồ sơ</th>
+                                        <th></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-switch-when=false>
+                            <h2 class="text-center" ng-bind="message"></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -24,9 +24,9 @@
                 "POST_CV": localhost + "/api/cv/post",
                 "NOT_ACTIVATED_BY_USERID": localhost + "/api/cv/not-activated-by-userid",
                 "ACTIVATED_BY_USERID": localhost + "/api/cv/activated",
-                "ACTIVATED_BY_CATEGORYID": localhost + "/api/cv/activated-by-categoryid"
+                "ACTIVATED_BY_QUERY": localhost + "/api/cv/activated-by-query"
             },
-            "CATAGORY": {
+            "CATEGORY": {
                 "GET_ALL": localhost + "/api/category/get-all",
                 "GET_BY_USERWORKERID": localhost + "/api/category/get-by-userworkerid"
             },

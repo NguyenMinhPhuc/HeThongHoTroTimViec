@@ -1,12 +1,14 @@
 (function () {
     'use strict';
 
-    angular
-        .module('app')
-        .directive('accountTemplateIndex', accountTemplateIndex)
-        .directive('adminTemplateIndex', adminTemplateIndex)
-        .directive('workerTemplateIndex', workerTemplateIndex)
-        .directive('datepicker', datepicker);
+    var app = angular.module('app');
+
+    app.directive('accountTemplateIndex', accountTemplateIndex);
+    app.directive('adminTemplateIndex', adminTemplateIndex);
+    app.directive('workerTemplateIndex', workerTemplateIndex);
+    app.directive('datepicker', datepicker);
+    app.directive('navbarMinimalize', navbarMinimalize);
+    app.directive('metisMenu', metisMenu);
 
     function accountTemplateIndex() {
         return {
@@ -43,6 +45,27 @@
                     zIndexOffset: 1000,
                     format: 'dd/mm/yyyy'
                 });
+            }
+        };
+    };
+
+    function navbarMinimalize() {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.bind('click', function () {
+                    $("body").toggleClass("mini-navbar");
+                    SmoothlyMenu();
+                });
+            }
+        };
+    };
+
+    function metisMenu() {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                $("body").metisMenu();
             }
         };
     };
