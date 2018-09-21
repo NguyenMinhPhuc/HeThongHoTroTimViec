@@ -10,14 +10,7 @@
 
     function adminDashboardController($rootScope, func) {
         if (func.getCookieAccessToken()) {
-            var account = func.getCookieAccount();
-            $rootScope.info = {
-                Image: account.Image,
-                FullName: account.FullName,
-                NameUserType: account.NameUserType,
-                UserTypeID: account.UserTypeID,
-                UserAccountID: account.UserAccountID
-            }
+            $rootScope.info = func.setCookieAccount();
             func.checkParamOfUrl();
         } else {
             window.location.href = '/#!/tai-khoan/dang-nhap';
@@ -165,8 +158,6 @@
         //FUNCTION
         function loadListWorkerActivated(CategoryID, ProvinceID, DistrictID, WardID) {
             try {
-                console.log(`${api.CV.ACTIVATED_BY_QUERY}?categoryid=${CategoryID}&provinceid=${ProvinceID}&districtid=${DistrictID}&wardid=${WardID}`);
-
                 call.GET(`${api.CV.ACTIVATED_BY_QUERY}?categoryid=${CategoryID}&provinceid=${ProvinceID}&districtid=${DistrictID}&wardid=${WardID}`)
                     .then(function (result) {
                         $scope.success = result.success;

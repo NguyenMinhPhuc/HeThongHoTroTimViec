@@ -3,7 +3,7 @@
 
     const app = angular.module('app');
 
-    app.controller('loginController', ['$scope', 'call', 'func', 'api', loginController]);
+    app.controller('loginController', ['$rootScope', '$scope', 'call', 'func', 'api', loginController]);
     app.controller('signupController', ['$scope', 'call', 'func', 'api', signupController]);
     app.controller('verifyController', ['$scope', '$routeParams', 'call', 'api', verifyController]);
     app.controller('profileController', ['$q', '$scope', '$routeParams', 'call', 'func', 'api', profileController]);
@@ -11,8 +11,8 @@
 
     var objValue = {};
 
-    function loginController($scope, call, func, api) {
-        // func.clearCookie();
+    function loginController($rootScope, $scope, call, func, api) {
+        func.clearCookie();
         $scope.LoginSubmit = function () {
             try {
                 let userData = {
@@ -24,9 +24,11 @@
                     .then(function (result) {
                         if (result.UserTypeID == 1) {
                             func.storeCookie(result);
+                            $rootScope.info = func.setCookieAccount();
                             window.location.href = "/#!/admin";
                         } else if (result.UserTypeID == 2) {
                             func.storeCookie(result);
+                            $rootScope.info = func.setCookieAccount();
                             window.location.href = "/#!";
                         } else {
                             throw "Loại tài khoản của bạn không có quyền đăng nhập tại đây.";

@@ -36,7 +36,7 @@
 			<account-template-index></account-template-index>
 		</div>
 		<div ng-controller="homeController">
-			<div ng-if="pagename()=='admin'">
+			<!-- <div ng-if="pagename()=='admin'">
 				<admin-template-index></admin-template-index>
 			</div>
 			<div ng-if="pagename()=='p' || pagename()=='trang-ca-nhan'">
@@ -49,10 +49,16 @@
 			</div>
 			<div ng-if="pagename()!='tai-khoan' && pagename()!='admin' && pagename()!='p' && pagename()!='trang-ca-nhan'">
 				<worker-template-index></worker-template-index>
+			</div> -->
+			<div ng-if="$root.info.UserTypeID==1">
+				<admin-template-index></admin-template-index>
+			</div>
+			<div ng-if="$root.info.UserTypeID==2">
+				<worker-template-index></worker-template-index>
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- script -->
 	<script src="/assets/template/js/jquery-3.1.1.min.js"></script>
 

@@ -158,6 +158,7 @@ router.get('/not-activated-by-userid', async (req, res) => {
         return res.status(500).json(helper.jsonErrorDescription("Lỗi xác thực token"));
     }
 });
+
 router.put('/not-activated-by-userid', async (req, res) => {
     req.checkBody('categoryid', 'Danh mục bị lỗi').isInt();
     req.checkBody('exprience', 'Sai định dạng kiểu dữ liệu của năm kinh nghiệm').isFloat({ min: 0.0 });
@@ -230,13 +231,13 @@ router.get('/activated-by-query', async (req, res) => {
             if (!isNaN(req.query.categoryid) && req.query.categoryid !== undefined && req.query.categoryid != "") {
                 strQuery = `${strQuery} AND ujc.CategoryID = ${req.query.categoryid}`
             }
-            if (!isNaN(req.query.provinceid) && req.query.provinceid !== undefined && req.query.provinceid != "") {
+            if (!isNaN(req.query.provinceid) && req.query.provinceid !== undefined && req.query.provinceid.length >= 1) {
                 strQuery = `${strQuery} AND ua.ProvinceID = ${req.query.provinceid}`
             }
-            if (!isNaN(req.query.districtid) && req.query.districtid !== undefined && req.query.districtid != "") {
+            if (!isNaN(req.query.districtid) && req.query.districtid !== undefined && req.query.districtid.length >= 3) {
                 strQuery = `${strQuery} AND ua.DistrictID = ${req.query.districtid}`
             }
-            if (!isNaN(req.query.wardid) && req.query.wardid !== undefined && req.query.wardid != "") {
+            if (!isNaN(req.query.wardid) && req.query.wardid !== undefined && req.query.wardid.length >= 5) {
                 strQuery = `${strQuery} AND ua.WardID = ${req.query.wardid}`
             }
             let resultOfUA = await cvModel.getCVByQuery(strQuery, 2, 1);

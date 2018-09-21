@@ -64,6 +64,7 @@ function updateProfileInform(profile) {
             profile.districtid,
             profile.wardid,
             profile.streetname,
+            profile.placename,
             profile.useraccountid
         ]
     );

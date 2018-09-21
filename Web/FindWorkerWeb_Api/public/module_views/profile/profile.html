@@ -19,7 +19,7 @@
                                 </h5>
                                 <h5><i class="fa fa-envelope"></i> <span ng-bind="myProfile.Email"></span></h5>
                                 <h5><i class="fa fa-phone"></i> <span ng-bind="myProfile.PhoneNumber"></span></h5>
-                                <p><i class="fa fa-map-marker"></i> <span ng-bind="myProfile.StreetName"></span></p>
+                                <p><i class="fa fa-map-marker"></i> <span ng-bind="(myProfile.PlaceName)+', '+(myProfile.StreetName)"></span></p>
                                 <p><i class="fa fa-birthday-cake"> Ngày sinh:</i><span ng-bind="myProfile.Birthday"></span></p>
                                 <h5><i class="fa fa-calendar"></i> Ngày tham gia vào hệ thống: <b ng-bind="myProfile.CreateDate"></b></h5>
                                 <p><i class="fa fa-check"></i> Điểm đánh giá: <b ng-bind="myProfile.PointsAverage"></b></p>

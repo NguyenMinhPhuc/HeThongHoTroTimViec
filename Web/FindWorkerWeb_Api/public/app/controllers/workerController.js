@@ -3,21 +3,16 @@
 
     const app = angular.module('app');
 
+    // app.controller('workerController', ['$rootScope', 'func', workerController]);
     app.controller('workerDashboardController', ['$rootScope', 'func', workerDashboardController]);
     app.controller('cvPostController', ['$scope', '$log', 'call', 'api', 'func', cvPostController]);
     app.controller('cvNotActivatedByUseridController', ['$scope', '$log', 'call', 'api', 'func', cvNotActivatedByUseridController]);
     app.controller('cvActivatedByUseridController', ['$scope', '$log', 'call', 'api', 'func', cvActivatedByUseridController]);
 
+
     function workerDashboardController($rootScope, func) {
         if (func.getCookieAccessToken()) {
-            var account = func.getCookieAccount();
-            $rootScope.info = {
-                Image: account.Image,
-                FullName: account.FullName,
-                NameUserType: account.NameUserType,
-                UserTypeID: account.UserTypeID,
-                UserAccountID: account.UserAccountID
-            }
+            $rootScope.info = func.setCookieAccount();
             func.checkParamOfUrl();
         } else {
             window.location.href = '/#!/tai-khoan/dang-nhap';

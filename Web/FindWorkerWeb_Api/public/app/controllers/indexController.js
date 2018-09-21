@@ -16,19 +16,12 @@
     function homeController($rootScope, $scope, func) {
         $scope.logout = function () {
             func.clearCookie();
+            $rootScope.info = {};
             window.location.href = '/#!/tai-khoan/dang-nhap';
         };
         if (func.getCookieAccessToken()) {
-            let account = func.getCookieAccount();
-            $rootScope.info = {
-                Image: account.Image,
-                FullName: account.FullName,
-                NameUserType: account.NameUserType,
-                UserTypeID: account.UserTypeID,
-                UserAccountID: account.UserAccountID
-            };
+            $rootScope.info = func.setCookieAccount();
         } else {
-            func.clearCookie();
             window.location.href = '/#!/tai-khoan/dang-nhap';
         }
     };

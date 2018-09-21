@@ -4,8 +4,7 @@ var helper = require('../helpers/helper');
 //GET
 function getAllProvince() {
     return helper.sendQueryToDatabase(
-        locationScript.selectAllProvince,
-        null
+        locationScript.selectAllProvince
     );
 };
 function getAllDistrictByProvinceid(Provinceid) {
@@ -20,6 +19,24 @@ function getAllWardByDistrictid(Districtid) {
         [Districtid]
     );
 };
+function getProvinceByID(Provinceid) {
+    return helper.sendQueryToDatabase(
+        locationScript.selectProvinceByID,
+        [Provinceid]
+    );
+};
+function getDistrictByID(Districtid) {
+    return helper.sendQueryToDatabase(
+        locationScript.selectDistrictByID,
+        [Districtid]
+    );
+};
+function getWardByID(Wardid) {
+    return helper.sendQueryToDatabase(
+        locationScript.selectWardByID,
+        [Wardid]
+    );
+};
 //PUT
 function putInfoGeolocationByUserID(locationData) {
     return helper.sendQueryToDatabase(
@@ -28,4 +45,4 @@ function putInfoGeolocationByUserID(locationData) {
     );
 };
 
-module.exports = { getAllProvince, getAllDistrictByProvinceid, getAllWardByDistrictid, putInfoGeolocationByUserID };
+module.exports = { getAllProvince, getAllDistrictByProvinceid, getAllWardByDistrictid, putInfoGeolocationByUserID, getProvinceByID, getDistrictByID, getWardByID };

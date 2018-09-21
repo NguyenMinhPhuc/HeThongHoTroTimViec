@@ -2,6 +2,9 @@
     "selectAllProvince": "SELECT * FROM province",
     "selectAllDistrictByProvinceid": "SELECT districtid, name, type FROM district WHERE provinceid = ?",
     "selectAllWardByDistrictid": "SELECT wardid, name, type FROM ward WHERE districtid = ?",
+    "selectProvinceByID": "SELECT name, type FROM province WHERE provinceid = ?",
+    "selectDistrictByID": "SELECT name, type FROM district WHERE districtid = ?",
+    "selectWardByID": "SELECT name, type FROM ward WHERE wardid = ?",
     "updateInfoLocation": "UPDATE useraccounts SET ProvinceID = ?, DistrictID =?, WardID = ?, StreetName =? WHERE UserAccountID = ?",
     "updateInfoGeolocation": "UPDATE useraccounts SET Longitude = ?, Latitude =? WHERE UserAccountID = ?"
 }

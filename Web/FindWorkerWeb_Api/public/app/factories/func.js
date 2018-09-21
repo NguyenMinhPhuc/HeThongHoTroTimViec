@@ -21,6 +21,7 @@
 			checkParamOfUrl: checkParamOfUrl,
 			storeCookie: storeCookie,
 			getCookieAccount: getCookieAccount,
+			setCookieAccount: setCookieAccount,
 			checkCookie: checkCookie,
 			clearCookie: clearCookie,
 			showToastSuccess: showToastSuccess,
@@ -75,11 +76,26 @@
 			return false;
 		};
 
+
 		/*
 		* Get cookie in browser return true or false
 		*/
 		function getCookieAccessToken() {
 			return $cookies.get('access_token');
+		};
+
+		/*
+		* Get cookie in browser return true or false
+		*/
+		function setCookieAccount() {
+			let account = getCookieAccount();
+			return {
+				Image: account.Image,
+				FullName: account.FullName,
+				NameUserType: account.NameUserType,
+				UserTypeID: account.UserTypeID,
+				UserAccountID: account.UserAccountID
+			};
 		};
 
 		/*
@@ -140,7 +156,7 @@
 			return $location.path().split("/");
 		};
 
-		function goBackHistory(){
+		function goBackHistory() {
 			window.history.back();
 		};
 

@@ -4,6 +4,7 @@ var md5 = require('md5');
 var moment = require('moment');
 
 var accountModel = require('../models/accountModel');
+var locationModel = require('../models/locationModel');
 var linkServer = require('../configs/config.json');
 var helper = require('../helpers/helper');
 var { check } = require('express-validator/check');
@@ -145,36 +146,52 @@ router.put('/profile', [check('Birthday').custom(value => {//sử dụng express
     req.checkBody('IsMale', 'Sai định dạng true false').isBoolean();
     req.checkBody('Image', 'Không để trống ảnh').trim().isURL();
     req.checkBody('PersonID', 'Sai định dạng cmnd').isInt().isLength({ min: 9, max: 10 });
-    req.checkBody('ProvinceID', 'Sai định dạng Tỉnh').isInt().isLength({ min: 1, max: 2 });
-    req.checkBody('DistrictID', 'Sai định dạng Huyện, Thành Phố').isInt().isLength({ min: 1, max: 3 });
-    req.checkBody('WardID', 'Sai định dạng Phường, Xã').isInt().isLength({ min: 1, max: 5 });
+    req.checkBody('ProvinceID', 'Sai định dạng Tỉnh').isLength({ min: 1, max: 2 });
+    req.checkBody('DistrictID', 'Sai định dạng Huyện, Thành Phố').isLength({ min: 3, max: 3 });
+    req.checkBody('WardID', 'Sai định dạng Phường, Xã').isLength({ min: 5, max: 5 });
     if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         try {
             result = "";
             result = await helper.jwtVerifyLogin(req.header("authorization"));
-            let profile = {
-                useraccountid: result.UserAccountID,
-                fullname: req.body.FullName.trim(),
-                ismale: req.body.IsMale,
-                phonenumber: req.body.PhoneNumber.trim(),
-                birthday: req.body.Birthday.trim(),
-                image: req.body.Image.trim(),
-                provinceid: req.body.ProvinceID,
-                districtid: req.body.DistrictID,
-                wardid: req.body.WardID,
-                streetname: req.body.StreetName,
-                personid: req.body.PersonID.trim()
-            };
-            let rows = await accountModel.updateProfileInform(profile)
-            if (rows.affectedRows > 0) {
-                return res.status(200).json(helper.jsonSuccessTrue("Đã cập thật thông tin thành công"));
-            }
-            else {
-                return res.status(400).json(helper.jsonErrorDescription("Tài khoản không tồn tại"));
+            if (result.UserTypeID > 0 && result.UserTypeID < 4) {
+                let profile = {
+                    useraccountid: result.UserAccountID,
+                    fullname: req.body.FullName.trim(),
+                    ismale: req.body.IsMale,
+                    phonenumber: req.body.PhoneNumber.trim(),
+                    birthday: req.body.Birthday.trim(),
+                    image: req.body.Image.trim(),
+                    provinceid: req.body.ProvinceID,
+                    districtid: req.body.DistrictID,
+                    wardid: req.body.WardID,
+                    streetname: req.body.StreetName,
+                    personid: req.body.PersonID.trim()
+                };
+                Promise.all([
+                    locationModel.getProvinceByID(profile.provinceid),
+                    locationModel.getDistrictByID(profile.districtid),
+                    locationModel.getWardByID(profile.wardid)
+                ]).then(async resultLocation => {
+                    let strResult = "";
+                    if (resultLocation[0][0] !== undefined) { strResult = `${strResult}${resultLocation[0][0].type} ${resultLocation[0][0].name}`; }
+                    if (resultLocation[1][0] !== undefined) { strResult = `${strResult}, ${resultLocation[1][0].type} ${resultLocation[1][0].name}`; }
+                    if (resultLocation[2][0] !== undefined) { strResult = `${strResult}, ${resultLocation[2][0].type} ${resultLocation[2][0].name}`; }
+                    profile.placename = strResult;
+                    let rows = await accountModel.updateProfileInform(profile)
+                    if (rows.affectedRows > 0) {
+                        return res.status(200).json(helper.jsonSuccessTrue("Đã cập thật thông tin thành công"));
+                    }
+                    else {
+                        return res.status(400).json(helper.jsonErrorDescription("Tài khoản không tồn tại"));
+                    }
+                }).catch(err => {
+                    console.log(err.message);
+                    return res.status(400).json(helper.jsonErrorDescription("Lỗi khi thêm vị trí."));
+                })
             }
         } catch (err) {
-            console.log(err);
+            console.log(err.message);
             return res.status(400).json(helper.jsonErrorDescription("Token không tồn tại hoặc đã hết hạn"));
         }
     }
