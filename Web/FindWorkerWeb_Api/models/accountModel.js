@@ -24,18 +24,18 @@ function postCheckInforLoginUseUsername(user, isMail) {
     }
 };
 
-function postSignUpForAllUser(account, UserTypeID) {
+function postSignUpForAllUser(account) {
     return helper.sendQueryToDatabase(
         AccountScript.insertSignUpForAllUser,
         [
-            account.email,
-            account.username,
-            account.password,
-            account.fullname,
-            account.codeActive,
-            UserTypeID,
-            account.email,
-            account.username
+            account.Email,
+            account.Username,
+            account.Password,
+            account.Fullname,
+            account.CodeActive,
+            account.TypeAccount,
+            account.Email,
+            account.Username
         ]
     );
 };
@@ -54,18 +54,18 @@ function updateProfileInform(profile) {
     return helper.sendQueryToDatabase(
         AccountScript.updateProfileInform,
         [
-            profile.fullname,
-            profile.ismale,
-            profile.phonenumber,
-            profile.birthday,
-            profile.image,
-            profile.personid,
-            profile.provinceid,
-            profile.districtid,
-            profile.wardid,
-            profile.streetname,
-            profile.placename,
-            profile.useraccountid
+            profile.FullName,
+            profile.IsMale,
+            profile.PhoneNumber,
+            profile.Birthday,
+            profile.Image,
+            profile.PersonID,
+            profile.ProvinceID,
+            profile.DistrictID,
+            profile.WardID,
+            profile.StreetName,
+            profile.PlaceName,
+            profile.UserAccountID
         ]
     );
 };
@@ -74,8 +74,8 @@ function updateStatusAccount(profile, statusAccount) {
         AccountScript.updateStatusAccount,
         [
             statusAccount,
-            profile.email,
-            profile.codeactive
+            profile.Email,
+            profile.CodeActive
         ]
     );
 };
@@ -83,8 +83,8 @@ function updateCodeActive(objectValue) {
     return helper.sendQueryToDatabase(
         AccountScript.updateStatusAccount,
         [
-            objectValue.email,
-            objectValue.codeactive
+            objectValue.Email,
+            objectValue.CodeActive
         ]
     );
 };

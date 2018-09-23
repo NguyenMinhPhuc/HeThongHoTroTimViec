@@ -37,14 +37,14 @@ function postJobCategoryByCategoryID(cv) {
     return helper.sendQueryToDatabase(
         CVScript.insertJobCategoryByCategoryID,
         [
-            cv.categoryid,
-            cv.userworkerid,
-            cv.exprience,
-            cv.qualifications,
-            cv.generalinformation,
-            cv.imagestore,
-            cv.categoryid,
-            cv.userworkerid
+            cv.CategoryID,
+            cv.UserAccountID,
+            cv.Exprience,
+            cv.Qualifications,
+            cv.GeneralInformation,
+            cv.ImageStore,
+            cv.CategoryID,
+            cv.UserAccountID
         ]
     );
 };
@@ -53,7 +53,7 @@ function postJobCategoryByCategoryID(cv) {
 function putActiveCV(cvUpdateMD) {
     return helper.sendQueryToDatabase(
         CVScript.updateActiveCV,
-        [cvUpdateMD.useraccountid, cvUpdateMD.categoryid, cvUpdateMD.userworkerid]
+        [cvUpdateMD.UserAccountID, cvUpdateMD.CategoryID, cvUpdateMD.UserWorkerID]
     );
 };
 
@@ -61,12 +61,12 @@ function putNotActivatedCV(cv) {
     return helper.sendQueryToDatabase(
         CVScript.updateNotActivatedCV,
         [
-            cv.exprience,
-            cv.qualifications,
-            cv.generalinformation,
-            cv.imagestore,
-            cv.categoryid,
-            cv.userworkerid
+            cv.Exprience,
+            cv.Qualifications,
+            cv.GeneralInformation,
+            cv.ImageStore,
+            cv.CategoryID,
+            cv.UserAccountID
         ]
     );
 };

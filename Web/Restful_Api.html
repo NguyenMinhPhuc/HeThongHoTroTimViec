@@ -38,7 +38,7 @@
 					<td class="text-left">
 						<h5 class="text-center">Đăng nhập</h5>
 						<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> username: - password: - grant_type: 'password'<br>
+						<b>body:</b> Username: - Password: - grant_type: 'password'<br>
 						<i>"8/8/2018-10/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -50,7 +50,7 @@
 					<td class="text-left">
 						<h5 class="text-center">Đăng ký cho khách và thợ</h5>
 						<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> email: - username: - password: - fullname: - typeaccount:<br>
+						<b>body:</b> Email: - Username: - Password: - Fullname: - TypeAccount:<br>
 						<i>"10/8/2018-13/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -88,7 +88,7 @@
 					<td class="text-left">
 						<h5 class="text-center">Xác nhận một tài khoản khi đăng ký</h5>
 						<b>headers:</b>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> email: - codeactive: <br>
+						<b>body:</b> Email: - CodeActive: <br>
 						<i>"14/9/2018-15/9/2018"</i>
 					</td>
 					</td>
@@ -132,7 +132,7 @@
 					<td class="text-left">
 						<h5 class="text-center">Tạo mới một CV</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> categoryid: - namejobcategory: - exprience: - qualifications: - generalinformation: - imagestore<br>
+						<b>body:</b> CategoryID: - Exprience: - Qualifications: - GeneralInformation: - ImageStore<br>
 						<i>"15/8/2018-17/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -145,13 +145,19 @@
 					<td class="text-left">
 						<h5 class="text-center">Active một CV</h5>
 						<b>headers:</b> 'Authorization': 'token' && <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> categoryid: - userworkerid:<br>
+						<b>body:</b> CategoryID: - UserWorkerID:<br>
 						<i>"18/8/2018-20/8/2018"</i>
 					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/cv/active-cv?categoryid=&userworkerid=</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-left">
 						<h5 class="text-center">Xóa một CV</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> categoryid: - userworkerid:<br>
 						<i>"20/8/2018-20/8/2018"</i>
 					</td>
 				</tr>
@@ -187,14 +193,20 @@
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-left">
 						<h5 class="text-center">Cập nhật thông tin của một hồ sơ chưa active từ một thợ</h5>
-						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> categoryid: - exprience: - qualifications: - generalinformation: - imagestore<br>
+						<b>headers:</b> 'Authorization': 'token' | <br>
+						<b>body:</b> CategoryID: - Exprience: - Qualifications: - GeneralInformation: - ImageStore<br>
 						<i>"1/9/2018-2/9/2018"</i>
 					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/cv/not-activated-by-userid?categoryid=</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-left">
 						<h5 class="text-center">Xóa một hồ sơ chưa active từ một thợ</h5>
-						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> categoryid: <br>
+						<b>headers:</b> 'Authorization': 'token'<br>
 						<i>"1/9/2018-2/9/2018"</i>
 					</td>
 				</tr>
@@ -221,7 +233,7 @@
 					<td class="text-left">
 						<h5 class="text-center">Cập nhật thông tin vị trí của một user</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> longitude: - latitude: <br>
+						<b>body:</b> Longitude: - Latitude: <br>
 						<i>"5/9/2018-5/9/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>

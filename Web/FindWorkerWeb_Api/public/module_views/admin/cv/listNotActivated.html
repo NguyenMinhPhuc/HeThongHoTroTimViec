@@ -27,7 +27,8 @@
 
                                     <tr ng-repeat="userCategory in userCategories | orderBy : 'CreateDateJobCategory' : true">
                                         <td><b ng-bind="$index"></b></td>
-                                        <td class="client-avatar"><img alt="image" ng-src="{{userCategory.Image}}"> </td>
+                                        <td class="client-avatar"><img alt="image" ng-src="{{userCategory.Image}}">
+                                        </td>
                                         <td style="width:120px">
                                             <a ng-href="/#!/p/{{userCategory.UserAccountID}}" class="client-link"
                                                 target="_blank" ng-bind="userCategory.FullName"></a>
@@ -43,12 +44,12 @@
                                         <td>
                                             <div style="display:inline">
                                                 <abbr title="Đồng ý hồ sơ này">
-                                                    <button type="button" class="btn btn-primary btn-xs" ng-click="clickAgreeCV(userCategory.CategoryID,userCategory.UserAccountID,userCategory.NameJobCategory,userCategory.FullName)">
+                                                    <button type="button" class="btn btn-primary btn-xs" ng-click="clickAgreeCV(userCategory)">
                                                         <i class="fa fa-check"></i>
                                                     </button>
                                                 </abbr>
                                                 <abbr title="Xóa hồ sơ này">
-                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="clickDeleteCV(userCategory.CategoryID,userCategory.UserAccountID,userCategory.NameJobCategory,userCategory.FullName)">
+                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="clickDeleteCV(userCategory)">
                                                         <i class="fa fa-trash-o"></i>
                                                     </button>
                                                 </abbr>

@@ -41,7 +41,7 @@ function getWardByID(Wardid) {
 function putInfoGeolocationByUserID(locationData) {
     return helper.sendQueryToDatabase(
         locationScript.updateInfoGeolocation,
-        [locationData.longitude, locationData.latitude, locationData.useraccountid]
+        [locationData.Longitude, locationData.Latitude, locationData.UserAccountID]
     );
 };
 

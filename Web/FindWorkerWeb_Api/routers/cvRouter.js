@@ -5,38 +5,30 @@ var cvModel = require('../models/cvModel');
 var helper = require('../helpers/helper');
 var CVScript = require('../databases/app_data/curriculumVitaeScript.json');
 
+var objectValue = {};
 var result = {};
 //router post
 //POST đăng hồ sơ để đợi duyệt
 router.post('/post', async (req, res) => {
-    req.checkBody('categoryid', 'Danh mục bị lỗi').isInt();
-    req.checkBody('namejobcategory', 'Tên danh mục bị sai định dạng').trim().isLength({ min: 3 });
-    req.checkBody('exprience', 'Sai định dạng kiểu dữ liệu của năm kinh nghiệm').isFloat({ min: 0.0 });
-    req.checkBody('qualifications', 'Bằng cấp chứa ít nhất 5 ký tự').trim().isLength({ min: 5 });
-    req.checkBody('generalinformation', 'Thông tin chung chứa ít nhất 10 ký tự').trim().isLength({ min: 10 });
-    req.checkBody('imagestore', 'Định dạng không phải là URL').trim().isURL();
+    req.checkBody('CategoryID', 'Danh mục bị lỗi').isInt();
+    req.checkBody('Exprience', 'Sai định dạng kiểu dữ liệu của năm kinh nghiệm').isFloat({ min: 0.0 });
+    req.checkBody('Qualifications', 'Bằng cấp chứa ít nhất 5 ký tự').trim().isLength({ min: 5 });
+    req.checkBody('GeneralInformation', 'Thông tin chung chứa ít nhất 10 ký tự').trim().isLength({ min: 10 });
+    req.checkBody('ImageStore', 'Định dạng không phải là URL').trim().isURL();
     if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
-        let cv = {};
         try {
             let results = await helper.jwtVerifyLogin(req.header("authorization"));
             if (results.UserTypeID == 2) {
-                cv.categoryid = req.body.categoryid;
-                cv.namejobcategory = req.body.namejobcategory.trim();
-                cv.userworkerid = results.UserAccountID;
-                cv.exprience = req.body.exprience;
-                cv.qualifications = req.body.qualifications.trim();
-                cv.generalinformation = req.body.generalinformation.trim();
-                cv.imagestore = req.body.imagestore.trim();
-                //
-                let resultgJC = await cvModel.getJobCategoryByID(cv.categoryid, cv.namejobcategory);
-                if (resultgJC.length > 0) {
-                    cv.categoryid = resultgJC[0].CategoryID;//nếu đã tồn tại categoryID thì lấy categoryID trong database gán vào
-                    let resultpJCBCID = await cvModel.postJobCategoryByCategoryID(cv);
-                    if (resultpJCBCID.affectedRows > 0) { return res.status(200).json(helper.jsonSuccessTrue("Đã đăng hồ sơ thành công.")); }
-                    return res.status(400).json(helper.jsonErrorDescription("Thông tin hồ sơ bị trùng."));
-                }
-                else { return res.status(400).json(helper.jsonErrorDescription("Mã danh mục hoặc tên danh mục không đúng.")); }
+                objectValue = {};
+                objectValue = req.body;
+                objectValue.UserAccountID = results.UserAccountID;
+                objectValue.Qualifications = objectValue.Qualifications.trim();
+                objectValue.GeneralInformation = objectValue.GeneralInformation.trim();
+                objectValue.ImageStore = objectValue.ImageStore.trim();
+                let resultpJCBCID = await cvModel.postJobCategoryByCategoryID(objectValue);
+                if (resultpJCBCID.affectedRows > 0) { return res.status(200).json(helper.jsonSuccessTrue("Đã đăng hồ sơ thành công.")); }
+                return res.status(400).json(helper.jsonErrorDescription("Thông tin hồ sơ bị trùng."));
             }
             else { return res.status(400).json(helper.jsonErrorDescription("Loại tài khoản của bạn không có quyền đăng hồ sơ.")); }
         } catch (err) {
@@ -49,20 +41,18 @@ router.post('/post', async (req, res) => {
 //router ACTIVE CV
 //PUT active Hồ sơ người đăng
 router.put('/active-cv', async (req, res) => {
-    req.checkBody('categoryid', 'Sai định dạng danh mục').isInt();
-    req.checkBody('userworkerid', 'Sai định dạng tài khoản id').isInt();
+    req.checkBody('CategoryID', 'Sai định dạng danh mục').isInt();
+    req.checkBody('UserWorkerID', 'Sai định dạng tài khoản id').isInt();
     if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         try {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
             if (resultOfJWT.UserTypeID == 1) {
-                let cvMD = {
-                    useraccountid: resultOfJWT.UserAccountID,
-                    categoryid: req.body.categoryid,
-                    userworkerid: req.body.userworkerid
-                };
-                let resultOfCVM = await cvModel.putActiveCV(cvMD);
-                if (resultOfCVM.affectedRows > 0) {//kiểm tra số dòng đã được update
+                objectValue = {};
+                objectValue = req.body;
+                objectValue.UserAccountID = resultOfJWT.UserAccountID;
+                let resultOfCVM = await cvModel.putActiveCV(objectValue);
+                if (resultOfCVM.affectedRows > 0) {
                     res.status(200).json(helper.jsonSuccessTrue("Đã xác nhận hồ sơ."));
                 } else {
                     return res.status(400).json(helper.jsonErrorDescription("Không tìm thấy dữ liệu để active."));
@@ -78,29 +68,26 @@ router.put('/active-cv', async (req, res) => {
 });
 //Delete hồ sơ chưa active
 router.delete('/active-cv', async (req, res) => {
-    req.checkBody('categoryid', 'Sai định dạng danh mục').isInt();
-    req.checkBody('userworkerid', 'Sai định dạng tài khoản id').isInt();
-    if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
-    else {
-        try {
-            let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
-            if (resultOfJWT.UserTypeID == 1) {
-                let cvdelete = {
-                    categoryid: req.body.categoryid,
-                    userworkerid: req.body.userworkerid
-                };
-                let resultOfCVM = await cvModel.deleteCV(cvdelete);
+    try {
+        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+        if (resultOfJWT.UserTypeID == 1) {
+            objectValue = {};
+            objectValue = req.query;
+            if (!isNaN(objectValue.categoryid) && objectValue.categoryid != "" && !isNaN(objectValue.userworkerid) && objectValue.userworkerid != "") {
+                let resultOfCVM = await cvModel.deleteCV(objectValue);
                 if (resultOfCVM.affectedRows > 0) { res.status(200).json(helper.jsonSuccessTrue("Đã xóa hồ sơ.")); }
                 else {
                     return res.status(400).json(helper.jsonErrorDescription("Không tìm thấy hồ sơ để xóa."));
                 }
             } else {
-                return res.status(400).json(helper.jsonErrorDescription("Bạn không có quyền xóa hồ sơ người làm."));
+                return res.status(404).json(helper.jsonErrorDescription("Đường dẫn không đúng."));
             }
-        } catch (err) {
-            console.log(err.message);
-            return res.status(500).json(helper.jsonErrorDescription("Lỗi xác thực token."));
+        } else {
+            return res.status(400).json(helper.jsonErrorDescription("Bạn không có quyền xóa hồ sơ này."));
         }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json(helper.jsonErrorDescription("Lỗi xác thực token."));
     }
 });
 
@@ -160,25 +147,25 @@ router.get('/not-activated-by-userid', async (req, res) => {
 });
 
 router.put('/not-activated-by-userid', async (req, res) => {
-    req.checkBody('categoryid', 'Danh mục bị lỗi').isInt();
-    req.checkBody('exprience', 'Sai định dạng kiểu dữ liệu của năm kinh nghiệm').isFloat({ min: 0.0 });
-    req.checkBody('qualifications', 'Bằng cấp chứa ít nhất 5 ký tự').trim().isLength({ min: 5 });
-    req.checkBody('generalinformation', 'Thông tin chung chứa ít nhất 10 ký tự').trim().isLength({ min: 10 });
-    req.checkBody('imagestore', 'Định dạng không phải là URL').trim().isURL();
+    req.checkBody('CategoryID', 'Danh mục bị lỗi').isInt();
+    req.checkBody('Exprience', 'Sai định dạng kiểu dữ liệu của năm kinh nghiệm').isFloat({ min: 0.0 });
+    req.checkBody('Qualifications', 'Bằng cấp chứa ít nhất 5 ký tự').trim().isLength({ min: 5 });
+    req.checkBody('GeneralInformation', 'Thông tin chung chứa ít nhất 10 ký tự').trim().isLength({ min: 10 });
+    req.checkBody('ImageStore', 'Định dạng không phải là URL').trim().isURL();
     if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         try {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
             if (resultOfJWT.UserTypeID == 2) {
-                let cv = {
-                    categoryid: req.body.categoryid,
-                    userworkerid: resultOfJWT.UserAccountID,
-                    exprience: req.body.exprience,
-                    qualifications: req.body.qualifications.trim(),
-                    generalinformation: req.body.generalinformation.trim(),
-                    imagestore: req.body.imagestore.trim()
-                };
-                let resultNACV = await cvModel.putNotActivatedCV(cv);
+
+                objectValue = {};
+                objectValue = req.body;
+                objectValue.UserAccountID = resultOfJWT.UserAccountID;
+                objectValue.Qualifications = objectValue.Qualifications.trim();
+                objectValue.GeneralInformation = objectValue.GeneralInformation.trim();
+                objectValue.ImageStore = objectValue.ImageStore.trim();
+
+                let resultNACV = await cvModel.putNotActivatedCV(objectValue);
                 if (resultNACV.affectedRows > 0) {
                     res.status(200).json(helper.jsonSuccessTrueResult("Đã chỉnh sửa hồ sơ thành công"));
                 } else {
@@ -195,29 +182,30 @@ router.put('/not-activated-by-userid', async (req, res) => {
 });
 
 router.delete('/not-activated-by-userid', async (req, res) => {
-    req.checkBody('categoryid', 'Danh mục bị lỗi').isInt();
-    if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
-    else {
-        try {
-            let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
-            if (resultOfJWT.UserTypeID == 2) {
-                let cv = {
-                    categoryid: req.body.categoryid,
-                    userworkerid: resultOfJWT.UserAccountID
-                };
-                let resultDCV = await cvModel.deleteCV(cv);
+    try {
+        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+        if (resultOfJWT.UserTypeID == 2) {
+
+            objectValue = {};
+            objectValue = req.query;
+            objectValue.userworkerid = resultOfJWT.UserAccountID;
+
+            if (!isNaN(objectValue.categoryid) && objectValue.categoryid != "") {
+                let resultDCV = await cvModel.deleteCV(objectValue);
                 if (resultDCV.affectedRows > 0) {
                     res.status(200).json(helper.jsonSuccessTrue("Đã xóa hồ sơ thành công"));
                 } else {
                     return res.status(400).json(helper.jsonErrorDescription("Hồ sơ không tồn tại"));
                 }
             } else {
-                res.status(400).json(helper.jsonErrorDescription("Loại tài khoản của bạn không có quyền xóa hồ sơ"));
+                return res.status(404).json(helper.jsonErrorDescription("Đường dẫn không đúng."));
             }
-        } catch (err) {
-            console.log(err.message);
-            return res.status(500).json(helper.jsonErrorDescription("Lỗi xác thực token"));
+        } else {
+            res.status(400).json(helper.jsonErrorDescription("Loại tài khoản của bạn không có quyền xóa hồ sơ"));
         }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json(helper.jsonErrorDescription("Lỗi xác thực token"));
     }
 });
 

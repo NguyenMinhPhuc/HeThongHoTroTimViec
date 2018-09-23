@@ -6,6 +6,7 @@ var helper = require('../helpers/helper');
 
 var validator = require('validator');
 
+var objectValue = {};
 var result = {};
 
 router.get('/all-province', async (req, res) => {
@@ -47,17 +48,17 @@ router.get('/all-ward-by-districtid', async (req, res) => {
 });
 
 router.put('/geolocation', async (req, res) => {
-    if (validator.isLatLong(`${req.body.latitude},${req.body.longitude}`)) {
-        try {
+    try {
+        objectValue = {};
+        objectValue = req.body;
+        if (validator.isLatLong(`${objectValue.Latitude},${objectValue.Longitude}`)) {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
             if (resultOfJWT.UserTypeID > 0 && resultOfJWT.UserTypeID < 4) {
-                let geolocationMD = {
-                    useraccountid: resultOfJWT.UserAccountID,
-                    longitude: req.body.longitude,
-                    latitude: req.body.latitude
-                };
-                let resultOfCVM = await locationModel.putInfoGeolocationByUserID(geolocationMD);
-                if (resultOfCVM.affectedRows > 0) {//kiểm tra số dòng đã được update
+
+                objectValue.UserAccountID = resultOfJWT.UserAccountID;
+
+                let resultOfCVM = await locationModel.putInfoGeolocationByUserID(objectValue);
+                if (resultOfCVM.affectedRows > 0) {
                     res.status(200).json(helper.jsonSuccessTrue("Đã cập nhật vị trí thành công"));
                 } else {
                     return res.status(400).json(helper.jsonErrorDescription("Không tìm thấy dữ liệu để cập nhật vị trí"));
@@ -65,12 +66,12 @@ router.put('/geolocation', async (req, res) => {
             } else {
                 return res.status(400).json(helper.jsonErrorDescription("Bạn không có quyền cập nhật vị trí"));
             }
-        } catch (err) {
-            console.log(err.message);
-            return res.status(500).json(helper.jsonErrorDescription("Lỗi xác thực token"));
+        } else {
+            return res.status(400).json(helper.jsonErrorDescription("Sai định dạng kinh độ và vĩ độ"));
         }
-    } else {
-        return res.status(400).json(helper.jsonErrorDescription("Sai định dạng kinh độ và vĩ độ"));
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json(helper.jsonErrorDescription("Lỗi xác thực token"));
     }
 });
 

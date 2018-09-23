@@ -15,27 +15,27 @@ var result = {};
 var objectValue = {};
 //Login
 router.post('/login', async (req, res) => {
-    let isEmail = false;
-    if (req.body.username.indexOf("@") > -1 && req.body.username.indexOf(".") > -1) {
-        isEmail = true;
-        req.checkBody('username', 'Sai định dạng Email').isEmail();
-    } else {
-        isEmail = false;
-        req.checkBody('username', 'Không để trống Username').notEmpty();
-    }
-    req.checkBody('password', 'Không để trống Password').trim().notEmpty();
-    req.checkBody('grant_type', 'Không để trống Grant type').trim().notEmpty();
-    if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
-    else {
-        if (req.body.grant_type === "password") {
-            try {
+    try {
+        let isEmail = false;
+        if (req.body.Username.indexOf("@") > -1 && req.body.Username.indexOf(".") > -1) {
+            isEmail = true;
+            req.checkBody('Username', 'Sai định dạng Email').isEmail();
+        } else {
+            isEmail = false;
+            req.checkBody('Username', 'Không để trống Username').notEmpty();
+        }
+        req.checkBody('Password', 'Không để trống Password').trim().notEmpty();
+        req.checkBody('grant_type', 'Không để trống Grant type').trim().notEmpty();
+        if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
+        else {
+            if (req.body.grant_type === "password") {
                 result = "";
-                result = await accountModel.postCheckInforLoginUseUsername(req.body.username, isEmail);
+                result = await accountModel.postCheckInforLoginUseUsername(req.body.Username, isEmail);
                 if (result.length > 0) {
                     if (result[0].StatusAccount == 0) {
                         return res.status(200).json(helper.jsonSuccessFalse("Tài khoản chưa được active kiểm tra email hoặc thùng rác"));
                     } else if (result[0].StatusAccount == 1) {
-                        if (result[0].Password == md5(req.body.password)) {//check password
+                        if (result[0].Password == md5(req.body.Password)) {//check password
                             let resultObject = JSON.parse(JSON.stringify({
                                 "UserAccountID": result[0].UserAccountID,
                                 "UserTypeID": result[0].UserTypeID
@@ -56,54 +56,60 @@ router.post('/login', async (req, res) => {
                                 });
                             });
                         } else {
-                            return res.status(400).json(helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng"));
+                            return res.status(400).json(
+                                helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng")
+                            );
                         }
                     } else {
-                        return res.status(400).json(helper.jsonErrorDescription("Tài khoản đã bị khóa"));
+                        return res.status(400).json(
+                            helper.jsonErrorDescription("Tài khoản đã bị khóa")
+                        );
                     }
                 } else {
-                    return res.status(400).json(helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng"));
+                    return res.status(400).json(
+                        helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng")
+                    );
                 }
-            } catch (err) {
-                console.log(err.message);
-                return res.status(500).json(err);
+
+            } else {
+                return res.status(400).json(
+                    helper.jsonErrorDescription("Grant type không đúng")
+                );
             }
-        } else {
-            return res.status(400).json(helper.jsonErrorDescription("Grant type không đúng"));
-        }
-    };
+        };
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json(helper.jsonError(err.message));
+    }
 });
 
 //signup
-router.post('/signup-for-both', [check('username').custom(value => {
+router.post('/signup-for-both', [check('Username').custom(value => {
     //sử dụng express-validator để custom username không có khoảng cách
     if (value.indexOf(' ') >= 0) {
         return Promise.reject('Username không chứa khoảng cách');
     }
     return Promise.resolve(true);
 })], async (req, res) => {
-    req.checkBody('email', 'không phải là một Email').isEmail();
-    req.checkBody('password', 'Password phải chứa ít nhất là 6 ký tự').trim().isLength({ min: 6 });
-    req.checkBody('fullname', 'Fullname phải chứa ít nhất là 3 ký tự').trim().isLength({ min: 3 });
-    req.checkBody('typeaccount', 'Loại tài khoản phải là số').isInt();
+    req.checkBody('Email', 'không phải là một Email').isEmail();
+    req.checkBody('Password', 'Password phải chứa ít nhất là 6 ký tự').trim().isLength({ min: 6 });
+    req.checkBody('Fullname', 'Fullname phải chứa ít nhất là 3 ký tự').trim().isLength({ min: 3 });
+    req.checkBody('TypeAccount', 'Loại tài khoản phải là số').isInt();
     if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
-        let account = {
-            email: req.body.email,
-            username: req.body.username,
-            password: md5(req.body.password.trim()),
-            fullname: req.body.fullname.trim(),
-            codeActive: helper.generateRandom6Number()
-        };
         try {
-            if (req.body.typeaccount == 2 || req.body.typeaccount == 3) {
+            let account = req.body;
+            account.Password = md5(req.body.Password.trim());
+            account.Fullname = req.body.Fullname.trim();
+            account.CodeActive = helper.generateRandom6Number();
+            if (account.TypeAccount == 2 || account.TypeAccount == 3) {
                 result = "";
-                result = await accountModel.postSignUpForAllUser(account, req.body.typeaccount);
+                result = await accountModel.postSignUpForAllUser(account);
                 if (result.affectedRows > 0) {
-                    let linkVerify = `${linkServer.hethonghotrotimviec.urlServer}/#!/tai-khoan/verify?email=${account.email}&code=${account.codeActive}`;
-                    helper.sendVerifyUseEmail(account.email, account.fullname, linkVerify)
+                    let linkVerify = `${linkServer.hethonghotrotimviec.urlServer}/#!/tai-khoan/verify?email=${account.Email}&code=${account.CodeActive}`;
+                    helper.sendVerifyUseEmail(account.Email, account.Fullname, linkVerify)
                         .then(resultVeri => {
-                            return res.status(200).json(helper.jsonSuccessTrue(`Link xác thực tài khoản đã gởi tới email: ${account.email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.`));
+                            return res.status(200).json(helper.jsonSuccessTrue(`Link xác thực tài khoản đã gởi tới email: ${account.Email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.`));
                         })
                         .catch(err => {
                             return res.status(500).json(helper.jsonError(err.message));
@@ -155,29 +161,23 @@ router.put('/profile', [check('Birthday').custom(value => {//sử dụng express
             result = "";
             result = await helper.jwtVerifyLogin(req.header("authorization"));
             if (result.UserTypeID > 0 && result.UserTypeID < 4) {
-                let profile = {
-                    useraccountid: result.UserAccountID,
-                    fullname: req.body.FullName.trim(),
-                    ismale: req.body.IsMale,
-                    phonenumber: req.body.PhoneNumber.trim(),
-                    birthday: req.body.Birthday.trim(),
-                    image: req.body.Image.trim(),
-                    provinceid: req.body.ProvinceID,
-                    districtid: req.body.DistrictID,
-                    wardid: req.body.WardID,
-                    streetname: req.body.StreetName,
-                    personid: req.body.PersonID.trim()
-                };
+                let profile = req.body;
+                profile.UserAccountID = result.UserAccountID;
+                profile.FullName = req.body.FullName.trim();
+                profile.PhoneNumber = req.body.PhoneNumber.trim();
+                profile.Birthday = req.body.Birthday.trim();
+                profile.PersonID = req.body.PersonID.trim();
+                profile.Image = req.body.Image.trim();
                 Promise.all([
-                    locationModel.getProvinceByID(profile.provinceid),
-                    locationModel.getDistrictByID(profile.districtid),
-                    locationModel.getWardByID(profile.wardid)
+                    locationModel.getProvinceByID(profile.ProvinceID),
+                    locationModel.getDistrictByID(profile.DistrictID),
+                    locationModel.getWardByID(profile.WardID)
                 ]).then(async resultLocation => {
                     let strResult = "";
                     if (resultLocation[0][0] !== undefined) { strResult = `${strResult}${resultLocation[0][0].type} ${resultLocation[0][0].name}`; }
                     if (resultLocation[1][0] !== undefined) { strResult = `${strResult}, ${resultLocation[1][0].type} ${resultLocation[1][0].name}`; }
                     if (resultLocation[2][0] !== undefined) { strResult = `${strResult}, ${resultLocation[2][0].type} ${resultLocation[2][0].name}`; }
-                    profile.placename = strResult;
+                    profile.PlaceName = strResult;
                     let rows = await accountModel.updateProfileInform(profile)
                     if (rows.affectedRows > 0) {
                         return res.status(200).json(helper.jsonSuccessTrue("Đã cập thật thông tin thành công"));
@@ -199,19 +199,16 @@ router.put('/profile', [check('Birthday').custom(value => {//sử dụng express
 
 router.put('/verify', async (req, res) => {
     try {
-        req.checkBody('email', 'Không phải là Email').isEmail();
-        req.checkBody('codeactive', 'Password phải chứa ít nhất là 6 ký tự và nhiều nhất 7 ký tự').isInt().isLength({ min: 6, max: 6 });
+        req.checkBody('Email', 'Không phải là Email').isEmail();
+        req.checkBody('CodeActive', 'Password phải chứa ít nhất là 6 ký tự và nhiều nhất 7 ký tự').isInt().isLength({ min: 6, max: 6 });
         if (req.validationErrors()) { return res.status(400).json(helper.jsonError(req.validationErrors())); }
         else {
             objectValue = {};
             result = {};
-            objectValue = {
-                email: req.body.email,
-                codeactive: req.body.codeactive
-            };
-            result = await accountModel.getVerifyByEmail(objectValue.email)
+            objectValue = req.body;
+            result = await accountModel.getVerifyByEmail(objectValue.Email)
             if (result[0].StatusAccount == 0) {
-                if (result[0].CodeActive == objectValue.codeactive) {
+                if (result[0].CodeActive == objectValue.CodeActive) {
                     await accountModel.updateStatusAccount(objectValue, 1);
                     return res.status(200).json(helper.jsonSuccessTrue("Đã xác thực tài khoản thành công."));
                 } else {

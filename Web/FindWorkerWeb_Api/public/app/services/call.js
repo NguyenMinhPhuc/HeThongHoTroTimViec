@@ -74,12 +74,10 @@
 
             this.DELETE = function (controller, data) {
                 $http.defaults.headers.common['Authorization'] = $cookies.get("access_token");
-                data = JSON.stringify(data);
                 return $http({
                     method: 'DELETE',
                     url: controller,
-                    headers: header,
-                    data: data
+                    headers: header
                 }).then(function (result) {
                     return $q.resolve(result.data);
                 }, function (err) {

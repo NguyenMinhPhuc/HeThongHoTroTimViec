@@ -32,7 +32,7 @@
                                             <div style="display:inline">
                                                 <abbr title="Chỉnh sửa hồ sơ này">
                                                     <button type="button" class="btn btn-primary btn-xs" data-toggle="modal"
-                                                        data-target="#myModal" ng-click="clickEditCV(cv.ImageStore,cv.CategoryID,cv.NameJobCategory,cv.Exprience,cv.Qualifications,cv.GeneralInformation)">
+                                                        data-target="#myModal" ng-click="clickEditCV(cv)">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                 </abbr>
@@ -66,8 +66,8 @@
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Đóng</span></button>
-                <img alt="image" ng-src="{{ImageStore}}" width="100px">
-                <h4 class="modal-title" ng-bind="NameJobCategory"></h4>
+                <img alt="image" ng-src="{{cv.ImageStore}}" width="100px">
+                <h4 class="modal-title" ng-bind="cv.NameJobCategory"></h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" ng-submit="submitEditCV()">
@@ -75,20 +75,20 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">Kinh nghiệm <font class="text-info">(Năm)</font>:</label>
                             <div class="col-md-9">
-                                <touch-spin ng-model="iExprience" options="optionsVariable"></touch-spin>
+                                <touch-spin ng-model="cv.Exprience" options="optionsVariable"></touch-spin>
                             </div>
                         </div>
                         <div class="form-group" id="data_1">
                             <label class="col-md-3 control-label">Bằng cấp:</label>
                             <div class="col-md-9">
-                                <input ng-model="iQualifications" type="text" tabindex="3" class="form-control"
+                                <input ng-model="cv.Qualifications" type="text" tabindex="3" class="form-control"
                                     required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">Thông tin thêm:</label>
                             <div class="col-md-9">
-                                <textarea ng-model="iGeneralInformation" type="text" tabindex="4" class="form-control"
+                                <textarea ng-model="cv.GeneralInformation" type="text" tabindex="4" class="form-control"
                                     rows="3" required></textarea>
                             </div>
                         </div>

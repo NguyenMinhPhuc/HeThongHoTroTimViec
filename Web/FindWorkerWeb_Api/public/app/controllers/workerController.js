@@ -43,20 +43,19 @@
         $scope.submitCV = function () {
             try {
                 let categoryData = {
-                    categoryid: $scope.selectedCategories.CategoryID,
-                    namejobcategory: $scope.selectedCategories.NameJobCategory,
-                    exprience: $scope.iExprience,
-                    qualifications: $scope.iQualifications,
-                    generalinformation: $scope.iGeneralinformation,
-                    imagestore: "https://png.icons8.com/color/300/000000/small-business.png"
+                    CategoryID: $scope.selectedCategories.CategoryID,
+                    Exprience: $scope.iExprience,
+                    Qualifications: $scope.iQualifications,
+                    GeneralInformation: $scope.iGeneralinformation,
+                    ImageStore: "https://png.icons8.com/color/300/000000/small-business.png"
                 };
-                if (!categoryData.categoryid || !categoryData.exprience || !categoryData.qualifications || !categoryData.generalinformation || !categoryData.imagestore) {
+                if (!categoryData.CategoryID || !categoryData.Exprience || !categoryData.Qualifications || !categoryData.GeneralInformation || !categoryData.ImageStore) {
                     throw "Thông tin không được để trống";
                 }
                 call.POST(api.CV.POST_CV, categoryData)
                     .then(function (result) {
                         if (result.success) {
-                            func.showToastSuccess(`Đã đăng hồ sơ: ${categoryData.namejobcategory}.`);
+                            func.showToastSuccess(`Đã đăng hồ sơ: ${$scope.selectedCategories.NameJobCategory}.`);
                         }
                     });
             } catch (err) {
@@ -81,62 +80,44 @@
             }
         };
 
-        $scope.clickDeleteCV = function (categoryid, namejobcategory) {
+        $scope.clickDeleteCV = function (cv) {
             try {
-                let cvData = {
-                    categoryid: categoryid
-                };
-
-                if (!cvData.categoryid) {
+                if (!cv.CategoryID) {
                     throw "Thông tin không được để trống";
                 }
-
                 let functionOfSweet = function () {
-                    call.DELETE(api.CV.NOT_ACTIVATED_BY_USERID, cvData)
+                    `${api.CV.NOT_ACTIVATED_BY_USERID}?categoryid=${cv.CategoryID}`
+                    call.DELETE(`${api.CV.NOT_ACTIVATED_BY_USERID}?categoryid=${cv.CategoryID}`)
                         .then(function (result) {
                             if (result.success) {
                                 swal.close();
-                                func.showToastSuccess(`Bạn đã xóa hồ sơ: ${namejobcategory}.`);
+                                func.showToastSuccess(`Bạn đã xóa hồ sơ: ${cv.NameJobCategory}.`);
                                 $scope.loadListCVNotActiveted();
                             }
                         });
                 };
-
                 func.showSweetAlertDelete("Bạn có muốn xóa hồ sơ này?", null, functionOfSweet);
             } catch (err) {
                 func.showToastError(err);
             }
         };
 
-        $scope.clickEditCV = function (ImageStore, CategoryID, NameJobCategory, Exprience, Qualifications, GeneralInformation) {
+        $scope.clickEditCV = function (cv) {
             $scope.optionsVariable = func.configTouchspin();
-            $scope.ImageStore = ImageStore;
-            $scope.CategoryID = CategoryID;
-            $scope.NameJobCategory = NameJobCategory;
-            $scope.iExprience = Exprience;
-            $scope.iQualifications = Qualifications;
-            $scope.iGeneralInformation = GeneralInformation;
+            $scope.cv = cv;
         }
 
         $scope.submitEditCV = function () {
             try {
-                $log.info($scope.iExprience, $scope.iQualifications, $scope.iGeneralInformation, $scope.CategoryID);
-                let cvData = {
-                    categoryid: $scope.CategoryID,
-                    exprience: $scope.iExprience,
-                    qualifications: $scope.iQualifications,
-                    generalinformation: $scope.iGeneralInformation,
-                    imagestore: $scope.ImageStore
-                };
-                if (!cvData.categoryid || !cvData.exprience || !cvData.qualifications || !cvData.generalinformation || !cvData.imagestore) {
+                let cvData = $scope.cv;
+                if (!cvData.CategoryID || !cvData.Exprience || !cvData.Qualifications || !cvData.GeneralInformation || !cvData.ImageStore) {
                     throw "Thông tin không được để trống";
                 }
                 call.PUT(api.CV.NOT_ACTIVATED_BY_USERID, cvData)
                     .then(function (result) {
                         if (result.success) {
-                            func.showToastSuccess(`Đã chỉnh sửa hồ sơ: ${$scope.NameJobCategory}.`);
+                            func.showToastSuccess(`Đã chỉnh sửa hồ sơ: ${$scope.cv.NameJobCategory}.`);
                             $('.modal').modal('toggle');
-                            $scope.loadListCVNotActiveted();
                         }
                     });
             } catch (err) {
@@ -160,35 +141,22 @@
             }
         };
 
-        $scope.clickEditCV = function (ImageStore, CategoryID, NameJobCategory, Exprience, Qualifications, GeneralInformation) {
+        $scope.clickEditCV = function (cv) {
             $scope.optionsVariable = func.configTouchspin();
-            $scope.ImageStore = ImageStore;
-            $scope.CategoryID = CategoryID;
-            $scope.NameJobCategory = NameJobCategory;
-            $scope.iExprience = Exprience;
-            $scope.iQualifications = Qualifications;
-            $scope.iGeneralInformation = GeneralInformation;
+            $scope.cv = cv;
         }
 
         $scope.submitEditCV = function () {
             try {
-                $log.info($scope.iExprience, $scope.iQualifications, $scope.iGeneralInformation, $scope.CategoryID);
-                let cvData = {
-                    categoryid: $scope.CategoryID,
-                    exprience: $scope.iExprience,
-                    qualifications: $scope.iQualifications,
-                    generalinformation: $scope.iGeneralInformation,
-                    imagestore: $scope.ImageStore
-                };
-                if (!cvData.categoryid || !cvData.exprience || !cvData.qualifications || !cvData.generalinformation || !cvData.imagestore) {
+                let cvData = $scope.cv;
+                if (!cvData.CategoryID || !cvData.Exprience || !cvData.Qualifications || !cvData.GeneralInformation || !cvData.ImageStore) {
                     throw "Thông tin không được để trống";
                 }
                 call.PUT(api.CV.NOT_ACTIVATED_BY_USERID, cvData)
                     .then(function (result) {
                         if (result.success) {
-                            func.showToastSuccess(`Đã chỉnh sửa hồ sơ: ${$scope.NameJobCategory}.`);
+                            func.showToastSuccess(`Đã chỉnh sửa hồ sơ: ${$scope.cv.NameJobCategory}.`);
                             $('.modal').modal('toggle');
-                            $scope.loadListCVActiveted();
                         }
                     });
             } catch (err) {

@@ -10,10 +10,10 @@ function getAllJobCategory() {
     );
 };
 
-function getJobCategoryByUserWorkerID(useraccount) {
+function getJobCategoryByUserWorkerID(UserAccountID) {
     return helper.sendQueryToDatabase(
         CategoryScript.selectJobCategoryByUserWorkerID,
-        [useraccount.useraccountid]
+        [UserAccountID]
     );
 };
 

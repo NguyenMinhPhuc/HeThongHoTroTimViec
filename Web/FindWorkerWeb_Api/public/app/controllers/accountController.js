@@ -16,8 +16,8 @@
         $scope.LoginSubmit = function () {
             try {
                 let userData = {
-                    username: $scope.UserName,
-                    password: $scope.PassWord,
+                    Username: $scope.UserName,
+                    Password: $scope.PassWord,
                     grant_type: "password"
                 };
                 call.POSTACCOUNT(api.ACCOUNT.LOGIN, userData)
@@ -46,17 +46,17 @@
     function signupController($scope, call, func, api) {
         $scope.signupSubmit = function () {
             let userSignup = {
-                username: $scope.UserName,
-                password: $scope.Password,
-                email: $scope.Email,
-                fullname: $scope.Fullname,
-                typeaccount: 2
+                Username: $scope.UserName,
+                Password: $scope.Password,
+                Email: $scope.Email,
+                Fullname: $scope.Fullname,
+                TypeAccount: 2
             };
             try {
-                if (userSignup.password != $scope.Password2) {
+                if (userSignup.Password != $scope.Password2) {
                     throw "Mật khẩu phải giống nhau";
                 }
-                if (!userSignup.username || !userSignup.password || !userSignup.email || !userSignup.fullname) {
+                if (!userSignup.Username || !userSignup.Password || !userSignup.Email || !userSignup.Fullname) {
                     throw "Không được để trống";
                 }
                 call.POSTACCOUNT(api.ACCOUNT.SIGNUP, userSignup)
@@ -78,10 +78,10 @@
         try {
             $scope.message = "Đợi xác thực tài khoản.";
             objValue = {
-                email: $routeParams.email,
-                codeactive: $routeParams.code
+                Email: $routeParams.email,
+                CodeActive: $routeParams.code
             };
-            if (objValue.email || objValue.codeactive) {
+            if (objValue.Email || objValue.CodeActive) {
                 call.PUTACCOUNT(api.ACCOUNT.VERIFY, objValue)
                     .then(function (result) {
                         $scope.message = result.message;
@@ -90,7 +90,7 @@
                         $scope.message = err.error_description;
                     });
             } else {
-                throw "Email và code không rỗng";
+                throw "Email và code không được để trống";
             }
         } catch (err) {
             $scope.message = err;
@@ -148,9 +148,9 @@
                 $scope.myProfile.ProvinceID = $scope.selectedProvince;
                 $scope.myProfile.DistrictID = $scope.selectedDistrict;
                 $scope.myProfile.WardID = $scope.selectedWard;
-                if ($scope.myProfile.ProvinceID === undefined) { throw "Phải chọn Tỉnh hoặc Thành Phố." }
-                if ($scope.myProfile.DistrictID === undefined) { throw "Phải chọn tên Thành Phố, Quận, Huyện." }
-                if ($scope.myProfile.WardID === undefined) { throw "Phải chọn tên Phường Xã." }
+                if ($scope.myProfile.ProvinceID == null) { throw "Phải chọn Tỉnh hoặc Thành Phố." }
+                if ($scope.myProfile.DistrictID == null) { throw "Phải chọn Thành Phố, Quận, Huyện." }
+                if ($scope.myProfile.WardID == null) { throw "Phải chọn Phường Xã." }
                 call.PUT(api.PROFILE.UPDATE, $scope.myProfile)
                     .then(function (result) {
                         func.showToastSuccess(result.message);

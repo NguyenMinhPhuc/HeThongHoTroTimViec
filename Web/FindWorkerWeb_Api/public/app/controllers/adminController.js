@@ -32,21 +32,21 @@
             }
         };
 
-        $scope.clickAgreeCV = function (categoryid, userworkerid, namejobcategory, fullname) {
+        $scope.clickAgreeCV = function (userCategory) {
             try {
                 let cvData = {
-                    categoryid: categoryid,
-                    userworkerid: userworkerid
+                    CategoryID: userCategory.CategoryID,
+                    UserWorkerID: userCategory.UserAccountID
                 };
 
-                if (!cvData.categoryid || !cvData.userworkerid) {
+                if (!cvData.CategoryID || !cvData.UserWorkerID) {
                     throw "Thông tin không được để trống";
                 }
 
                 call.PUT(api.CV.ACTIVE_CV, cvData)
                     .then(function (result) {
                         if (result.success) {
-                            func.showToastSuccess("Bạn đã duyệt hồ sơ: " + namejobcategory + "." + "<br>Của thợ: " + fullname + ".");
+                            func.showToastSuccess("Bạn đã duyệt hồ sơ: " + userCategory.NameJobCategory + "." + "<br>Của thợ: " + userCategory.FullName + ".");
                             $scope.loadListWorkerNotActivated();
                         }
                     });
@@ -56,28 +56,21 @@
             }
         };
 
-        $scope.clickDeleteCV = function (categoryid, userworkerid, namejobcategory, fullname) {
+        $scope.clickDeleteCV = function (userCategory) {
             try {
-                let cvData = {
-                    categoryid: categoryid,
-                    userworkerid: userworkerid
-                };
-
-                if (!cvData.categoryid || !cvData.userworkerid) {
+                if (!userCategory.CategoryID || !userCategory.UserAccountID) {
                     throw "Thông tin không được để trống";
                 }
-
                 let functionOfSweet = function () {
-                    call.DELETE(api.CV.ACTIVE_CV, cvData)
+                    call.DELETE(`${api.CV.ACTIVE_CV}?categoryid=${userCategory.CategoryID}&userworkerid=${userCategory.UserAccountID}`)
                         .then(function (result) {
                             if (result.success) {
                                 swal.close();
-                                func.showToastSuccess("Bạn đã xóa hồ sơ: " + namejobcategory + "." + "<br>Của thợ: " + fullname + ".");
+                                func.showToastSuccess("Bạn đã xóa hồ sơ: " + userCategory.NameJobCategory + "." + "<br>Của thợ: " + userCategory.FullName + ".");
                                 $scope.loadListWorkerNotActivated();
                             }
                         });
                 };
-
                 func.showSweetAlertDelete("Bạn có muốn xóa hồ sơ này?", null, functionOfSweet);
             } catch (err) {
                 $log.error(err);
