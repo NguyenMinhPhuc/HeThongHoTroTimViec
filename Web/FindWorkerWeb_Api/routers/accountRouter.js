@@ -2,6 +2,7 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 var md5 = require('md5');
 var moment = require('moment');
+var url = require("url");
 
 var accountModel = require('../models/accountModel');
 var locationModel = require('../models/locationModel');
@@ -140,6 +141,7 @@ router.get('/profile/:useraccountid', async (req, res) => {
         return res.status(500).json(helper.jsonErrorDescription("Token không tồn tại hoặc đã hết hạn"));
     }
 });
+
 //PUT
 router.put('/profile', [check('Birthday').custom(value => {//sử dụng express-validator để custom date đúng định dạng
     if (!moment(value, 'DD/MM/YYYY', true).isValid()) {
@@ -150,7 +152,6 @@ router.put('/profile', [check('Birthday').custom(value => {//sử dụng express
     req.checkBody('FullName', 'Không để trống họ tên').trim().notEmpty();
     req.checkBody('PhoneNumber', 'Không phải là số điện thoại').isMobilePhone("vi-VN");
     req.checkBody('IsMale', 'Sai định dạng true false').isBoolean();
-    req.checkBody('Image', 'Không để trống ảnh').trim().isURL();
     req.checkBody('PersonID', 'Sai định dạng cmnd').isInt().isLength({ min: 9, max: 10 });
     req.checkBody('ProvinceID', 'Sai định dạng Tỉnh').isLength({ min: 1, max: 2 });
     req.checkBody('DistrictID', 'Sai định dạng Huyện, Thành Phố').isLength({ min: 3, max: 3 });
@@ -167,7 +168,7 @@ router.put('/profile', [check('Birthday').custom(value => {//sử dụng express
                 profile.PhoneNumber = req.body.PhoneNumber.trim();
                 profile.Birthday = req.body.Birthday.trim();
                 profile.PersonID = req.body.PersonID.trim();
-                profile.Image = req.body.Image.trim();
+                profile.Image = url.parse(profile.Image).pathname;
                 Promise.all([
                     locationModel.getProvinceByID(profile.ProvinceID),
                     locationModel.getDistrictByID(profile.DistrictID),
@@ -185,10 +186,11 @@ router.put('/profile', [check('Birthday').custom(value => {//sử dụng express
                     else {
                         return res.status(400).json(helper.jsonErrorDescription("Tài khoản không tồn tại"));
                     }
-                }).catch(err => {
-                    console.log(err.message);
-                    return res.status(400).json(helper.jsonErrorDescription("Lỗi khi thêm vị trí."));
                 })
+                    .catch(err => {
+                        console.log(err.message);
+                        return res.status(400).json(helper.jsonErrorDescription("Lỗi khi thêm vị trí."));
+                    })
             }
         } catch (err) {
             console.log(err.message);

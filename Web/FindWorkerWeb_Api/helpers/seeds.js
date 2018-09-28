@@ -14,6 +14,6 @@ function mailOptions(toEmail, fullName, linkVerify) {
                 </div>
             </div>`
     };
-}
+};
 
 module.exports = { mailOptions };

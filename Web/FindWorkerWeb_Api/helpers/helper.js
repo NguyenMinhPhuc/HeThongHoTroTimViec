@@ -1,9 +1,11 @@
 var jwt = require('jsonwebtoken');
 var Math = require('mathjs');
+var multer = require('multer');
+var path = require('path');
 
 var db = require('../databases/createPool').connection;
 var transporter = require('../configs/config').transporter;
-var optionsSendMail = require('./seeds');
+var options = require('./seeds');
 
 //decode với key trong config
 function jwtVerifyLogin(token) {
@@ -31,13 +33,13 @@ function sendQueryToDatabase(queryStatement, arrayValue) {
 };
 
 /**
- * Help Connect to DATABASE
+ * Help Connect to EMAIL
  * @param {String} toEmail Send email to somebody
  * @param {Number} codeVery Code to very account
  */
 function sendVerifyUseEmail(toEmail, fullName, linkVerify) {
     return new Promise((resolve, reject) => {
-        transporter.sendMail(optionsSendMail.mailOptions(toEmail, fullName, linkVerify), function (error, info) {
+        transporter.sendMail(options.mailOptions(toEmail, fullName, linkVerify), function (error, info) {
             if (error) {
                 return reject(error);
             }
@@ -45,6 +47,32 @@ function sendVerifyUseEmail(toEmail, fullName, linkVerify) {
         })
     })
 };
+
+// Upload image config
+// Set The Storage Engine
+var storage = multer.diskStorage({
+    destination: '../public/uploads/images/avatars/',
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+var upload = multer({
+    storage: storage,
+    limits: { fileSize: 5242880 },
+    fileFilter: function (req, file, cb) {
+        // Allowed ext
+        const filetypes = /jpeg|jpg|png/;
+        // Check ext
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        // Check mime
+        const mimetype = filetypes.test(file.mimetype);
+        if (mimetype && extname) {
+            return cb(null, true);
+        } else {
+            return cb(true, null);
+        }
+    }
+}).single('Image');
 
 function generateRandom6Number() {
     let result = 0;
@@ -85,4 +113,4 @@ function jsonSuccessTrueResult(strMessage) {
     };
 };
 
-module.exports = { jwtVerifyLogin, sendQueryToDatabase, sendVerifyUseEmail, generateRandom6Number, jsonErrorDescription, jsonSuccessFalse, jsonSuccessTrue, jsonSuccessTrueResult, jsonError };
+module.exports = { jwtVerifyLogin, sendQueryToDatabase, sendVerifyUseEmail, generateRandom6Number, jsonErrorDescription, jsonSuccessFalse, jsonSuccessTrue, jsonSuccessTrueResult, jsonError, upload };
