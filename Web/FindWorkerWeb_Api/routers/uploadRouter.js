@@ -4,6 +4,7 @@ var path = require('path');
 var fs = require('fs');
 
 var helper = require('../helpers/helper');
+var linkServer = require('../configs/config.json');
 
 var uploadAvatar = multer({
     dest: '../public/uploads/images/avatars/',
@@ -49,7 +50,7 @@ router.post('/image-avatar', async (req, res) => {
                             else {
                                 // Return tên file về.
                                 return res.status(200).json(helper.jsonSuccessTrueResult({
-                                    "path": `/uploads/images/avatars/${nameFile}`
+                                    "path": `${linkServer.hethonghotrotimviec.urlServer}/uploads/images/avatars/${nameFile}`
                                 }));
                             }
                         });

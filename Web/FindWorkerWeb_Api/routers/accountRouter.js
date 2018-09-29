@@ -51,7 +51,7 @@ router.post('/login', async (req, res) => {
                                     "token": token,
                                     "UserAccountID": result[0].UserAccountID,
                                     "FullName": result[0].FullName,
-                                    "Image": result[0].Image,
+                                    "Image": `${linkServer.hethonghotrotimviec.urlServer}${result[0].Image}`,
                                     "NameUserType": result[0].NameUserType,
                                     "UserTypeID": result[0].UserTypeID
                                 });
@@ -133,7 +133,10 @@ router.get('/profile/:useraccountid', async (req, res) => {
         await helper.jwtVerifyLogin(req.header("authorization"));//verify token trong header
         result = "";
         result = await accountModel.getProfileInform(req.params.useraccountid)//get thông tin profile
-        if (result.length > 0) { return res.status(200).json(result[0]); }
+        if (result.length > 0) {
+            result[0].Image = `${linkServer.hethonghotrotimviec.urlServer}${result[0].Image}`;
+            return res.status(200).json(result[0]);
+        }
         else {
             return res.status(404).json(helper.jsonErrorDescription("ID không tồn tại"));
         }

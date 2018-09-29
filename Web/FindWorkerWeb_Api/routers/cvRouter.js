@@ -4,6 +4,7 @@ var router = express.Router();
 var cvModel = require('../models/cvModel');
 var helper = require('../helpers/helper');
 var CVScript = require('../databases/app_data/curriculumVitaeScript.json');
+var linkServer = require('../configs/config.json');
 
 var objectValue = {};
 var result = {};
@@ -98,6 +99,9 @@ router.get('/not-activated', async (req, res) => {
         let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
         if (resultOfJWT.UserTypeID == 1) {
             let resultOfUNA = await cvModel.getUserNotActivated(0, 2);
+            for (let i = 0; i < resultOfUA.length; i++) {
+                resultOfUA[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfUA[i].Image}`
+            }
             if (resultOfUNA.length > 0) { res.status(200).json(helper.jsonSuccessTrueResult(resultOfUNA)); }
             else { res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!")); }
         } else {
@@ -230,6 +234,9 @@ router.get('/activated-by-query', async (req, res) => {
             }
             let resultOfUA = await cvModel.getCVByQuery(strQuery, 2, 1);
             if (resultOfUA.length > 0) {
+                for (let i = 0; i < resultOfUA.length; i++) {
+                    resultOfUA[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfUA[i].Image}`
+                }
                 res.status(200).json(helper.jsonSuccessTrueResult(resultOfUA));
             } else {
                 res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!"));
