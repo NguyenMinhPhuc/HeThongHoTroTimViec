@@ -1,3 +1,5 @@
+var linkServer = require('../configs/config.json');
+
 function mailOptions(toEmail, fullName, linkVerify) {
     return {
         from: process.env.FW_USERNAMEGMAIL,
@@ -16,4 +18,8 @@ function mailOptions(toEmail, fullName, linkVerify) {
     };
 };
 
-module.exports = { mailOptions };
+function linkImageStoreDefault() {
+    return `${linkServer.hethonghotrotimviec.urlServer}/images/storedefault.jpg`
+}
+
+module.exports = { mailOptions, linkImageStoreDefault };

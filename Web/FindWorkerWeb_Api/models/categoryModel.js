@@ -17,4 +17,26 @@ function getJobCategoryByUserWorkerID(UserAccountID) {
     );
 };
 
-module.exports = { getAllJobCategory, getJobCategoryByUserWorkerID };
+function postJobCategory(valueObject) {
+    return helper.sendQueryToDatabase(
+        CategoryScript.insertJobCategory,
+        [
+            valueObject.NameJobCategory,
+            valueObject.ImageStore,
+            valueObject.NameJobCategory
+        ]
+    );
+};
+
+function putJobCategory(valueObject) {
+    return helper.sendQueryToDatabase(
+        CategoryScript.updateJobCategory,
+        [
+            valueObject.NameJobCategory,
+            valueObject.ImageStore,
+            valueObject.CategoryID
+        ]
+    );
+};
+
+module.exports = { getAllJobCategory, getJobCategoryByUserWorkerID, postJobCategory, putJobCategory };

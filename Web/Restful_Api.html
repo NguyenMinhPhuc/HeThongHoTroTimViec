@@ -122,6 +122,30 @@
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
+					<th scope="row">/api/category/create-category</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Tạo một danh mục mới(ADMIN)</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> NameJobCategory: - ImageStore: <br>
+						<i>"29/9/2018-29/9/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/category/update-category</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Chỉnh sửa một danh mục.</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> CategoryID: - NameJobCategory: - ImageStore: <br>
+						<i>"29/9/2018-29/9/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
 					<th colspan="5" style="background-color: deepskyblue;color: white">
 						<h4>Hồ Sơ</h4>
 					</th>
@@ -282,8 +306,31 @@
 						<h5 class="text-center">Lưu file ảnh của profile</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'multipart/form-data'<br>
 						<b>body:</b> Image: <br>
-						<i>"5/9/2018-5/9/2018"</i>
+						<i>"24/9/2018-27/9/2018"</i>
 					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/upload/image-store</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Lưu file ảnh của store (ADMIN)</h5>
+						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'multipart/form-data'<br>
+						<b>body:</b> Image: <br>
+						<i>"29/9/2018-29/9/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/upload/image-store-default</th>
+					<td class="text-left">
+						<h5 class="text-center">Get file ảnh store mặc định (ADMIN)</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"29/9/2018-29/9/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>

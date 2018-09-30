@@ -1,4 +1,6 @@
 {
     "selectAllJobCategory": "SELECT * FROM jobcategories",
-    "selectJobCategoryByUserWorkerID": "SELECT * FROM jobcategories WHERE CategoryID NOT IN (SELECT CategoryID FROM userjobcategories WHERE UserWorkerID = ?)"
+    "selectJobCategoryByUserWorkerID": "SELECT * FROM jobcategories WHERE CategoryID NOT IN (SELECT CategoryID FROM userjobcategories WHERE UserWorkerID = ?)",
+    "insertJobCategory":"INSERT INTO jobcategories ( NameJobCategory , ImageStore) SELECT ?, ? WHERE NOT EXISTS (SELECT CategoryID FROM jobcategories WHERE NameJobCategory = ?) LIMIT 1",
+    "updateJobCategory":"UPDATE jobcategories SET NameJobCategory = ?, ImageStore = ? WHERE CategoryID = ?"
 }
