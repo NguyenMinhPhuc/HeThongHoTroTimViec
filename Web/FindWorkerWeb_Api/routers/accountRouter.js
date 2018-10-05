@@ -17,67 +17,69 @@ var objectValue = {};
 //Login
 router.post('/login', async (req, res) => {
     try {
-        let isEmail = false;
-        if (req.body.Username.indexOf("@") > -1 && req.body.Username.indexOf(".") > -1) {
-            isEmail = true;
-            req.checkBody('Username', 'Sai định dạng Email').isEmail();
-        } else {
-            isEmail = false;
-            req.checkBody('Username', 'Không để trống Username').notEmpty();
-        }
-        req.checkBody('Password', 'Không để trống Password').trim().notEmpty();
-        req.checkBody('grant_type', 'Không để trống Grant type').trim().notEmpty();
-        if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
-        else {
-            if (req.body.grant_type === "password") {
-                result = "";
-                result = await accountModel.postCheckInforLoginUseUsername(req.body.Username, isEmail);
-                if (result.length > 0) {
-                    if (result[0].StatusAccount == 0) {
-                        return res.status(200).json(helper.jsonSuccessFalse("Tài khoản chưa được active kiểm tra email hoặc thùng rác"));
-                    } else if (result[0].StatusAccount == 1) {
-                        if (result[0].Password == md5(req.body.Password)) {//check password
-                            let resultObject = JSON.parse(JSON.stringify({
-                                "UserAccountID": result[0].UserAccountID,
-                                "UserTypeID": result[0].UserTypeID
-                            }));
-                            jwt.sign(resultObject, process.env.FW_SECRET, {
-                                algorithm: process.env.FW_ALGORITHM,
-                                expiresIn: '1 days'
-                            }, (err, token) => {
-                                if (err) return res.status(500).json(helper.jsonError(err.message));
-                                return res.status(200).json({
-                                    "success": true,
-                                    "token": token,
+        if (req.body != undefined) {
+            let isEmail = false;
+            if (req.body.Username.indexOf("@") > -1 && req.body.Username.indexOf(".") > -1) {
+                isEmail = true;
+                req.checkBody('Username', 'Sai định dạng Email').isEmail();
+            } else {
+                isEmail = false;
+                req.checkBody('Username', 'Không để trống Username').notEmpty();
+            }
+            req.checkBody('Password', 'Không để trống Password').trim().notEmpty();
+            req.checkBody('grant_type', 'Không để trống Grant type').trim().notEmpty();
+            if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
+            else {
+                if (req.body.grant_type === "password") {
+                    result = "";
+                    result = await accountModel.postCheckInforLoginUseUsername(req.body.Username, isEmail);
+                    if (result.length > 0) {
+                        if (result[0].StatusAccount == 0) {
+                            return res.status(200).json(helper.jsonSuccessFalse("Tài khoản chưa được active kiểm tra email hoặc thùng rác"));
+                        } else if (result[0].StatusAccount == 1) {
+                            if (result[0].Password == md5(req.body.Password)) {//check password
+                                let resultObject = JSON.parse(JSON.stringify({
                                     "UserAccountID": result[0].UserAccountID,
-                                    "FullName": result[0].FullName,
-                                    "Image": `${linkServer.hethonghotrotimviec.urlServer}${result[0].Image}`,
-                                    "NameUserType": result[0].NameUserType,
                                     "UserTypeID": result[0].UserTypeID
+                                }));
+                                jwt.sign(resultObject, process.env.FW_SECRET, {
+                                    algorithm: process.env.FW_ALGORITHM,
+                                    expiresIn: '1 days'
+                                }, (err, token) => {
+                                    if (err) return res.status(500).json(helper.jsonError(err.message));
+                                    return res.status(200).json({
+                                        "success": true,
+                                        "token": token,
+                                        "UserAccountID": result[0].UserAccountID,
+                                        "FullName": result[0].FullName,
+                                        "Image": `${linkServer.hethonghotrotimviec.urlServer}${result[0].Image}`,
+                                        "NameUserType": result[0].NameUserType,
+                                        "UserTypeID": result[0].UserTypeID
+                                    });
                                 });
-                            });
+                            } else {
+                                return res.status(400).json(
+                                    helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng")
+                                );
+                            }
                         } else {
                             return res.status(400).json(
-                                helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng")
+                                helper.jsonErrorDescription("Tài khoản đã bị khóa")
                             );
                         }
                     } else {
                         return res.status(400).json(
-                            helper.jsonErrorDescription("Tài khoản đã bị khóa")
+                            helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng")
                         );
                     }
+
                 } else {
                     return res.status(400).json(
-                        helper.jsonErrorDescription("Tài khoản hoặc mật khẩu không đúng")
+                        helper.jsonErrorDescription("Grant type không đúng")
                     );
                 }
-
-            } else {
-                return res.status(400).json(
-                    helper.jsonErrorDescription("Grant type không đúng")
-                );
-            }
-        };
+            };
+        }
     } catch (err) {
         console.log(err.message);
         return res.status(500).json(helper.jsonError(err.message));
@@ -87,10 +89,15 @@ router.post('/login', async (req, res) => {
 //signup
 router.post('/signup-for-both', [check('Username').custom(value => {
     //sử dụng express-validator để custom username không có khoảng cách
-    if (value.indexOf(' ') >= 0) {
-        return Promise.reject('Username không chứa khoảng cách');
+    try {
+        if (value.indexOf(' ') >= 0) {
+            return Promise.reject('Username không chứa khoảng cách.');
+        }
+        return Promise.resolve(true);
+    } catch (err) {
+        console.log(err.message);
+        return Promise.reject('Username không để trống.');
     }
-    return Promise.resolve(true);
 })], async (req, res) => {
     req.checkBody('Email', 'không phải là một Email').isEmail();
     req.checkBody('Password', 'Password phải chứa ít nhất là 6 ký tự').trim().isLength({ min: 6 });
@@ -107,7 +114,7 @@ router.post('/signup-for-both', [check('Username').custom(value => {
                 result = "";
                 result = await accountModel.postSignUpForAllUser(account);
                 if (result.affectedRows > 0) {
-                    let linkVerify = `${linkServer.hethonghotrotimviec.urlServer}/#!/tai-khoan/verify?email=${account.Email}&code=${account.CodeActive}`;
+                    let linkVerify = `${linkServer.hethonghotrotimviec.urlClientWorker}/#!/tai-khoan/verify?email=${account.Email}&code=${account.CodeActive}`;
                     helper.sendVerifyUseEmail(account.Email, account.Fullname, linkVerify)
                         .then(resultVeri => {
                             return res.status(200).json(helper.jsonSuccessTrue(`Link xác thực tài khoản đã gởi tới email: ${account.Email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.`));

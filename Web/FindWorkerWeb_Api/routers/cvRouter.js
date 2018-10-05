@@ -99,8 +99,8 @@ router.get('/not-activated', async (req, res) => {
         let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
         if (resultOfJWT.UserTypeID == 1) {
             let resultOfUNA = await cvModel.getUserNotActivated(0, 2);
-            for (let i = 0; i < resultOfUA.length; i++) {
-                resultOfUA[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfUA[i].Image}`
+            for (let i = 0; i < resultOfUNA.length; i++) {
+                resultOfUNA[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfUNA[i].Image}`
             }
             if (resultOfUNA.length > 0) { res.status(200).json(helper.jsonSuccessTrueResult(resultOfUNA)); }
             else { res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!")); }
