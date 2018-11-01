@@ -82,11 +82,32 @@ function updateStatusAccount(profile, statusAccount) {
 function updateCodeActive(objectValue) {
     return helper.sendQueryToDatabase(
         AccountScript.updateStatusAccount,
-        [
-            objectValue.Email,
-            objectValue.CodeActive
-        ]
+        [objectValue.Email, objectValue.CodeActive]
+    );
+};
+function putSocketID(objectValue) {
+    return helper.sendQueryToDatabase(
+        AccountScript.updateSocketID,
+        [objectValue.SocketID, objectValue.UserAccountID]
     );
 };
 
-module.exports = { getVerifyByEmail, postCheckInforLoginUseUsername, postSignUpForAllUser, getProfileInform, updateProfileInform, updateStatusAccount, updateCodeActive };
+//Select info account for chat
+function selectInfoAccountChat(UserAccountID) {
+    return helper.sendQueryToDatabase(
+        AccountScript.selectInfoAccountForChat,
+        [UserAccountID]
+    )
+}
+
+module.exports = {
+    selectInfoAccountChat,
+    getVerifyByEmail,
+    postCheckInforLoginUseUsername,
+    postSignUpForAllUser,
+    getProfileInform,
+    updateProfileInform,
+    updateStatusAccount,
+    updateCodeActive,
+    putSocketID
+};

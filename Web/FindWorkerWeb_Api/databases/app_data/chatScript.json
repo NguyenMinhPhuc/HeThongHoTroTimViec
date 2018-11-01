@@ -1,0 +1,15 @@
+{
+    "selectMessageDetailLimit": "SELECT TimeComment, UserID, MessageDetail FROM chatdetails WHERE HistoryID = ? ORDER BY TimeComment DESC LIMIT ?, ?",
+    "selectIDUserByHistoryID": "SELECT UserGuestID, UserWorkerID FROM chathistories WHERE HistoryID = ?",
+    "selectListPeopleChatedByUserWorkerID": "SELECT ua.FullName, ua.Image, ch.HistoryID, ch.UserGuestID, DATE_FORMAT(ch.DateCreate, '%d/%m/%Y') as DateCreate, ch.HistoryName FROM chathistories AS ch INNER JOIN useraccounts AS ua ON ch.UserGuestID = ua.UserAccountID AND ch.UserWorkerID = ? AND StatusEnd = ?",
+    "selectListPeopleChatedByUserGuestID": "SELECT ua.FullName, ua.Image, ch.HistoryID, ch.UserWorkerID, DATE_FORMAT(ch.DateCreate, '%d/%m/%Y') as DateCreate, ch.HistoryName FROM chathistories AS ch INNER JOIN useraccounts AS ua ON ch.UserWorkerID = ua.UserAccountID AND ch.UserGuestID = ? AND StatusEnd = ?",
+    "selectPointsAndCheck":"SELECT PointsGuest, PointsWorker, UserGuestID, UserWorkerID, StatusEnd FROM chathistories WHERE HistoryID = ?",
+    "selectInfoGuestTransactionDone":"SELECT HistoryID, UserWorkerID, DateEnd, PointsWorker, FullName, Image FROM chathistories INNER JOIN useraccounts ON UserGuestID = UserAccountID AND UserGuestID = ? AND StatusEnd = ? ORDER BY UNIX_TIMESTAMP(DateEnd) LIMIT ?, ?",
+    "selectInfoWorkerTransactionDone":"SELECT HistoryID, UserGuestID, DateEnd, PointsGuest, FullName, Image FROM chathistories INNER JOIN useraccounts ON UserWorkerID = UserAccountID AND UserWorkerID = ? AND StatusEnd = ? ORDER BY UNIX_TIMESTAMP(DateEnd) LIMIT ?, ?",
+    "insertChatHistory": "INSERT INTO chathistories ( UserGuestID, UserWorkerID) SELECT ?,? WHERE NOT EXISTS (SELECT HistoryID FROM chathistories WHERE UserGuestID = ? AND UserWorkerID = ? AND StatusEnd = ?) LIMIT 1",
+    "insertMessageDetail": "INSERT INTO chatdetails (HistoryID, TimeComment, UserID, MessageDetail) VALUES (?, ?, ?, ?)",
+    "updateStatusEndChatHistoryByUserWorkerID": "UPDATE chathistories SET StatusEnd = ?, DateEnd = now() WHERE HistoryID = ? AND UserWorkerID = ?",
+    "updateStatusEndChatHistoryByUserGuestID": "UPDATE chathistories SET StatusEnd = ?, DateEnd = now() WHERE HistoryID = ? AND UserGuestID = ?",
+    "updatePointsAndStatusByGuest": "UPDATE chathistories SET PointsGuest = ?, StatusEnd = ?, DateEnd = now() WHERE HistoryID = ?",
+    "updatePointsAndStatusByWorker": "UPDATE chathistories SET PointsWorker = ?, StatusEnd = ?, DateEnd = now() WHERE HistoryID = ?"
+}

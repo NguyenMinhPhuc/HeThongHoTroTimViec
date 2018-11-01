@@ -44,7 +44,7 @@ router.post('/post', async (req, res) => {
 router.put('/active-cv', async (req, res) => {
     req.checkBody('CategoryID', 'Sai định dạng danh mục').isInt();
     req.checkBody('UserWorkerID', 'Sai định dạng tài khoản id').isInt();
-    if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
+    if (req.validationErrors()) {return res.status(400).json(helper.jsonError(req.validationErrors()));}
     else {
         try {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));

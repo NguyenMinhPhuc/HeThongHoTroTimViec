@@ -28,9 +28,13 @@ function sendQueryToDatabase(queryStatement, arrayValue) {
         return db.query(queryStatement, arrayValue, (err, results) => {
             if (err) { return reject(err); }
             resolve(results);
-        })
+        });
     });
 };
+
+function getOffset(page, limit) {
+    return (page - 1) * limit;
+}
 
 /**
  * Help Connect to EMAIL
@@ -113,4 +117,4 @@ function jsonSuccessTrueResult(strMessage) {
     };
 };
 
-module.exports = { jwtVerifyLogin, sendQueryToDatabase, sendVerifyUseEmail, generateRandom6Number, jsonErrorDescription, jsonSuccessFalse, jsonSuccessTrue, jsonSuccessTrueResult, jsonError, upload };
+module.exports = { jwtVerifyLogin, sendQueryToDatabase, getOffset, sendVerifyUseEmail, generateRandom6Number, jsonErrorDescription, jsonSuccessFalse, jsonSuccessTrue, jsonSuccessTrueResult, jsonError, upload };
