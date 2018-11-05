@@ -60,6 +60,18 @@ function selectInfoWorkerTransactionDone(valueObject, limit, offset) {
     );
 };
 
+function selectPointsWorkerAndAverage(UserAccountID) {
+    return helper.sendQueryToDatabase(
+        chatHistoryScript.selectPointsWorkerAndAverage, [UserAccountID]
+    );
+};
+
+function selectPointsGuestAndAverage(UserAccountID) {
+    return helper.sendQueryToDatabase(
+        chatHistoryScript.selectPointsGuestAndAverage, [UserAccountID]
+    );
+};
+
 function insertChatHistory(chat, isEnd) {
     return helper.sendQueryToDatabase(
         chatHistoryScript.insertChatHistory,
@@ -137,6 +149,8 @@ module.exports = {
     selectPointsAndCheck,
     selectInfoGuestTransactionDone,
     selectInfoWorkerTransactionDone,
+    selectPointsWorkerAndAverage,
+    selectPointsGuestAndAverage,
     insertChatHistory,
     insertMessageDetail,
     updateStatusEndChatHistoryByUserWorkerID,

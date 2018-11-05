@@ -90,7 +90,7 @@ router.get('/get-message-chated', async function (req, res) {
         let historyid = req.query.historyid;
         let limit = Number(req.query.limit);
         let page = Number(req.query.page);
-        if (!!UserAccountID && !!limit && !!page && Number.isInteger(limit) && Number.isInteger(page) && page > 0 && limit > 0) {
+        if (!!historyid && !!limit && !!page && Number.isInteger(limit) && Number.isInteger(page) && page > 0 && limit > 0) {
             let offset = helper.getOffset(page, limit);
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
             let resultSelUserID = await chatHistoryModel.selectIDUserByHistoryID(historyid);
@@ -103,7 +103,7 @@ router.get('/get-message-chated', async function (req, res) {
                     });
                     return res.status(200).json(helper.jsonSuccessTrueResult(resultNew));
                 }
-                else { return res.status(200).json(helper.jsonSuccessFalse("Nội dung trống hãy nhắn gì đó.")); }
+                else { return res.status(200).json(helper.jsonSuccessFalse("Không có nội dung.")); }
             } else {
                 return res.status(400).json(helper.jsonErrorDescription("Không thể lấy vì bạn không trong phòng chat này."));
             }
@@ -182,7 +182,7 @@ router.put('/put-cancel-transaction', async function (req, res) {
 
 router.put('/put-done-transaction', async function (req, res) {
     req.checkBody('HistoryID', 'Sai định dạng mã History.').isInt({ min: 10000 });
-    req.checkBody('Points', 'Điểm đánh giá phải từ 0 đến 10.').isInt({ min: 0, max: 10 });
+    req.checkBody('Points', 'Điểm đánh giá phải từ 1 đến 10.').isInt({ min: 1, max: 10 });
     if (req.validationErrors()) { return res.status(400).json(helper.jsonError(req.validationErrors())); }
     else {
         try {
@@ -243,6 +243,9 @@ router.get('/get-info-transaction-done-by-userid', async function (req, res) {
             if (resultInfoAccount[0].UserTypeID == 2) {
                 let resultSelectPeopleTransaceted = await chatHistoryModel.selectInfoWorkerTransactionDone(valueObject, limit, offset);
                 if (resultSelectPeopleTransaceted.length > 0) {
+                    for (let i = 0; i < resultSelectPeopleTransaceted.length; i++) {
+                        resultSelectPeopleTransaceted[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultSelectPeopleTransaceted[i].Image}`
+                    }
                     return res.status(200).json(helper.jsonSuccessTrueResult(resultSelectPeopleTransaceted));
                 } else {
                     return res.status(200).json(helper.jsonSuccessFalse("Không có dữ liệu."));
@@ -250,12 +253,40 @@ router.get('/get-info-transaction-done-by-userid', async function (req, res) {
             } else if (resultInfoAccount[0].UserTypeID == 3) {
                 let resultSelectPeopleTransaceted = await chatHistoryModel.selectInfoGuestTransactionDone(valueObject, limit, offset);
                 if (resultSelectPeopleTransaceted.length > 0) {
+                    for (let i = 0; i < resultSelectPeopleTransaceted.length; i++) {
+                        resultSelectPeopleTransaceted[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultSelectPeopleTransaceted[i].Image}`
+                    }
                     return res.status(200).json(helper.jsonSuccessTrueResult(resultSelectPeopleTransaceted));
                 } else {
                     return res.status(200).json(helper.jsonSuccessFalse("Không có dữ liệu."));
                 }
             } else {
                 return res.status(200).json(helper.jsonSuccessFalse("Không có quyền lấy thông tin giao dịch tài khoản này."));
+            }
+        } else {
+            return res.status(400).json(helper.jsonErrorDescription("Sai định dạng."));
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json(helper.jsonErrorDescription("Token không tồn tại hoặc đã hết hạn."));
+    }
+});
+
+router.get('/get-average-points', async function (req, res) {
+    try {
+        let UserAccountID = req.query.useraccountid;
+        if (!!UserAccountID) {
+            await helper.jwtVerifyLogin(req.header("authorization"));
+            let resultInfoAccount = await accountModel.selectInfoAccountChat(UserAccountID);
+            if (resultInfoAccount[0].UserTypeID == 2) {
+                let resultSelectPoint = await chatHistoryModel.selectPointsWorkerAndAverage(UserAccountID);
+                return res.status(200).json(helper.jsonSuccessTrueResult(resultSelectPoint[0]));
+            } else if (resultInfoAccount[0].UserTypeID == 3) {
+                let resultSelectPoint = await chatHistoryModel.selectPointsGuestAndAverage(UserAccountID);
+                return res.status(200).json(helper.jsonSuccessTrueResult(resultSelectPoint[0]));
+            } else {
+                let resultSelectPoint = { Points: null, CountTransaction: null }
+                return res.status(200).json(helper.jsonSuccessTrueResult(resultSelectPoint));
             }
         } else {
             return res.status(400).json(helper.jsonErrorDescription("Sai định dạng."));
