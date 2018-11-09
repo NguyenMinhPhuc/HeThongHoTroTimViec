@@ -95,6 +95,18 @@
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
+					<th scope="row">/api/account/get-name-by-userid</th>
+					<td class="text-left">
+						<h5 class="text-center">Lấy tên của một user bất kỳ theo id <span style="color: red">(ALL)</span></h5>
+						<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+						<b>body:</b> Username: - Password: - grant_type: 'password'<br>
+						<i>"8/8/2018-10/8/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
 					<th colspan="5" style="background-color: deepskyblue;color: white">
 						<h4>Danh mục</h4>
 					</th>
@@ -329,6 +341,104 @@
 						<h5 class="text-center">Get file ảnh store mặc định (ADMIN)</h5>
 						<b>headers:</b> 'Authorization': 'token'<br>
 						<i>"29/9/2018-29/9/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th colspan="5" style="background-color: deepskyblue;color: white">
+						<h4>Chat</h4>
+					</th>
+				</tr>
+				<tr>
+					<th scope="row">/api/chat/update-socketid</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Update SOCKET_ID <span style="color: red">(SERVER SOCKET)</span></h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> SocketID: <br>
+						<i>"9/10/2018-9/10/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/chat/create-chat-history</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Tạo mới một chat <span style="color: red">(SERVER SOCKET)</span></h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> ToUserID: <br>
+						<i>"11/10/2018-12/10/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/chat/post-new-messagey</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Chat một câu <span style="color: red">(SERVER SOCKET)</span></h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> HistoryID: - TimeComment: - MessageDetail: <br>
+						<i>"12/10/2018-12/10/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/chat/get-message-chated?historyid=&limit=&page=</th>
+					<td class="text-left">
+						<h5 class="text-center">Chat một câu <span style="color: red">(SERVER SOCKET)</span></h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"12/10/2018-12/10/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/chat/get-list-people-chated</th>
+					<td class="text-left">
+						<h5 class="text-center">Lấy danh sách người đã nhăn tin nhưng chưa kết thúc giao dịch</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"16/10/2018-16/10/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/chat/put-cancel-transaction</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Hủy một giao dịch</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> HistoryID: <br>
+						<i>"18/10/2018-19/10/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/chat/put-done-transaction</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Hoàn thành một giao dịch và cập nhật điểm</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> HistoryID: - Points: <br>
+						<i>"31/10/2018-1/10/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/chat/get-info-transaction-done-by-userid?useraccountid=&limit=&page=</th>
+					<td class="text-left">
+						<h5 class="text-center">Lấy dữ liệu </h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"1/11/2018-1/11/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>

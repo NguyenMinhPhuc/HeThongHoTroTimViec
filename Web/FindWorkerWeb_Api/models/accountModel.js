@@ -79,16 +79,25 @@ function updateStatusAccount(profile, statusAccount) {
         ]
     );
 };
+
 function updateCodeActive(objectValue) {
     return helper.sendQueryToDatabase(
         AccountScript.updateStatusAccount,
         [objectValue.Email, objectValue.CodeActive]
     );
 };
+
 function putSocketID(objectValue) {
     return helper.sendQueryToDatabase(
         AccountScript.updateSocketID,
         [objectValue.SocketID, objectValue.UserAccountID]
+    );
+};
+
+function updatePointAndCount(objectValue, UserAccountID) {
+    return helper.sendQueryToDatabase(
+        AccountScript.updatePointAndCount,
+        [objectValue.PointsAverage, objectValue.CountPeopleRated, UserAccountID]
     );
 };
 
@@ -109,5 +118,6 @@ module.exports = {
     updateProfileInform,
     updateStatusAccount,
     updateCodeActive,
-    putSocketID
+    putSocketID,
+    updatePointAndCount
 };

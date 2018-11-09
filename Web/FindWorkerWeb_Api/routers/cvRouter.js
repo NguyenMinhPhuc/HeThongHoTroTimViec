@@ -44,7 +44,7 @@ router.post('/post', async (req, res) => {
 router.put('/active-cv', async (req, res) => {
     req.checkBody('CategoryID', 'Sai định dạng danh mục').isInt();
     req.checkBody('UserWorkerID', 'Sai định dạng tài khoản id').isInt();
-    if (req.validationErrors()) {return res.status(400).json(helper.jsonError(req.validationErrors()));}
+    if (req.validationErrors()) { return res.status(400).json(helper.jsonError(req.validationErrors())); }
     else {
         try {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
@@ -220,16 +220,16 @@ router.get('/activated-by-query', async (req, res) => {
         result = await helper.jwtVerifyLogin(req.header("authorization"));
         if (result.UserTypeID > 0 && result.UserTypeID < 4) {
             let strQuery = CVScript.selectCVByQuery;
-            if (!isNaN(req.query.categoryid) && req.query.categoryid !== undefined && req.query.categoryid != "") {
+            if (!isNaN(req.query.categoryid) && !!req.query.categoryid) {
                 strQuery = `${strQuery} AND ujc.CategoryID = ${req.query.categoryid}`
             }
-            if (!isNaN(req.query.provinceid) && req.query.provinceid !== undefined && req.query.provinceid.length >= 1) {
+            if (!isNaN(req.query.provinceid) && !!req.query.provinceid) {
                 strQuery = `${strQuery} AND ua.ProvinceID = ${req.query.provinceid}`
             }
-            if (!isNaN(req.query.districtid) && req.query.districtid !== undefined && req.query.districtid.length >= 3) {
+            if (!isNaN(req.query.districtid) && !!req.query.districtid) {
                 strQuery = `${strQuery} AND ua.DistrictID = ${req.query.districtid}`
             }
-            if (!isNaN(req.query.wardid) && req.query.wardid !== undefined && req.query.wardid.length >= 5) {
+            if (!isNaN(req.query.wardid) && !!req.query.wardid) {
                 strQuery = `${strQuery} AND ua.WardID = ${req.query.wardid}`
             }
             let resultOfUA = await cvModel.getCVByQuery(strQuery, 2, 1);

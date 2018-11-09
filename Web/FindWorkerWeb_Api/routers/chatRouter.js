@@ -181,7 +181,7 @@ router.put('/put-cancel-transaction', async function (req, res) {
 });
 
 router.put('/put-done-transaction', async function (req, res) {
-    req.checkBody('HistoryID', 'Sai định dạng mã History.').isInt({ min: 10000 });
+    req.checkBody('HistoryID', 'Sai định dạng mã History.').isInt();
     req.checkBody('Points', 'Điểm đánh giá phải từ 1 đến 10.').isInt({ min: 1, max: 10 });
     if (req.validationErrors()) { return res.status(400).json(helper.jsonError(req.validationErrors())); }
     else {
@@ -196,12 +196,23 @@ router.put('/put-done-transaction', async function (req, res) {
                 if (resultOfSelectPoint[0].PointsGuest >= 0 || resultOfSelectPoint[0].PointsWorker >= 0) {
                     valueObject.StatusEnd = 1;
                 }
-                //Tránh Bug khi một user đánh giá 2 lần và gọn code
+                //Tránh Bug khi một user đánh giá 2 lần
                 if (resultOfJWT.UserTypeID == 2 && resultOfSelectPoint[0].PointsWorker == -1 && resultOfJWT.UserAccountID == resultOfSelectPoint[0].UserWorkerID) {
                     valueObject.PointsWorker = valueObject.Points;
-                    let resultOfUpdatePoints = await chatHistoryModel.updatePointsAndStatusByWorker(valueObject);
+                    let resultOfUpdatePoints = await chatHistoryModel.updatePointsAndStatusByWorker(valueObject);//cập nhật điểm và trạng thái
                     if (resultOfUpdatePoints.affectedRows > 0) {
-                        return res.status(200).json(helper.jsonSuccessTrue("Đã đánh giá thành công."));
+                        res.status(200).json(helper.jsonSuccessTrue("Đã đánh giá thành công."));
+                        if (valueObject.StatusEnd == 1) {
+                            let resultOfSelectPointArray = await Promise.all([//Tính và lấy điểm trung bình tổng người đánh giá ra
+                                chatHistoryModel.selectPointsWorkerAndAverage(resultOfSelectPoint[0].UserWorkerID),
+                                chatHistoryModel.selectPointsGuestAndAverage(resultOfSelectPoint[0].UserGuestID)
+                            ]);
+                            await Promise.all([//Cập nhật điểm trung bình vào bảng user
+                                accountModel.updatePointAndCount(resultOfSelectPointArray[0][0],resultOfSelectPoint[0].UserWorkerID),
+                                accountModel.updatePointAndCount(resultOfSelectPointArray[1][0],resultOfSelectPoint[0].UserGuestID)
+                            ]);
+                        }
+                        return;
                     } else {
                         return res.status(400).json(helper.jsonErrorDescription("Cập nhật điểm đánh giá không thành công."));
                     }
@@ -209,7 +220,18 @@ router.put('/put-done-transaction', async function (req, res) {
                     valueObject.PointsGuest = valueObject.Points;
                     let resultOfUpdatePoints = await chatHistoryModel.updatePointsAndStatusByGuest(valueObject);
                     if (resultOfUpdatePoints.affectedRows > 0) {
-                        return res.status(200).json(helper.jsonSuccessTrue("Đã đánh giá thành công."));
+                        res.status(200).json(helper.jsonSuccessTrue("Đã đánh giá thành công."));
+                        if (valueObject.StatusEnd == 1) {
+                            let resultOfSelectPointArray = await Promise.all([
+                                chatHistoryModel.selectPointsWorkerAndAverage(resultOfSelectPoint[0].UserWorkerID),
+                                chatHistoryModel.selectPointsGuestAndAverage(resultOfSelectPoint[0].UserGuestID)
+                            ]);
+                            await Promise.all([
+                                accountModel.updatePointAndCount(resultOfSelectPointArray[0],resultOfSelectPoint[0].UserWorkerID),
+                                accountModel.updatePointAndCount(resultOfSelectPointArray[1],resultOfSelectPoint[0].UserGuestID)
+                            ]);
+                        }
+                        return;
                     } else {
                         return res.status(400).json(helper.jsonErrorDescription("Cập nhật điểm đánh giá không thành công."));
                     }
@@ -262,31 +284,6 @@ router.get('/get-info-transaction-done-by-userid', async function (req, res) {
                 }
             } else {
                 return res.status(200).json(helper.jsonSuccessFalse("Không có quyền lấy thông tin giao dịch tài khoản này."));
-            }
-        } else {
-            return res.status(400).json(helper.jsonErrorDescription("Sai định dạng."));
-        }
-    } catch (err) {
-        console.log(err.message);
-        return res.status(500).json(helper.jsonErrorDescription("Token không tồn tại hoặc đã hết hạn."));
-    }
-});
-
-router.get('/get-average-points', async function (req, res) {
-    try {
-        let UserAccountID = req.query.useraccountid;
-        if (!!UserAccountID) {
-            await helper.jwtVerifyLogin(req.header("authorization"));
-            let resultInfoAccount = await accountModel.selectInfoAccountChat(UserAccountID);
-            if (resultInfoAccount[0].UserTypeID == 2) {
-                let resultSelectPoint = await chatHistoryModel.selectPointsWorkerAndAverage(UserAccountID);
-                return res.status(200).json(helper.jsonSuccessTrueResult(resultSelectPoint[0]));
-            } else if (resultInfoAccount[0].UserTypeID == 3) {
-                let resultSelectPoint = await chatHistoryModel.selectPointsGuestAndAverage(UserAccountID);
-                return res.status(200).json(helper.jsonSuccessTrueResult(resultSelectPoint[0]));
-            } else {
-                let resultSelectPoint = { Points: null, CountTransaction: null }
-                return res.status(200).json(helper.jsonSuccessTrueResult(resultSelectPoint));
             }
         } else {
             return res.status(400).json(helper.jsonErrorDescription("Sai định dạng."));
