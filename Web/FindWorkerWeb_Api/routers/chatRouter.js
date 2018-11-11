@@ -120,25 +120,57 @@ router.get('/get-list-people-chated', async function (req, res) {
         if (resultOfJWT.UserTypeID == 2) {
             let resultOfList = await chatHistoryModel.selectListPeopleChatedByUserWorkerID(resultOfJWT.UserAccountID, 0);
             if (resultOfList.length > 0) {
+                let stringSQL = "";
                 for (let i = 0; i < resultOfList.length; i++) {
                     resultOfList[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfList[i].Image}`
+                    stringSQL = ` HistoryID = ${resultOfList[i].HistoryID} OR`;
+                };
+                stringSQL = stringSQL.slice(0, stringSQL.length - 2);//cắt chữ OR cuối cùng
+                let resultOfListMostRecentChat = await chatHistoryModel.selectUserChatedMostRecent(stringSQL);
+                for (let i = 0; i < resultOfList.length; i++) {//vòng lặp kết quả resultOfListMostRecentChat
+                    if (resultOfListMostRecentChat.length < 1) {
+                        resultOfList[i].UserIDChatedMostRecent = 0;
+                    } else {
+                        for (let n = 0; n < resultOfListMostRecentChat.length; n++) {//vòng lặp để kiểm tra và gán UserIDChatedMostRecent vào đúng USER ID
+                            if (resultOfList[i].HistoryID == resultOfListMostRecentChat[n].HistoryID) {
+                                resultOfList[i].UserIDChatedMostRecent = resultOfListMostRecentChat[n].UserIDChatedMostRecent;
+                                break;
+                            }
+                        }
+                    }
                 }
-                res.status(200).json(helper.jsonSuccessTrueResult(resultOfList));
+                return res.status(200).json(helper.jsonSuccessTrueResult(resultOfList));
             } else {
-                res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!"));
+                return res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!"));
             }
         } else if (resultOfJWT.UserTypeID == 3) {
             let resultOfList = await chatHistoryModel.selectListPeopleChatedByUserGuestID(resultOfJWT.UserAccountID, 0);
             if (resultOfList.length > 0) {
+                let stringSQL = "";
                 for (let i = 0; i < resultOfList.length; i++) {
-                    resultOfList[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfList[i].Image}`
+                    resultOfList[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfList[i].Image}`;
+                    stringSQL = ` HistoryID = ${resultOfList[i].HistoryID} OR`;
                 }
-                res.status(200).json(helper.jsonSuccessTrueResult(resultOfList));
+                stringSQL = stringSQL.slice(0, stringSQL.length - 2);//cắt chữ OR cuối cùng
+                let resultOfListMostRecentChat = await chatHistoryModel.selectUserChatedMostRecent(stringSQL);
+                for (let i = 0; i < resultOfList.length; i++) {//vòng lặp kết quả resultOfListMostRecentChat
+                    if (resultOfListMostRecentChat.length < 1) {
+                        resultOfList[i].UserIDChatedMostRecent = 0;
+                    } else {
+                        for (let n = 0; n < resultOfListMostRecentChat.length; n++) {//vòng lặp để kiểm tra và gán UserIDChatedMostRecent vào đúng USER ID
+                            if (resultOfList[i].HistoryID == resultOfListMostRecentChat[n].HistoryID) {
+                                resultOfList[i].UserIDChatedMostRecent = resultOfListMostRecentChat[n].UserIDChatedMostRecent;
+                                break;
+                            }
+                        }
+                    }
+                }
+                return res.status(200).json(helper.jsonSuccessTrueResult(resultOfList));
             } else {
-                res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!"));
+                return res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!"));
             }
         } else {
-            return res.status(400).json(helper.jsonErrorDescription("Bạn không có quyền tạo phòng chat."));
+            return res.status(400).json(helper.jsonErrorDescription("Không có quyền lấy danh sách phòng chat."));
         }
     } catch (err) {
         console.log(err.message);
@@ -208,8 +240,8 @@ router.put('/put-done-transaction', async function (req, res) {
                                 chatHistoryModel.selectPointsGuestAndAverage(resultOfSelectPoint[0].UserGuestID)
                             ]);
                             await Promise.all([//Cập nhật điểm trung bình vào bảng user
-                                accountModel.updatePointAndCount(resultOfSelectPointArray[0][0],resultOfSelectPoint[0].UserWorkerID),
-                                accountModel.updatePointAndCount(resultOfSelectPointArray[1][0],resultOfSelectPoint[0].UserGuestID)
+                                accountModel.updatePointAndCount(resultOfSelectPointArray[0][0], resultOfSelectPoint[0].UserWorkerID),
+                                accountModel.updatePointAndCount(resultOfSelectPointArray[1][0], resultOfSelectPoint[0].UserGuestID)
                             ]);
                         }
                         return;
@@ -227,8 +259,8 @@ router.put('/put-done-transaction', async function (req, res) {
                                 chatHistoryModel.selectPointsGuestAndAverage(resultOfSelectPoint[0].UserGuestID)
                             ]);
                             await Promise.all([
-                                accountModel.updatePointAndCount(resultOfSelectPointArray[0],resultOfSelectPoint[0].UserWorkerID),
-                                accountModel.updatePointAndCount(resultOfSelectPointArray[1],resultOfSelectPoint[0].UserGuestID)
+                                accountModel.updatePointAndCount(resultOfSelectPointArray[0], resultOfSelectPoint[0].UserWorkerID),
+                                accountModel.updatePointAndCount(resultOfSelectPointArray[1], resultOfSelectPoint[0].UserGuestID)
                             ]);
                         }
                         return;

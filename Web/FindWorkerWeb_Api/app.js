@@ -32,12 +32,14 @@ var categoryRouter = require('./routers/categoryRouter');
 var locationRouter = require('./routers/locationRouter');
 var uploadRouter = require('./routers/uploadRouter');
 var chatRouter = require('./routers/chatRouter');
+var statisticalRouter = require('./routers/statisticalRouter');
 
 app.use('/api/account', accountRouter);
 app.use('/api/cv', cvRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/location', locationRouter);
 app.use('/api/upload', uploadRouter);
+app.use('/api/statistical',statisticalRouter);
 app.use('/api/chat', chatRouter);
 
 app.use(function (req, res, next) {

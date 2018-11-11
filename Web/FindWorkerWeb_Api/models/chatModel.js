@@ -60,6 +60,12 @@ function selectInfoWorkerTransactionDone(valueObject, limit, offset) {
     );
 };
 
+function selectUserChatedMostRecent(stringSQL){
+    return helper.sendQueryToDatabase(
+        `${chatHistoryScript.selectUserChatedMostRecent} AND (${stringSQL})`,[]
+    );
+};
+
 function selectPointsWorkerAndAverage(UserAccountID) {
     return helper.sendQueryToDatabase(
         chatHistoryScript.selectPointsWorkerAndAverage, [UserAccountID]
@@ -151,6 +157,7 @@ module.exports = {
     selectInfoWorkerTransactionDone,
     selectPointsWorkerAndAverage,
     selectPointsGuestAndAverage,
+    selectUserChatedMostRecent,
     insertChatHistory,
     insertMessageDetail,
     updateStatusEndChatHistoryByUserWorkerID,

@@ -1,6 +1,6 @@
 {
     "hethonghotrotimviec": {
-        "urlServer": "http://localhost:3000",
+        "urlServer": "http://18.217.245.123",
         "urlClientWorker":"http://ho-tro-tim-viec-tho.herokuapp.com/",
         "linksv": "http://18.217.245.123"
     }

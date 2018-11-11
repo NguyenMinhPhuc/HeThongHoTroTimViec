@@ -8,6 +8,7 @@
     "selectInfoWorkerTransactionDone":"SELECT ch.HistoryID, ch.UserGuestID AS UserAccountID, DATE_FORMAT(ch.DateEnd, '%d/%m/%Y') as DateEnd, ch.PointsGuest AS Points, ua.FullName, ua.Image FROM chathistories AS ch INNER JOIN useraccounts AS ua ON ch.UserGuestID = ua.UserAccountID AND ch.UserWorkerID = ? AND ch.StatusEnd = ? ORDER BY UNIX_TIMESTAMP(ch.DateEnd) LIMIT ?, ?",
     "selectPointsWorkerAndAverage": "SELECT ROUND(AVG(PointsGuest), 2) AS PointsAverage, COUNT(PointsGuest) AS CountPeopleRated FROM chathistories WHERE UserWorkerID = ? AND StatusEnd = 1",
     "selectPointsGuestAndAverage": "SELECT ROUND(AVG(PointsWorker), 2) AS PointsAverage, COUNT(PointsWorker) AS CountPeopleRated FROM chathistories WHERE UserGuestID = ? AND StatusEnd = 1",
+    "selectUserChatedMostRecent": "SELECT HistoryID, UserID AS UserIDChatedMostRecent FROM db_findworker.chatdetails AS cd1 WHERE cd1.UserID = (SELECT UserID FROM db_findworker.chatdetails AS cd2 WHERE cd1.HistoryID = cd2.HistoryID ORDER BY TimeComment DESC LIMIT 1) ",
     "insertChatHistory": "INSERT INTO chathistories ( UserGuestID, UserWorkerID) SELECT ?,? WHERE NOT EXISTS (SELECT HistoryID FROM chathistories WHERE UserGuestID = ? AND UserWorkerID = ? AND StatusEnd = ?) LIMIT 1",
     "insertMessageDetail": "INSERT INTO chatdetails (HistoryID, TimeComment, UserID, MessageDetail) VALUES (?, ?, ?, ?)",
     "updateStatusEndChatHistoryByUserWorkerID": "UPDATE chathistories SET StatusEnd = ?, DateEnd = now() WHERE HistoryID = ? AND UserWorkerID = ?",

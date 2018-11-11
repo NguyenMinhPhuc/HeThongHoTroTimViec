@@ -6,13 +6,9 @@ var helper = require('../helpers/helper');
 
 var validator = require('validator');
 
-var objectValue = {};
-var result = {};
-
 router.get('/all-province', async (req, res) => {
     try {
-        result = {};
-        result = await locationModel.getAllProvince();
+        let result = await locationModel.getAllProvince();
         if (result.length > 0) { res.status(200).json(helper.jsonSuccessTrueResult(result)); }
         else { res.status(200).json(helper.jsonSuccessFalse("Danh sách tên Tỉnh, Thành phố trống!!!")); }
     } catch (err) {
@@ -23,8 +19,7 @@ router.get('/all-province', async (req, res) => {
 
 router.get('/all-district-by-provinceid', async (req, res) => {
     try {
-        result = {};
-        result = await locationModel.getAllDistrictByProvinceid(req.query.provinceid.trim());
+        let result = await locationModel.getAllDistrictByProvinceid(req.query.provinceid.trim());
         if (result.length > 0) { res.status(200).json(helper.jsonSuccessTrueResult(result)); }
         else { res.status(200).json(helper.jsonSuccessFalse("Danh sách tên Quận, Huyện, Thành phố không tồn tại!!!")); }
     } catch (err) {
@@ -36,8 +31,7 @@ router.get('/all-district-by-provinceid', async (req, res) => {
 
 router.get('/all-ward-by-districtid', async (req, res) => {
     try {
-        result = {};
-        result = await locationModel.getAllWardByDistrictid(req.query.districtid.trim());
+        let result = await locationModel.getAllWardByDistrictid(req.query.districtid.trim());
         if (result.length > 0) { res.status(200).json(helper.jsonSuccessTrueResult(result)); }
         else { res.status(200).json(helper.jsonSuccessFalse("Danh sách tên Phường, Xã không tồn tại!!!")); }
     } catch (err) {
@@ -49,14 +43,11 @@ router.get('/all-ward-by-districtid', async (req, res) => {
 
 router.put('/geolocation', async (req, res) => {
     try {
-        objectValue = {};
-        objectValue = req.body;
+        let objectValue = req.body;
         if (validator.isLatLong(`${objectValue.Latitude},${objectValue.Longitude}`)) {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
             if (resultOfJWT.UserTypeID > 0 && resultOfJWT.UserTypeID < 4) {
-
                 objectValue.UserAccountID = resultOfJWT.UserAccountID;
-
                 let resultOfCVM = await locationModel.putInfoGeolocationByUserID(objectValue);
                 if (resultOfCVM.affectedRows > 0) {
                     res.status(200).json(helper.jsonSuccessTrue("Đã cập nhật vị trí thành công"));
