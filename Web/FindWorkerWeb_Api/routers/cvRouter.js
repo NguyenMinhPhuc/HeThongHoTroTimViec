@@ -250,4 +250,23 @@ router.get('/activated-by-query', async (req, res) => {
     }
 });
 
+router.get('/get-all-cv-by-userid', async (req, res) => {
+    try {
+        let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+        if (resultOfJWT.UserTypeID == 2) {
+            let resultOfUA = await cvModel.selectCVByUserID(resultOfJWT.UserAccountID);
+            if (resultOfUA.length > 0) {
+                res.status(200).json(helper.jsonSuccessTrueResult(resultOfUA));
+            } else {
+                res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!"));
+            }
+        } else {
+            res.status(400).json(helper.jsonErrorDescription("Loại tài khoản của bạn không có quyền lấy danh sách"));
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json(helper.jsonErrorDescription("Lỗi xác thực token"));
+    }
+});
+
 module.exports = router;

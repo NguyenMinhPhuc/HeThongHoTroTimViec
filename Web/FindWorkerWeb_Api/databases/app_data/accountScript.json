@@ -9,5 +9,5 @@
     "updateStatusAccount": "UPDATE useraccounts SET StatusAccount = ? WHERE Email = ? AND CodeActive = ?",
     "updateCodeActive":"UPDATE useraccounts SET CodeActive = ? WHERE Email = ?",
     "updateSocketID": "UPDATE useraccounts SET SocketID = ? WHERE UserAccountID = ?",
-    "updatePointAndCount": "UPDATE db_findworker.useraccounts SET PointsAverage = ?, CountPeopleRated = ? WHERE UserAccountID = ?"
+    "updatePointAndCount": "UPDATE useraccounts SET PointsAverage = ?, CountPeopleRated = ? WHERE UserAccountID = ?"
 }
