@@ -48,7 +48,6 @@ class cvClass {
                 cv.Exprience,
                 cv.Qualifications,
                 cv.GeneralInformation,
-                cv.ImageStore,
                 cv.CategoryID,
                 cv.UserAccountID
             ]
@@ -68,7 +67,6 @@ class cvClass {
                 cv.Exprience,
                 cv.Qualifications,
                 cv.GeneralInformation,
-                cv.ImageStore,
                 cv.CategoryID,
                 cv.UserAccountID
             ]

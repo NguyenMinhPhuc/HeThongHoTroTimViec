@@ -168,7 +168,7 @@
 					<td class="text-left">
 						<h5 class="text-center">Tạo mới một CV</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> CategoryID: - Exprience: - Qualifications: - GeneralInformation: - ImageStore<br>
+						<b>body:</b> CategoryID: - Exprience: - Qualifications: - GeneralInformation: <br>
 						<i>"15/8/2018-17/8/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -241,7 +241,7 @@
 					<td class="text-left">
 						<h5 class="text-center">Cập nhật thông tin của một hồ sơ chưa active từ một thợ</h5>
 						<b>headers:</b> 'Authorization': 'token' | <br>
-						<b>body:</b> CategoryID: - Exprience: - Qualifications: - GeneralInformation: - ImageStore<br>
+						<b>body:</b> CategoryID: - Exprience: - Qualifications: - GeneralInformation: <br>
 						<i>"1/9/2018-2/9/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
@@ -490,6 +490,30 @@
 						<i>"12/11/2018-12/11/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/statistical/put-block-account-by-userid</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Khóa tài khoản <span style="color: red">(ADMIN)</span></h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> UserAccountID: <br>
+						<i>"12/11/2018-12/11/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/statistical/put-enable-account-by-userid</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Mở khóa tài khoản <span style="color: red">(ADMIN)</span></h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> UserAccountID: <br>
+						<i>"12/11/2018-12/11/2018"</i>
+					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>

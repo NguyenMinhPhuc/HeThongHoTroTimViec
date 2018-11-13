@@ -15,7 +15,6 @@ router.post('/post', async (req, res) => {
     req.checkBody('Exprience', 'Sai định dạng kiểu dữ liệu của năm kinh nghiệm').isFloat({ min: 0.0 });
     req.checkBody('Qualifications', 'Bằng cấp chứa ít nhất 5 ký tự').trim().isLength({ min: 5 });
     req.checkBody('GeneralInformation', 'Thông tin chung chứa ít nhất 10 ký tự').trim().isLength({ min: 10 });
-    req.checkBody('ImageStore', 'Định dạng không phải là URL').trim().isURL();
     if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         try {
@@ -26,7 +25,6 @@ router.post('/post', async (req, res) => {
                 objectValue.UserAccountID = results.UserAccountID;
                 objectValue.Qualifications = objectValue.Qualifications.trim();
                 objectValue.GeneralInformation = objectValue.GeneralInformation.trim();
-                objectValue.ImageStore = objectValue.ImageStore.trim();
                 let resultpJCBCID = await cvModel.postJobCategoryByCategoryID(objectValue);
                 if (resultpJCBCID.affectedRows > 0) { return res.status(200).json(helper.jsonSuccessTrue("Đã đăng hồ sơ thành công.")); }
                 return res.status(400).json(helper.jsonErrorDescription("Thông tin hồ sơ bị trùng."));
@@ -119,6 +117,9 @@ router.get('/activated/:useraccountid', async (req, res) => {
         let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
         if (resultOfJWT.UserTypeID) {
             let resultOfUA = await cvModel.getUserActivated(req.params.useraccountid, 1);
+            for (let i = 0; i < resultOfUA.length; i++) {
+                resultOfUA[i].ImageStore = `${linkServer.hethonghotrotimviec.urlServer}${resultOfUA[i].ImageStore}`
+            }
             if (resultOfUA.length > 0) { res.status(200).json(helper.jsonSuccessTrueResult(resultOfUA)); }
             else { res.status(200).json(helper.jsonSuccessFalse("Danh sách trống!!!")); }
         } else {
@@ -136,6 +137,9 @@ router.get('/not-activated-by-userid', async (req, res) => {
         let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
         if (resultOfJWT.UserTypeID == 2) {
             let resultOfUA = await cvModel.getUserActivated(resultOfJWT.UserAccountID, 0);
+            for (let i = 0; i < resultOfUA.length; i++) {
+                resultOfUA[i].ImageStore = `${linkServer.hethonghotrotimviec.urlServer}${resultOfUA[i].ImageStore}`
+            }
             if (resultOfUA.length > 0) {
                 res.status(200).json(helper.jsonSuccessTrueResult(resultOfUA));
             } else {
@@ -155,20 +159,16 @@ router.put('/not-activated-by-userid', async (req, res) => {
     req.checkBody('Exprience', 'Sai định dạng kiểu dữ liệu của năm kinh nghiệm').isFloat({ min: 0.0 });
     req.checkBody('Qualifications', 'Bằng cấp chứa ít nhất 5 ký tự').trim().isLength({ min: 5 });
     req.checkBody('GeneralInformation', 'Thông tin chung chứa ít nhất 10 ký tự').trim().isLength({ min: 10 });
-    req.checkBody('ImageStore', 'Định dạng không phải là URL').trim().isURL();
     if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         try {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
             if (resultOfJWT.UserTypeID == 2) {
-
                 objectValue = {};
                 objectValue = req.body;
                 objectValue.UserAccountID = resultOfJWT.UserAccountID;
                 objectValue.Qualifications = objectValue.Qualifications.trim();
                 objectValue.GeneralInformation = objectValue.GeneralInformation.trim();
-                objectValue.ImageStore = objectValue.ImageStore.trim();
-
                 let resultNACV = await cvModel.putNotActivatedCV(objectValue);
                 if (resultNACV.affectedRows > 0) {
                     res.status(200).json(helper.jsonSuccessTrueResult("Đã chỉnh sửa hồ sơ thành công"));
@@ -255,6 +255,9 @@ router.get('/get-all-cv-by-userid', async (req, res) => {
         let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
         if (resultOfJWT.UserTypeID == 2) {
             let resultOfUA = await cvModel.selectCVByUserID(resultOfJWT.UserAccountID);
+            for (let i = 0; i < resultOfUA.length; i++) {
+                resultOfUA[i].ImageStore = `${linkServer.hethonghotrotimviec.urlServer}${resultOfUA[i].ImageStore}`
+            }
             if (resultOfUA.length > 0) {
                 res.status(200).json(helper.jsonSuccessTrueResult(resultOfUA));
             } else {
