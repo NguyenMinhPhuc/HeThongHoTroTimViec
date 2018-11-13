@@ -88,4 +88,52 @@ router.get('/get-all-transaction-done', async function (req, res) {
     }
 });
 
+router.put('/put-block-account-by-userid', async function (req, res) {
+    req.checkBody('UserAccountID', 'Sai định dạng UserAccountID.').isInt();
+    if (req.validationErrors()) { return res.status(400).json(helper.jsonError(req.validationErrors())); }
+    else {
+        try {
+            let UserAccountID = req.body.UserAccountID;
+            let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+            if (resultOfJWT.UserTypeID == 1) {
+                let resultOfUpdateStatus = await statisticalModel.updateStatusAccountByUserID(-1, UserAccountID);
+                if (resultOfUpdateStatus.affectedRows > 0) {
+                    return res.status(200).json(helper.jsonSuccessTrue("Đã cập nhật trạng thái tài khoản thành công."));
+                } else {
+                    return res.status(400).json(helper.jsonErrorDescription("Cập nhật không thành công."));
+                }
+            } else {
+                return res.status(400).json(helper.jsonErrorDescription("Không có quyền cập nhật trạng thái tài khoản."));
+            }
+        } catch (err) {
+            console.log(err.message);
+            return res.status(500).json(helper.jsonErrorDescription("Token không tồn tại hoặc đã hết hạn."));
+        }
+    }
+});
+
+router.put('/put-enable-account-by-userid', async function (req, res) {
+    req.checkBody('UserAccountID', 'Sai định dạng UserAccountID.').isInt();
+    if (req.validationErrors()) { return res.status(400).json(helper.jsonError(req.validationErrors())); }
+    else {
+        try {
+            let UserAccountID = req.body.UserAccountID;
+            let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
+            if (resultOfJWT.UserTypeID == 1) {
+                let resultOfUpdateStatus = await statisticalModel.updateStatusAccountByUserID(1, UserAccountID);
+                if (resultOfUpdateStatus.affectedRows > 0) {
+                    return res.status(200).json(helper.jsonSuccessTrue("Đã cập nhật trạng thái tài khoản thành công."));
+                } else {
+                    return res.status(400).json(helper.jsonErrorDescription("Cập nhật không thành công."));
+                }
+            } else {
+                return res.status(400).json(helper.jsonErrorDescription("Không có quyền cập nhật trạng thái tài khoản."));
+            }
+        } catch (err) {
+            console.log(err.message);
+            return res.status(500).json(helper.jsonErrorDescription("Token không tồn tại hoặc đã hết hạn."));
+        }
+    }
+});
+
 module.exports = router;

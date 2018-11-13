@@ -17,6 +17,11 @@ class statisticalClass {
             statisticalScript.selectAllTransactionDone, [offset, limit]
         );
     };
+    updateStatusAccountByUserID(StatusAccount, UserAccountID) {
+        return helper.sendQueryToDatabase(
+            statisticalScript.updateStatusAccountByUserID, [StatusAccount, UserAccountID]
+        );
+    };
 };
 
 module.exports = new statisticalClass();
