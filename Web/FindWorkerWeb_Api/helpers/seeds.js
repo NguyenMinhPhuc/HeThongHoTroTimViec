@@ -1,11 +1,11 @@
-var linkServer = require('../configs/config.json');
-
-function mailOptions(toEmail, fullName, linkVerify) {
-    return {
-        from: process.env.FW_USERNAMEGMAIL,
-        to: toEmail,
-        subject: 'Mã xác nhận vào hệ thống hỗ trợ tìm việc',
-        html: `<div style="width: 500px;margin: 0 auto;margin-top: 10px;background-color: #f6f6f6;" >
+const linkServer = require('../configs/config.json');
+class SeedClass {
+    mailOptions(toEmail, fullName, linkVerify) {
+        return {
+            from: process.env.FW_USERNAMEGMAIL,
+            to: toEmail,
+            subject: 'Mã xác nhận vào hệ thống hỗ trợ tìm việc',
+            html: `<div style="width: 500px;margin: 0 auto;margin-top: 10px;background-color: #f6f6f6;" >
                 <div style="background-color: #1ab394;padding: 1px">
                     <center><h1 style="color: #fff">Hệ thống hỗ trợ tìm việc</h1></center>
                 </div>
@@ -15,11 +15,27 @@ function mailOptions(toEmail, fullName, linkVerify) {
                     <center><i><h3><span style="background-color: #f6f6f6;color:#ed5565;padding: 7px;border-radius: 5px;"><a href="${linkVerify}">Click vào đây</a></span></h3></i></center>
                 </div>
             </div>`
+        };
+    };
+    mailOptionsChangePassword(toEmail, password) {
+        return {
+            from: process.env.FW_USERNAMEGMAIL,
+            to: toEmail,
+            subject: 'Quên mật khẩu hệ thống hỗ trợ tìm việc',
+            html: `<div style="width: 500px;margin: 0 auto;margin-top: 10px;background-color: #f6f6f6;" >
+                <div style="background-color: #1ab394;padding: 1px">
+                    <center><h1 style="color: #fff">Hệ thống hỗ trợ tìm việc</h1></center>
+                </div>
+                <div style="background-color: #f6f6f6;padding: 1px">
+                    <center><h3 style="margin-left: 30px;color: #1ecacc">Mật khẩu được hệ thống tạo tự động là: </h3></center>
+                    <center><i><h3><span style="background-color: #f6f6f6;color:#ed5565;padding: 7px;border-radius: 5px;">${password}</span></h3></i></center>
+                </div>
+            </div>`
+        };
+    };
+    linkImageStoreDefault() {
+        return `${linkServer.hethonghotrotimviec.urlServer}/images/storedefault.jpg`
     };
 };
 
-function linkImageStoreDefault() {
-    return `${linkServer.hethonghotrotimviec.urlServer}/images/storedefault.jpg`
-}
-
-module.exports = { mailOptions, linkImageStoreDefault };
+module.exports = new SeedClass();

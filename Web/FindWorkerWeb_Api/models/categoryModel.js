@@ -25,6 +25,9 @@ class categoryClass {
             ]
         );
     };
+    selectInfoCVByCategoryID(CategoryID) {
+        return helper.sendQueryToDatabase(CategoryScript.selectInfoCVByCategoryID, [CategoryID]);
+    };
     putJobCategory(valueObject) {
         return helper.sendQueryToDatabase(
             CategoryScript.updateJobCategory,

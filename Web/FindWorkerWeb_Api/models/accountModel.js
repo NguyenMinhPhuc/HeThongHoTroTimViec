@@ -10,6 +10,12 @@ class AccountClass {
             [email]
         );
     };
+    selectPasswordByUserID(UserID) {
+        return helper.sendQueryToDatabase(AccountScript.selectPasswordByUserID, [UserID]);
+    };
+    selectUserIDByEmail(Email) {
+        return helper.sendQueryToDatabase(AccountScript.selectUserIDByEmail, [Email]);
+    };
     //POST
     postCheckInforLoginUseUsername(user, isMail) {
         if (isMail) {
@@ -93,6 +99,18 @@ class AccountClass {
         return helper.sendQueryToDatabase(
             AccountScript.updatePointAndCount,
             [objectValue.PointsAverage, objectValue.CountPeopleRated, UserAccountID]
+        );
+    };
+    updatePasswordByUserID(objectValue) {
+        return helper.sendQueryToDatabase(
+            AccountScript.updatePasswordByUserID,
+            [objectValue.Password, objectValue.UserAccountID]
+        );
+    };
+    updateStatusOnline(objectValue) {
+        return helper.sendQueryToDatabase(
+            AccountScript.updateStatusOnline,
+            [objectValue.StatusOnline, objectValue.UserAccountID]
         );
     };
     //Select info account for chat

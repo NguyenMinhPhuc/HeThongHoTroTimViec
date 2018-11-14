@@ -2,6 +2,7 @@
     "selectAllJobCategory": "SELECT jc.*, count(ujc.CategoryID) AS CountCVWorker FROM jobcategories AS jc LEFT JOIN userjobcategories AS ujc ON jc.CategoryID = ujc.CategoryID GROUP BY jc.CategoryID",
     "selectJobCategoryByUserWorkerID": "SELECT * FROM jobcategories WHERE CategoryID NOT IN (SELECT CategoryID FROM userjobcategories WHERE UserWorkerID = ?)",
     "selectCVByCategoryID": "SELECT ujc.CategoryID, ujc.UserWorkerID, ujc.Exprience, ujc.Qualifications, ujc.GeneralInformation, DATE_FORMAT(ujc.CreateDate, '%d/%m/%Y') AS CreateDate, DATE_FORMAT(ujc.ActiveDate, '%d/%m/%Y') AS ActiveDate, ua.FullName, jc.NameJobCategory, jc.ImageStore FROM userjobcategories AS ujc INNER JOIN useraccounts AS ua ON ujc.UserWorkerID = ua.UserAccountID AND CategoryID = 1002 INNER JOIN jobcategories AS jc ON ujc.CategoryID = jc.CategoryID",
+    "selectInfoCVByCategoryID": "SELECT ua.UserAccountID, ua.FullName, ujc.Exprience, ujc.Qualifications, ujc.GeneralInformation, ujc.ActiveStatus FROM userjobcategories AS ujc INNER JOIN useraccounts AS ua ON ujc.UserWorkerID = ua.UserAccountID INNER JOIN jobcategories AS jc ON ujc.CategoryID = jc.CategoryID AND ujc.CategoryID = ?",
     "insertJobCategory":"INSERT INTO jobcategories ( NameJobCategory , ImageStore) SELECT ?, ? WHERE NOT EXISTS (SELECT CategoryID FROM jobcategories WHERE NameJobCategory = ?) LIMIT 1",
     "updateJobCategory":"UPDATE jobcategories SET NameJobCategory = ?, ImageStore = ? WHERE CategoryID = ?"
 }

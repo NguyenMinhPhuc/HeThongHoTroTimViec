@@ -95,15 +95,41 @@
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
-					<th scope="row">/api/account/get-name-by-userid</th>
+					<th scope="row">/api/account/put-change-password</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-left">
-						<h5 class="text-center">Lấy tên của một user bất kỳ theo id <span style="color: red">(ALL)</span></h5>
-						<b>headers:</b> 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
-						<b>body:</b> Username: - Password: - grant_type: 'password'<br>
-						<i>"8/8/2018-10/8/2018"</i>
+						<h5 class="text-center">Cập nhật mật khẩu mới</h5>
+						<b>headers:</b> 'Authorization': 'token' | <br>'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'<br>
+						<b>body:</b> PasswordOld: - PasswordNew: <br>
+						<i>"14/11/2018-14/11/2018"</i>
+					</td>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/account/put-forgot-password</th>
 					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Tạo tự động và gởi mật khẩu qua email</h5>
+						<b>body:</b> Email: <br>
+						<i>"14/11/2018-14/11/2018"</i>
+					</td>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/account/put-status-online</th>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-left">
+						<h5 class="text-center">Cập nhật trạng thái online</h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<b>body:</b> StatusOnline: <br>
+						<i>"14/11/2018-14/11/2018"</i>
+					</td>
+					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 				</tr>
 				<tr>
@@ -263,6 +289,17 @@
 						<h5 class="text-center">Lấy danh sách cv của một thợ đã kích hoạt bởi userid</h5>
 						<b>headers:</b> 'Authorization': 'token'<br>
 						<i>"14/8/2018-14/8/2018"</i>
+					</td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+					<td class="text-danger"><b>ERROR</b></td>
+				</tr>
+				<tr>
+					<th scope="row">/api/cv/get-all-cv-by-categoryid?categoryid=</th>
+					<td class="text-left">
+						<h5 class="text-center">Lấy danh sách hồ sơ theo danh mục ngành nghề <span style="color: red">(ADMIN)</span></h5>
+						<b>headers:</b> 'Authorization': 'token'<br>
+						<i>"12/11/2018-12/11/2018"</i>
 					</td>
 					<td class="text-danger"><b>ERROR</b></td>
 					<td class="text-danger"><b>ERROR</b></td>

@@ -52,6 +52,17 @@ function sendVerifyUseEmail(toEmail, fullName, linkVerify) {
     })
 };
 
+function sendEmailChangePassword(toEmail, password) {
+    return new Promise((resolve, reject) => {
+        transporter.sendMail(options.mailOptionsChangePassword(toEmail, password), function (error, info) {
+            if (error) {
+                return reject(error);
+            }
+            return resolve(info.response);
+        })
+    })
+};
+
 // Upload image config
 // Set The Storage Engine
 var storage = multer.diskStorage({
@@ -117,4 +128,17 @@ function jsonSuccessTrueResult(strMessage) {
     };
 };
 
-module.exports = { jwtVerifyLogin, sendQueryToDatabase, getOffset, sendVerifyUseEmail, generateRandom6Number, jsonErrorDescription, jsonSuccessFalse, jsonSuccessTrue, jsonSuccessTrueResult, jsonError, upload };
+module.exports = {
+    jwtVerifyLogin,
+    sendQueryToDatabase,
+    getOffset,
+    sendVerifyUseEmail,
+    sendEmailChangePassword,
+    generateRandom6Number,
+    jsonErrorDescription,
+    jsonSuccessFalse,
+    jsonSuccessTrue,
+    jsonSuccessTrueResult,
+    jsonError,
+    upload
+};
