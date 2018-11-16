@@ -1,11 +1,11 @@
-var router = require('express').Router();
-var multer = require('multer');
-var path = require('path');
-var fs = require('fs');
+const router = require('express').Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
-var helper = require('../helpers/helper');
-var linkServer = require('../configs/config.json');
-var imageDefault = require('../helpers/seeds');
+const helper = require('../helpers/helper');
+const linkServer = require('../configs/config.json');
+const imageDefault = require('../helpers/seeds');
 
 var uploadAvatar = multer({
     dest: '../public/uploads/images/avatars/',
@@ -43,12 +43,9 @@ var uploadStore = multer({
     }
 }).single('ImageStore');
 
-var result = {};
-
 router.post('/image-avatar', async (req, res) => {
     try {
-        result = "";
-        result = await helper.jwtVerifyLogin(req.header("authorization"));
+        let result = await helper.jwtVerifyLogin(req.header("authorization"));
         if (result.UserTypeID >= 1 && result.UserTypeID <= 3) {
             uploadAvatar(req, res, function (err) {
                 if (err) {
@@ -88,8 +85,7 @@ router.post('/image-avatar', async (req, res) => {
 
 router.post('/image-store', async (req, res) => {
     try {
-        result = "";
-        result = await helper.jwtVerifyLogin(req.header("authorization"));
+        let result = await helper.jwtVerifyLogin(req.header("authorization"));
         if (result.UserTypeID == 1) {
             uploadStore(req, res, function (err) {
                 if (err) {
@@ -127,8 +123,7 @@ router.post('/image-store', async (req, res) => {
 
 router.get('/image-store-default', async (req, res) => {
     try {
-        result = "";
-        result = await helper.jwtVerifyLogin(req.header("authorization"));
+        let result = await helper.jwtVerifyLogin(req.header("authorization"));
         if (result.UserTypeID > 0 && result.UserTypeID < 4) {
             res.status(200).json(helper.jsonSuccessTrueResult(imageDefault.linkImageStoreDefault()));
         } else { res.status(400).json(helper.jsonErrorDescription("Loại tài khoản của bạn không có quyền đăng ảnh.")); }

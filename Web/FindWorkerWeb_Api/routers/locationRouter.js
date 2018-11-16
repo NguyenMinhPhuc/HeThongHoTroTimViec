@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var locationModel = require('../models/locationModel');
-var helper = require('../helpers/helper');
+const locationModel = require('../models/locationModel');
+const helper = require('../helpers/helper');
 
-var validator = require('validator');
+const validator = require('validator');
 
 router.get('/all-province', async (req, res) => {
     try {

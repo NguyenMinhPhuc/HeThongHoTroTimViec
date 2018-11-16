@@ -1,5 +1,5 @@
 {
-    "selectProfileInform": "SELECT UserAccountID, Email, FullName, IsMale, PhoneNumber, StreetName, ProvinceID, DistrictID, WardID, PlaceName, DATE_FORMAT(Birthday, '%d/%m/%Y') as Birthday, Image, DATE_FORMAT(CreateDate, '%d/%m/%Y') as CreateDate, PersonID, UserTypeID, PointsAverage, CountPeopleRated FROM useraccounts WHERE UserAccountID = ?",
+    "selectProfileInform": "SELECT UserAccountID, Email, FullName, IsMale, PhoneNumber, StreetName, ProvinceID, DistrictID, WardID, PlaceName, DATE_FORMAT(Birthday, '%d/%m/%Y') as Birthday, Image, DATE_FORMAT(CreateDate, '%d/%m/%Y') as CreateDate, PersonID, UserTypeID, PointsAverage, CountPeopleRated, StatusOnline FROM useraccounts WHERE UserAccountID = ?",
     "selectCheckInforLogin": "SELECT ua.UserAccountID, ua.Username, ua.UserTypeID, ua.FullName, ua.Image, ut.NameUserType, ua.StatusAccount, ua.Password FROM useraccounts as ua INNER JOIN usertype as ut ON ua.UserTypeID = ut.UserTypeID WHERE ua.Username = ? LIMIT 1",
     "selectCheckInforLoginUseEmail": "SELECT ua.UserAccountID, ua.Username, ua.UserTypeID, ua.FullName, ua.Image, ut.NameUserType, ua.StatusAccount, ua.Password FROM useraccounts as ua INNER JOIN usertype as ut ON ua.UserTypeID = ut.UserTypeID WHERE ua.Email = ? LIMIT 1",
     "selectVerifyByEmail": "SELECT CodeActive, StatusAccount FROM useraccounts WHERE Email = ? LIMIT 1",

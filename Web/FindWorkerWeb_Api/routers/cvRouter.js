@@ -1,13 +1,11 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var cvModel = require('../models/cvModel');
-var helper = require('../helpers/helper');
-var CVScript = require('../databases/app_data/curriculumVitaeScript.json');
-var linkServer = require('../configs/config.json');
+const cvModel = require('../models/cvModel');
+const helper = require('../helpers/helper');
+const CVScript = require('../databases/app_data/curriculumVitaeScript.json');
+const linkServer = require('../configs/config.json');
 
-var objectValue = {};
-var result = {};
 //router post
 //POST đăng hồ sơ để đợi duyệt
 router.post('/post', async (req, res) => {
@@ -20,8 +18,7 @@ router.post('/post', async (req, res) => {
         try {
             let results = await helper.jwtVerifyLogin(req.header("authorization"));
             if (results.UserTypeID == 2) {
-                objectValue = {};
-                objectValue = req.body;
+                let objectValue = req.body;
                 objectValue.UserAccountID = results.UserAccountID;
                 objectValue.Qualifications = objectValue.Qualifications.trim();
                 objectValue.GeneralInformation = objectValue.GeneralInformation.trim();
@@ -47,8 +44,7 @@ router.put('/active-cv', async (req, res) => {
         try {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
             if (resultOfJWT.UserTypeID == 1) {
-                objectValue = {};
-                objectValue = req.body;
+                let objectValue = req.body;
                 objectValue.UserAccountID = resultOfJWT.UserAccountID;
                 let resultOfCVM = await cvModel.putActiveCV(objectValue);
                 if (resultOfCVM.affectedRows > 0) {
@@ -70,8 +66,7 @@ router.delete('/active-cv', async (req, res) => {
     try {
         let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
         if (resultOfJWT.UserTypeID == 1) {
-            objectValue = {};
-            objectValue = req.query;
+            let objectValue = req.query;
             if (!isNaN(objectValue.categoryid) && objectValue.categoryid != "" && !isNaN(objectValue.userworkerid) && objectValue.userworkerid != "") {
                 let resultOfCVM = await cvModel.deleteCV(objectValue);
                 if (resultOfCVM.affectedRows > 0) { res.status(200).json(helper.jsonSuccessTrue("Đã xóa hồ sơ.")); }
@@ -164,8 +159,7 @@ router.put('/not-activated-by-userid', async (req, res) => {
         try {
             let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
             if (resultOfJWT.UserTypeID == 2) {
-                objectValue = {};
-                objectValue = req.body;
+                let objectValue = req.body;
                 objectValue.UserAccountID = resultOfJWT.UserAccountID;
                 objectValue.Qualifications = objectValue.Qualifications.trim();
                 objectValue.GeneralInformation = objectValue.GeneralInformation.trim();
@@ -189,11 +183,8 @@ router.delete('/not-activated-by-userid', async (req, res) => {
     try {
         let resultOfJWT = await helper.jwtVerifyLogin(req.header("authorization"));
         if (resultOfJWT.UserTypeID == 2) {
-
-            objectValue = {};
-            objectValue = req.query;
+            let objectValue = req.query;
             objectValue.userworkerid = resultOfJWT.UserAccountID;
-
             if (!isNaN(objectValue.categoryid) && objectValue.categoryid != "") {
                 let resultDCV = await cvModel.deleteCV(objectValue);
                 if (resultDCV.affectedRows > 0) {
@@ -216,8 +207,7 @@ router.delete('/not-activated-by-userid', async (req, res) => {
 //Router get all cv not activated by userID
 router.get('/activated-by-query', async (req, res) => {
     try {
-        result = {};
-        result = await helper.jwtVerifyLogin(req.header("authorization"));
+        let result = await helper.jwtVerifyLogin(req.header("authorization"));
         if (result.UserTypeID > 0 && result.UserTypeID < 4) {
             let strQuery = CVScript.selectCVByQuery;
             if (!isNaN(req.query.categoryid) && !!req.query.categoryid) {

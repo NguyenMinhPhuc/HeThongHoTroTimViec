@@ -1,13 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var url = require("url");
+const express = require('express');
+const router = express.Router();
+const url = require("url");
 
-var categoryModel = require('../models/categoryModel');
-var helper = require('../helpers/helper');
-var linkServer = require('../configs/config.json');
-
-var objectValue = {};
-var result = {};
+const categoryModel = require('../models/categoryModel');
+const helper = require('../helpers/helper');
+const linkServer = require('../configs/config.json');
 
 router.get('/get-all', async (req, res) => {
     try {
@@ -43,10 +40,9 @@ router.post('/create-category', async (req, res) => {
     if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         try {
-            result = {};
-            result = await helper.jwtVerifyLogin(req.header("authorization"));
+            let result = await helper.jwtVerifyLogin(req.header("authorization"));
             if (result.UserTypeID == 1) {
-                objectValue = req.body;
+                let objectValue = req.body;
                 objectValue.ImageStore = url.parse(objectValue.ImageStore).pathname;
                 let resultRowInserted = await categoryModel.postJobCategory(objectValue);
                 if (resultRowInserted.affectedRows > 0) { return res.status(200).json(helper.jsonSuccessTrue("Đã đăng danh mục thành công.")); }
@@ -67,10 +63,9 @@ router.put('/update-category', async (req, res) => {
     if (req.validationErrors()) return res.status(400).json(helper.jsonError(req.validationErrors()));
     else {
         try {
-            result = {};
-            result = await helper.jwtVerifyLogin(req.header("authorization"));
+            let result = await helper.jwtVerifyLogin(req.header("authorization"));
             if (result.UserTypeID == 1) {
-                objectValue = req.body;
+                let objectValue = req.body;
                 objectValue.ImageStore = url.parse(objectValue.ImageStore).pathname;
                 let resultRowInserted = await categoryModel.putJobCategory(objectValue);
                 if (resultRowInserted.affectedRows > 0) { return res.status(200).json(helper.jsonSuccessTrue(`Đã cập nhật danh mục ${objectValue.NameJobCategory} thành công.`)); }
