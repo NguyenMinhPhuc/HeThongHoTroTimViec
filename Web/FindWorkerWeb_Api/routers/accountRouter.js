@@ -110,9 +110,14 @@ router.post('/signup-for-both', [check('Username').custom(value => {
             if (account.TypeAccount == 2 || account.TypeAccount == 3) {
                 let result = await accountModel.postSignUpForAllUser(account);
                 if (result.affectedRows > 0) {
-                    let linkVerify = `${linkServer.hethonghotrotimviec.urlClientWorker}/#!/tai-khoan/verify?email=${account.Email}&code=${account.CodeActive}`;
+                    let linkVerify = "";
+                    if (account.TypeAccount == 2) {
+                        linkVerify = `${linkServer.hethonghotrotimviec.urlClientWorker}/#!/tai-khoan/verify?email=${account.Email}&code=${account.CodeActive}`;
+                    } else {
+                        linkVerify = `${linkServer.hethonghotrotimviec.urlClientGuest}/#!/tai-khoan/verify?email=${account.Email}&code=${account.CodeActive}`;
+                    }
                     helper.sendVerifyUseEmail(account.Email, account.Fullname, linkVerify)
-                        .then(resultVeri => {
+                        .then(function () {
                             return res.status(200).json(helper.jsonSuccessTrue(`Link xác thực tài khoản đã gởi tới email: ${account.Email}, nếu không tìm thấy có thể vào thư rác để kiểm tra.`));
                         })
                         .catch(err => {

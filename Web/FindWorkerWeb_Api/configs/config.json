@@ -2,6 +2,7 @@
     "hethonghotrotimviec": {
         "urlServer": "http://18.217.245.123",
         "urlClientWorker":"http://ho-tro-tim-viec-tho.herokuapp.com/",
+        "urlClientGuest": "http://ho-tro-tim-viec-khach.herokuapp.com/",
         "linksv": "http://localhost:3000"
     }
 } 
