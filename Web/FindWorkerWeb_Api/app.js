@@ -33,6 +33,7 @@ var locationRouter = require('./routers/locationRouter');
 var uploadRouter = require('./routers/uploadRouter');
 var chatRouter = require('./routers/chatRouter');
 var statisticalRouter = require('./routers/statisticalRouter');
+var dashboardRouter = require('./routers/dashboardRouter');
 
 app.use('/api/account', accountRouter);
 app.use('/api/cv', cvRouter);
@@ -41,6 +42,7 @@ app.use('/api/location', locationRouter);
 app.use('/api/upload', uploadRouter);
 app.use('/api/statistical',statisticalRouter);
 app.use('/api/chat', chatRouter);
+app.use('/api/dashboard', dashboardRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));

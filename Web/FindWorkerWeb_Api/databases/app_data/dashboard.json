@@ -1,0 +1,5 @@
+{
+    "selectCountCVByCategoryID": "SELECT jc.NameJobCategory, COUNT(ujc.CategoryID) AS CountPeople FROM userjobcategories AS ujc INNER JOIN jobcategories AS jc ON ujc.CategoryID = jc.CategoryID GROUP BY ujc.CategoryID ORDER BY CountPeople DESC",
+    "selectCountTypeID": "SELECT UserTypeID, COUNT(UserTypeID) AS CountPeople FROM useraccounts GROUP BY UserTypeID",
+    "selectCountTransaction": "SELECT StatusEnd, COUNT(HistoryID) AS CountTransaction FROM db_findworker.chathistories GROUP BY StatusEnd"
+}
