@@ -214,7 +214,7 @@ router.put('/put-cancel-transaction', async function (req, res) {
 
 router.put('/put-done-transaction', async function (req, res) {
     req.checkBody('HistoryID', 'Sai định dạng mã History.').isInt();
-    req.checkBody('Points', 'Điểm đánh giá phải từ 1 đến 10.').isInt({ min: 1, max: 10 });
+    req.checkBody('Points', 'Điểm đánh giá phải từ 1 đến 5.').isInt({ min: 1, max: 5 });
     if (req.validationErrors()) { return res.status(400).json(helper.jsonError(req.validationErrors())); }
     else {
         try {

@@ -210,17 +210,21 @@ router.get('/activated-by-query', async (req, res) => {
         let result = await helper.jwtVerifyLogin(req.header("authorization"));
         if (result.UserTypeID > 0 && result.UserTypeID < 4) {
             let strQuery = CVScript.selectCVByQuery;
-            if (!isNaN(req.query.categoryid) && !!req.query.categoryid) {
-                strQuery = `${strQuery} AND ujc.CategoryID = ${req.query.categoryid}`
+            let categoryid = parseInt(req.query.categoryid);
+            let provinceid = parseInt(req.query.provinceid);
+            let districtid = parseInt(req.query.districtid);
+            let wardid = parseInt(req.query.wardid);
+            if (!isNaN(categoryid) && !!categoryid) {
+                strQuery = `${strQuery} AND ujc.CategoryID = ${categoryid}`;
             }
-            if (!isNaN(req.query.provinceid) && !!req.query.provinceid) {
-                strQuery = `${strQuery} AND ua.ProvinceID = ${req.query.provinceid}`
+            if (!isNaN(provinceid) && !!provinceid) {
+                strQuery = `${strQuery} AND ua.ProvinceID = ${provinceid}`;
             }
-            if (!isNaN(req.query.districtid) && !!req.query.districtid) {
-                strQuery = `${strQuery} AND ua.DistrictID = ${req.query.districtid}`
+            if (!isNaN(districtid) && !!districtid) {
+                strQuery = `${strQuery} AND ua.DistrictID = ${districtid}`;
             }
-            if (!isNaN(req.query.wardid) && !!req.query.wardid) {
-                strQuery = `${strQuery} AND ua.WardID = ${req.query.wardid}`
+            if (!isNaN(wardid) && !!wardid) {
+                strQuery = `${strQuery} AND ua.WardID = ${wardid}`;
             }
             let resultOfUA = await cvModel.getCVByQuery(strQuery, 2, 1);
             if (resultOfUA.length > 0) {
