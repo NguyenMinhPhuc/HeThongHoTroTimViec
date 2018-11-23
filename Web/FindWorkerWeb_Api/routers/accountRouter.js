@@ -278,7 +278,7 @@ router.put('/put-forgot-password', async function (req, res) {
 
             let resultOfSelectUserID = await accountModel.selectUserIDByEmail(Email);
             if (resultOfSelectUserID.length > 0) {
-                let Password = helper.generateRandom6Number().toString();
+                let Password = helper.generateRandomAlphaNum(6).toString();
                 let objValue = { Password: md5(Password), UserAccountID: resultOfSelectUserID[0].UserAccountID };
                 let resultOfUpdatePassword = await accountModel.updatePasswordByUserID(objValue);
                 if (resultOfUpdatePassword.affectedRows > 0) {

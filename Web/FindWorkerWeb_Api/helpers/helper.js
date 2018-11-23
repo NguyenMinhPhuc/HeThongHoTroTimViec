@@ -97,6 +97,12 @@ function generateRandom6Number() {
     return result;
 };
 
+function generateRandomAlphaNum(len) {
+    let rdmString = "";
+    for( ; rdmString.length < len; rdmString  += Math.random().toString(36).substr(2));
+    return  rdmString.substr(0, len);
+}
+
 //RETURN JSON
 function jsonError(strErr) {
     return {
@@ -135,6 +141,7 @@ module.exports = {
     sendVerifyUseEmail,
     sendEmailChangePassword,
     generateRandom6Number,
+    generateRandomAlphaNum,
     jsonErrorDescription,
     jsonSuccessFalse,
     jsonSuccessTrue,
