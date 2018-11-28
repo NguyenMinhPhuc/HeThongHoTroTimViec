@@ -122,12 +122,12 @@ router.get('/get-list-people-chated', async function (req, res) {
             if (resultOfList.length > 0) {
                 let stringSQL = "";
                 for (let i = 0; i < resultOfList.length; i++) {
-                    resultOfList[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfList[i].Image}`
-                    stringSQL = ` HistoryID = ${resultOfList[i].HistoryID} OR`;
+                    stringSQL += ` HistoryID = ${resultOfList[i].HistoryID} OR`;
                 };
                 stringSQL = stringSQL.slice(0, stringSQL.length - 2);//cắt chữ OR cuối cùng
                 let resultOfListMostRecentChat = await chatHistoryModel.selectUserChatedMostRecent(stringSQL);
                 for (let i = 0; i < resultOfList.length; i++) {//vòng lặp kết quả resultOfListMostRecentChat
+                    resultOfList[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfList[i].Image}`;
                     if (resultOfListMostRecentChat.length < 1) {
                         resultOfList[i].UserIDChatedMostRecent = 0;
                     } else {
@@ -148,12 +148,12 @@ router.get('/get-list-people-chated', async function (req, res) {
             if (resultOfList.length > 0) {
                 let stringSQL = "";
                 for (let i = 0; i < resultOfList.length; i++) {
-                    resultOfList[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfList[i].Image}`;
-                    stringSQL = ` HistoryID = ${resultOfList[i].HistoryID} OR`;
+                    stringSQL += ` HistoryID = ${resultOfList[i].HistoryID} OR`;
                 }
                 stringSQL = stringSQL.slice(0, stringSQL.length - 2);//cắt chữ OR cuối cùng
                 let resultOfListMostRecentChat = await chatHistoryModel.selectUserChatedMostRecent(stringSQL);
                 for (let i = 0; i < resultOfList.length; i++) {//vòng lặp kết quả resultOfListMostRecentChat
+                    resultOfList[i].Image = `${linkServer.hethonghotrotimviec.urlServer}${resultOfList[i].Image}`;
                     if (resultOfListMostRecentChat.length < 1) {
                         resultOfList[i].UserIDChatedMostRecent = 0;
                     } else {
